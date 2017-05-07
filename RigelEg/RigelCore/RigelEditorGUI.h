@@ -34,6 +34,7 @@ namespace RigelCore
 		static bool Button(String ^label);
 		static bool Button(String ^label, float w, float h);
 		static bool SmallButton(String ^label);
+
 	};
 
 }

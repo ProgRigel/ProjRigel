@@ -16,7 +16,7 @@ namespace RigelEditor
 
         }
 
-        [MainMenuItem("Help","by Yemi")]
+        [MainMenuItem("Help", "by Yemi")]
         public static void MenuItemCopyRight()
         {
 
