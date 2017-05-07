@@ -1,0 +1,12 @@
+/Debug/
+/.vs/
+/ipch/
+*/Debug/
+*/Release/
+*/bin/
+*/obj/
+*.VC.VC.opendb
+*.VC.db
+Assembly/*/bin/
+Assembly/*/obj/
+/Release/

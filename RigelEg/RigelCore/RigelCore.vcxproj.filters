@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Native">
+      <UniqueIdentifier>{2cf97151-ea6e-4567-8cc5-72f78930a9af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{f102eda0-9300-4696-974f-a41b2ab0d082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdPart">
+      <UniqueIdentifier>{c6ca1926-7d89-45f8-b6fe-a1efa630a881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native\tp">
+      <UniqueIdentifier>{b49c640b-0a81-4794-a5e2-c14b06111764}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="cRigelEditorApp.h">
+      <Filter>Native</Filter>
+    </ClInclude>
+    <ClInclude Include="RigelEditorApp.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>资源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cImguiImplDX11.h">
+      <Filter>Native\tp</Filter>
+    </ClInclude>
+    <ClInclude Include="cRigelGrphicsBackend.h">
+      <Filter>Native</Filter>
+    </ClInclude>
+    <ClInclude Include="RigelEditorGUI.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Stdafx.cpp" />
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="cRigelEditorApp.cpp">
+      <Filter>Native</Filter>
+    </ClCompile>
+    <ClCompile Include="RigelEditorApp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="cImguiImplDX11.cpp">
+      <Filter>Native\tp</Filter>
+    </ClCompile>
+    <ClCompile Include="cRigelGrphicsBackend.cpp">
+      <Filter>Native</Filter>
+    </ClCompile>
+    <ClCompile Include="RigelEditorGUI.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
