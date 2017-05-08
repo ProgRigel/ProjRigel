@@ -21,14 +21,13 @@ namespace RigelEditor.Internal
 
             LoadMainAssembly();
             EditorModuleManager.Inst.LoadModuleFromAssembly(mAssemblyRigelEditor);
-
-            
         }
 
 
         private void LoadMainAssembly()
         {
-            mAssemblyRigelEditor = Assembly.LoadFile(EditorConfig.EditorDataPath + EditorConfig.AssemblyRigelEditorName);
+            //mAssemblyRigelEditor = Assembly.LoadFile(EditorConfig.EditorDataPath + EditorConfig.AssemblyRigelEditorName);
+            mAssemblyRigelEditor = Assembly.GetAssembly(typeof(EditorApplication));
         }
 
 

@@ -114,6 +114,8 @@ namespace RigelCore
 	{
 		ImGui::ShowTestWindow();
 
+		
+
 		ImGui::Render();
 	}
 
