@@ -112,6 +112,8 @@ namespace RigelCore
 
 	void cRigelGrphicsBackend::Render()
 	{
+		ImGui::ShowTestWindow();
+
 		ImGui::Render();
 	}
 
