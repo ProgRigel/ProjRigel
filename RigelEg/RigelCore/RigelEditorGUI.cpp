@@ -92,3 +92,34 @@ bool RigelCore::RigelEditorGUI::SmallButton(String ^ label)
 	string clabel = marshal_as<string>(label);
 	return ImGui::SmallButton(clabel.c_str());
 }
+
+void RigelCore::RigelEditorGUI::SetTooltip(String ^ text)
+{
+	string ctext = marshal_as<string>(text);
+	ImGui::SetTooltip(ctext.c_str());
+}
+
+void RigelCore::RigelEditorGUI::BeginTooltip()
+{
+	ImGui::BeginTooltip();
+}
+
+void RigelCore::RigelEditorGUI::EndTooltip()
+{
+	ImGui::EndTooltip();
+}
+
+bool RigelCore::RigelEditorGUI::IsItemHovered()
+{
+	return ImGui::IsItemHovered();
+}
+
+bool RigelCore::RigelEditorGUI::IsItemHoveredRect()
+{
+	return ImGui::IsItemHoveredRect();
+}
+
+bool RigelCore::RigelEditorGUI::IsItemClicked(int mouseButton)
+{
+	return ImGui::IsItemClicked(mouseButton);
+}
