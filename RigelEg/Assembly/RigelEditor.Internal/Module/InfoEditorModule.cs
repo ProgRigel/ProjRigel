@@ -18,7 +18,16 @@ namespace RigelEditor.Internal
         [MainMenuItem("Help", "by Yemi")]
         public static void MenuItemCopyRight()
         {
+            Console.WriteLine("xxx");
+            EditorGUIUtil.ShowModalMessageBox("info", "this is a messagebox", (ok) =>
+            {
+                EditorGUIUtil.ShowModalMessageBox("2", "t1", (ok1) => { });
+            });
+            EditorGUIUtil.ShowModalMessageBox("3", "txxx", (ok1) => { });
+        }
 
+        public override void onStart()
+        {
         }
 
         public override void onGUI()

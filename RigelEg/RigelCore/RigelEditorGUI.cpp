@@ -125,9 +125,16 @@ bool RigelCore::RigelEditorGUI::IsItemClicked(int mouseButton)
 	return ImGui::IsItemClicked(mouseButton);
 }
 
-bool RigelCore::RigelEditorGUI::ModalMessageBox(String ^ title, String ^ info)
+int RigelCore::RigelEditorGUI::ModalMessageBox(String ^ title, String ^ info)
 {
 	string ctitle = marshal_as<string>(title);
 	string cinfo = marshal_as<string>(info);
 	return RigelCore::ModalMessageBox(ctitle.c_str(), cinfo.c_str());
+}
+
+bool RigelCore::RigelEditorGUI::ModelMessageTip(String ^ title, String ^ info)
+{
+	const char *ctitle = marshal_as<string>(title).c_str();
+	const char *cinfo = marshal_as<string>(info).c_str();
+	return RigelCore::ModalMessageTip(ctitle, cinfo);
 }

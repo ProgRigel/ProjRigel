@@ -9,6 +9,8 @@ namespace RigelEditor.Internal
     public class EditorModule
     {
         protected string ModuleName;
+        protected bool enable = false;
+        public bool Enable { get { return enable; } }
 
         public EditorModule() {
             ModuleName = GetType().Name;

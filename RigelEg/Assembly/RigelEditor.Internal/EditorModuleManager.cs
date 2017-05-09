@@ -37,6 +37,7 @@ namespace RigelEditor.Internal
                 {
                     EditorModule module = Activator.CreateInstance(t) as EditorModule;
                     if (module == null) continue;
+                    module.onStart();
                     mModules.Add(t, module);
 
                     Console.WriteLine("[Module] Load " + t);
@@ -75,6 +76,17 @@ namespace RigelEditor.Internal
                 return orderA.CompareTo(orderB);
             });
 
+        }
+
+        public void ExecModuleOnGUI()
+        {
+            EditorGUIUtil._onGUIState = true;
+            foreach (var mod in mModules)
+            {
+                if (!mod.Value.Enable) continue;
+                mod.Value.onGUI();
+            }
+            EditorGUIUtil._onGUIState = false;
         }
     }
 }

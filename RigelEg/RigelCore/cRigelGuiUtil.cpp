@@ -28,4 +28,23 @@ namespace RigelCore
 		}
 		return ret;
 	}
+
+	bool ModalMessageTip(const char*title, const char * info)
+	{
+		ImGui::OpenPopup(title);
+		if (ImGui::BeginPopupModal(title, NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text(info);
+			ImGui::Separator();
+			ImGui::SameLine();
+			if (ImGui::Button("OK", ImVec2(120, 0)))
+			{
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				return true;
+			}
+			ImGui::EndPopup();
+		}
+		return false;
+	}
 }

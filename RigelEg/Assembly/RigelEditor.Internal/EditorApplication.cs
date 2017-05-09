@@ -75,12 +75,9 @@ namespace RigelEditor.Internal
         {
             DrawMainMenuBar();
 
-            if(!modelshowed)
-            {
-                if (RigelEditorGUI.ModalMessageBox("Isxxx", "xxxxxx rua"))
-                    modelshowed = true;
-            }
-                
+            EditorGUIUtil.onGUI();
+
+            EditorModuleManager.Inst.ExecModuleOnGUI();
         }
 
         #endregion

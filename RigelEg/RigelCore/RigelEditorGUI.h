@@ -48,7 +48,8 @@ namespace RigelCore
 
 
 		//util
-		static bool ModalMessageBox(String ^title, String ^info);
+		static int ModalMessageBox(String ^title, String ^info);
+		static bool ModelMessageTip(String ^title, String ^info);
 
 	};
 
