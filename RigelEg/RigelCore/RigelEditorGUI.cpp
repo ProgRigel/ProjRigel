@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RigelEditorGUI.h"
 #include <imgui\imgui.h>
+#include "cRigelGuiUtil.h"
 
 
 bool RigelCore::RigelEditorGUI::BeginMainMenuBar()
@@ -122,4 +123,11 @@ bool RigelCore::RigelEditorGUI::IsItemHoveredRect()
 bool RigelCore::RigelEditorGUI::IsItemClicked(int mouseButton)
 {
 	return ImGui::IsItemClicked(mouseButton);
+}
+
+bool RigelCore::RigelEditorGUI::ModalMessageBox(String ^ title, String ^ info)
+{
+	string ctitle = marshal_as<string>(title);
+	string cinfo = marshal_as<string>(info);
+	return RigelCore::ModalMessageBox(ctitle.c_str(), cinfo.c_str());
 }

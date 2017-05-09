@@ -13,9 +13,12 @@ namespace RigelEditor.Internal
     {
         private Assembly mAssemblyRigelEditor;
 
+        private RigelEditorApp _nativeApp;
+
         public void InitWithNative(RigelEditorApp nativeApp)
         {
             #region register callback
+            _nativeApp = nativeApp;
             nativeApp.delOnGUI += NativeApp_delOnGUI;
             #endregion
 
@@ -54,11 +57,30 @@ namespace RigelEditor.Internal
             }
         }
 
+        public void OpenProject(string projFolder,string projFile)
+        {
+
+        }
+
+        public void NewProject()
+        {
+
+        }
 
         #region delegate
+
+        private bool modelshowed = false;
+
         private void NativeApp_delOnGUI()
         {
             DrawMainMenuBar();
+
+            if(!modelshowed)
+            {
+                if (RigelEditorGUI.ModalMessageBox("Isxxx", "xxxxxx rua"))
+                    modelshowed = true;
+            }
+                
         }
 
         #endregion

@@ -1,4 +1,5 @@
 #pragma once
+#include "Stdafx.h"
 #include "cRigelEditorApp.h"
 
 namespace RigelCore
@@ -21,8 +22,11 @@ namespace RigelCore
 		void Run();
 		void onWindowDestroy();
 
-
 		void callbackOnGUI();
+
+		void ProjectOpen(System::String ^projFile);
+		void ProjectClose();
+		void ProjectSave();
 	};
 
 }

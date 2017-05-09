@@ -33,4 +33,17 @@ namespace RigelCore
 		delOnGUI();
 	}
 
+	void RigelEditorApp::ProjectOpen(System::String ^ projFile)
+	{
+
+	}
+
+	void RigelEditorApp::ProjectClose()
+	{
+	}
+
+	void RigelEditorApp::ProjectSave()
+	{
+	}
+
 }

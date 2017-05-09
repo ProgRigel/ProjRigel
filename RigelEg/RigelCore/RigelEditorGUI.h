@@ -44,7 +44,11 @@ namespace RigelCore
 		//utility
 		static bool IsItemHovered();
 		static bool IsItemHoveredRect();
-		static bool IsItemClicked(int mouseButton = 0);
+		static bool IsItemClicked(int mouseButton);
+
+
+		//util
+		static bool ModalMessageBox(String ^title, String ^info);
 
 	};
 

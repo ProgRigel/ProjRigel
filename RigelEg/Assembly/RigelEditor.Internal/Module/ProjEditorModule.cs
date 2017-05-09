@@ -13,11 +13,21 @@ namespace RigelEditor.Internal
         [MainMenuItem("File","Open")]
         private static void MenuItem_File_Open()
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            if(openFile.ShowDialog() == DialogResult.OK)
+            string projFileName = null;
+            using (var openFolder = new OpenFileDialog())
             {
-                Console.WriteLine("openfile");
+                openFolder.Filter = "Rigel Project (*.rigel)|*.rigel";
+                openFolder.Multiselect = false;
+                if (openFolder.ShowDialog() == DialogResult.OK)
+                {
+                    projFileName = openFolder.FileName;
+                }
             }
+
+            if (string.IsNullOrEmpty(projFileName)) return;
+            FileInfo file = new FileInfo(projFileName);
+            if (!file.Exists) return;
+
         }
 
         [MainMenuItem("File", "New")]

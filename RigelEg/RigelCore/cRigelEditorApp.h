@@ -2,6 +2,7 @@
 #include "Stdafx.h"
 #include "RigelEditorApp.h"
 #include "cRigelGrphicsBackend.h"
+#include "cRigelProject.h"
 
 namespace RigelCore
 {
@@ -14,7 +15,8 @@ namespace RigelCore
 		HWND hwndWin;
 		WNDCLASSEX wc;
 
-		cRigelGrphicsBackend *mGraphicBackend;
+		cRigelGrphicsBackend	*mGraphicBackend;
+		cRigelProject			*mCurrentProject;
 
 	private:
 
@@ -35,6 +37,9 @@ namespace RigelCore
 		static cRigelEditorApp *GetApp();
 
 		LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParams, LPARAM lParams);
+
+	public:
+
 
 	public:
 		static cRigelEditorApp *mInst;
