@@ -25,6 +25,9 @@ namespace RigelCore
 		
 		LRESULT ProcMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+	public:
+		void CreateTexture(const unsigned char* pixel, int width, int height);
+
 	private:
 		ID3D11Device* pd3dDevice = NULL;
 		ID3D11DeviceContext* pd3dDeviceContext = NULL;

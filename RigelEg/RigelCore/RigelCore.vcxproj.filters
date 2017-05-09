@@ -17,6 +17,9 @@
     <Filter Include="Native\tp">
       <UniqueIdentifier>{b49c640b-0a81-4794-a5e2-c14b06111764}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Native\utility">
+      <UniqueIdentifier>{fca20c03-7d55-4f2c-9cf1-9a4a5c9e513a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Stdafx.h" />
@@ -38,6 +41,12 @@
     <ClInclude Include="RigelEditorGUI.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="cRigelGuiUtil.h">
+      <Filter>Native\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cRigelProject.h">
+      <Filter>Native</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -56,6 +65,12 @@
     </ClCompile>
     <ClCompile Include="RigelEditorGUI.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="cRigelGuiUtil.cpp">
+      <Filter>Native\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cRigelProject.cpp">
+      <Filter>Native</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

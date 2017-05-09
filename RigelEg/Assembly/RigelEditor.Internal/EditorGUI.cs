@@ -71,5 +71,11 @@ namespace RigelEditor.Internal
             return RigelEditorGUI.MenuItem(label);
         }
 
+        //模态对话框 在onGUI中调用
+        internal static int ModalMessageBox(string title,string info)
+        {
+            return RigelEditorGUI.ModalMessageBox(title, info);
+        }
+
     }
 }

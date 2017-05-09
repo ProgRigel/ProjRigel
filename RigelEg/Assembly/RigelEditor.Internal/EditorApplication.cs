@@ -13,40 +13,40 @@ namespace RigelEditor.Internal
     {
         private Assembly mAssemblyRigelEditor;
 
+        private RigelEditorApp _nativeApp;
+
         public void InitWithNative(RigelEditorApp nativeApp)
         {
             #region register callback
+            _nativeApp = nativeApp;
             nativeApp.delOnGUI += NativeApp_delOnGUI;
             #endregion
 
             LoadMainAssembly();
             EditorModuleManager.Inst.LoadModuleFromAssembly(mAssemblyRigelEditor);
-
-            
         }
 
 
         private void LoadMainAssembly()
         {
-            mAssemblyRigelEditor = Assembly.LoadFile(EditorConfig.EditorDataPath + EditorConfig.AssemblyRigelEditorName);
+            //mAssemblyRigelEditor = Assembly.LoadFile(EditorConfig.EditorDataPath + EditorConfig.AssemblyRigelEditorName);
+            mAssemblyRigelEditor = Assembly.GetAssembly(typeof(EditorApplication));
         }
 
 
         private void DrawMainMenuBar()
         {
-            var menudata = EditorModuleManager.Inst.MainMenuBar;
             
             if (RigelEditorGUI.BeginMainMenuBar())
             {
-                if (menudata == null) return;
-                foreach (var menu in menudata)
+                foreach (var menu in EditorModuleManager.Inst.MenuCata)
                 {
-                    if(RigelEditorGUI.BeginMenu(menu.Key))
+                    if(RigelEditorGUI.BeginMenu(menu))
                     {
-                        foreach(var item in menu.Value)
+                        foreach(var item in EditorModuleManager.Inst.MenuCataDict[menu])
                         {
-                            if (RigelEditorGUI.MenuItem(item.Key.Item))
-                                item.Value.Invoke(null, null);
+                            if (RigelEditorGUI.MenuItem(item.Item))
+                                EditorModuleManager.Inst.MenuItemDict[item].Invoke(null, null);
                         }
 
                         RigelEditorGUI.EndMenu();
@@ -57,11 +57,27 @@ namespace RigelEditor.Internal
             }
         }
 
+        public void OpenProject(string projFolder,string projFile)
+        {
+
+        }
+
+        public void NewProject()
+        {
+
+        }
 
         #region delegate
+
+        private bool modelshowed = false;
+
         private void NativeApp_delOnGUI()
         {
             DrawMainMenuBar();
+
+            EditorGUIUtil.onGUI();
+
+            EditorModuleManager.Inst.ExecModuleOnGUI();
         }
 
         #endregion

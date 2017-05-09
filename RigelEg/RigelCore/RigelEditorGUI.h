@@ -35,6 +35,7 @@ namespace RigelCore
 		static bool Button(String ^label, float w, float h);
 		static bool SmallButton(String ^label);
 
+
 		//tooltip
 		static void SetTooltip(String ^text);
 		static void BeginTooltip();
@@ -43,8 +44,13 @@ namespace RigelCore
 		//utility
 		static bool IsItemHovered();
 		static bool IsItemHoveredRect();
-		static bool IsItemClicked(int mouseButton = 0);
-		
+		static bool IsItemClicked(int mouseButton);
+
+
+		//util
+		static int ModalMessageBox(String ^title, String ^info);
+		static bool ModelMessageTip(String ^title, String ^info);
+
 	};
 
 }
