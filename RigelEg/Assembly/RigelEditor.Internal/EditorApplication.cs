@@ -15,15 +15,21 @@ namespace RigelEditor.Internal
 
         private RigelEditorApp _nativeApp;
 
-        public void InitWithNative(RigelEditorApp nativeApp)
+        public void Run()
         {
-            #region register callback
-            _nativeApp = nativeApp;
-            nativeApp.delOnGUI += NativeApp_delOnGUI;
-            #endregion
+            _nativeApp = new RigelEditorApp();
+            _nativeApp.delOnGUI += NativeApp_delOnGUI;
 
             LoadMainAssembly();
             EditorModuleManager.Inst.LoadModuleFromAssembly(mAssemblyRigelEditor);
+
+            Rigel.API.Test();
+            Rigel.API.TestParam("sdwd");
+
+            _nativeApp.Run();
+
+            
+
         }
 
 
@@ -59,7 +65,6 @@ namespace RigelEditor.Internal
 
         public void OpenProject(string projFolder,string projFile)
         {
-
         }
 
         public void NewProject()

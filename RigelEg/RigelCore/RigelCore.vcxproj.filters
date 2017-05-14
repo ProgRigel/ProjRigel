@@ -47,6 +47,9 @@
     <ClInclude Include="cRigelProject.h">
       <Filter>Native</Filter>
     </ClInclude>
+    <ClInclude Include="RigelAPI.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="cRigelProject.cpp">
       <Filter>Native</Filter>
+    </ClCompile>
+    <ClCompile Include="RigelAPI.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

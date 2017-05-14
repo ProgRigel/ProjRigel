@@ -142,6 +142,7 @@
     <ClInclude Include="cRigelGuiUtil.h" />
     <ClInclude Include="cRigelProject.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RigelAPI.h" />
     <ClInclude Include="RigelEditorApp.h" />
     <ClInclude Include="RigelEditorGUI.h" />
     <ClInclude Include="Stdafx.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="cRigelGrphicsBackend.cpp" />
     <ClCompile Include="cRigelGuiUtil.cpp" />
     <ClCompile Include="cRigelProject.cpp" />
+    <ClCompile Include="RigelAPI.cpp" />
     <ClCompile Include="RigelEditorApp.cpp" />
     <ClCompile Include="RigelEditorGUI.cpp" />
     <ClCompile Include="Stdafx.cpp">

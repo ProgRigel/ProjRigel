@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Reflection;
 
-using RigelCore;
 using RigelEditor.Internal;
 
 namespace RigelEngine
@@ -15,21 +14,14 @@ namespace RigelEngine
     {
         static void Main(string[] args)
         {
-            Thread thread = new Thread(EditorThread);
-            thread.SetApartmentState(ApartmentState.STA);
+            Thread thread = new Thread(new ThreadStart(ThreadEditorApp));
             thread.Start();
-
-            //wait
-            Console.Read();
         }
 
-        private static void EditorThread()
+        private static void ThreadEditorApp()
         {
-            RigelEditorApp app = new RigelEditorApp();
-
-            EditorApplication.Inst.InitWithNative(app);
-
-            app.Run();
+            EditorApplication application = new EditorApplication();
+            application.Run();
         }
     }
 }

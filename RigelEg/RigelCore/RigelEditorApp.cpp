@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "RigelEditorApp.h"
 #include "cRigelEditorApp.h"
-
+#include "RigelAPI.h"
 namespace RigelCore
 {
 	RigelEditorApp::RigelEditorApp()
 	{
 		_app = new cRigelEditorApp(this);
 		_app->Create();
+
+		RigelAPI::Test();
 	}
 
 	RigelEditorApp::~RigelEditorApp()
@@ -26,7 +28,7 @@ namespace RigelCore
 
 		delete _app;
 		_app = 0;
-	}
+	}		
 
 	void RigelEditorApp::callbackOnGUI()
 	{

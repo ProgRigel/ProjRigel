@@ -3,6 +3,7 @@
 // stdafx.obj 将包含预编译类型信息
 
 #include "stdafx.h"
+#include "RigelAPI.h"
 
 void DebugLog(const char * msg)
 {

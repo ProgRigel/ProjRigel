@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThridPart", "ThridPart", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "ThirdPart\imgui\imgui.vcxproj", "{CEB46F48-1E04-4A85-8CE0-6B144A8638CA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assembly", "Assembly", "{1049DE04-48AD-4FD1-8695-22731A9FD79E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RigelEditor.Internal", "Assembly\RigelEditor.Internal\RigelEditor.Internal.csproj", "{5DF443BF-D365-4024-9EBC-342B491526C7}"
 EndProject
 Global
@@ -75,6 +73,5 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CEB46F48-1E04-4A85-8CE0-6B144A8638CA} = {7E7282D3-222A-4494-A681-DACC09F2AA59}
-		{5DF443BF-D365-4024-9EBC-342B491526C7} = {1049DE04-48AD-4FD1-8695-22731A9FD79E}
 	EndGlobalSection
 EndGlobal

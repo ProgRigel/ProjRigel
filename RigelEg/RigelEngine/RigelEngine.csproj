@@ -55,10 +55,6 @@
       <Project>{5df443bf-d365-4024-9ebc-342b491526c7}</Project>
       <Name>RigelEditor.Internal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RigelCore\RigelCore.vcxproj">
-      <Project>{70a7a141-b986-4924-9a73-d0692c2994fc}</Project>
-      <Name>RigelCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
