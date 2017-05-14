@@ -40,6 +40,9 @@
     <ClInclude Include="RigelAPI.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="RigelAPIgui.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -65,5 +68,6 @@
     <ClCompile Include="RigelAPI.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="RigelAPIgui.cpp" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Stdafx.h"
+#include "RigelAPIgui.h"
 
 using namespace System;
 
@@ -15,6 +16,11 @@ namespace RigelCore
 
 	//Editor GUI
 	public:
+		//const
+		static bool *CST_OPEN = new bool(true);
+		static bool *CST_CLOSE = new bool(false);
+
+
 		//menu
 		static bool BeginMainMenuBar();
 		static void EndMainMenuBar();
@@ -43,6 +49,22 @@ namespace RigelCore
 		//util
 		static int ModalMessageBox(String ^title, String ^info);
 		static bool ModelMessageTip(String ^title, String ^info);
+
+		static void SameLine();
+
+		//window
+		static bool Begin(String ^name);
+		static bool Begin(String ^name, int wid);
+		static void End();
+
+	//EditorGUI Util
+	public:
+		static void InitEGUI();
+		static int EGUI_registerWindow(int wind);
+		static void EGUI_unregisterWindow(int wind);
+
+	private:
+		static std::map<int,cEGUIwin*>* EGUI_mWindowState;
 	};
 
 }

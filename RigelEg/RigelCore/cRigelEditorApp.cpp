@@ -95,7 +95,7 @@ namespace RigelCore
 			mGraphicBackend->Render();
 			mGraphicBackend->Present();
 
-			System::Threading::Thread::Sleep(15);
+			System::Threading::Thread::Sleep(17);
 
 		}
 		mGraphicBackend->onDestroy();

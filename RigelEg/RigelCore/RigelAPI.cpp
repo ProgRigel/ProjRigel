@@ -9,7 +9,26 @@ namespace RigelCore
 {
 	void RigelAPI::Test()
 	{
-		std::cout << "ednsl" << std::endl;
+		if (ImGui::TreeNode("tree"))
+		{
+			if (ImGui::TreeNode("tree1"))
+			{
+				ImGui::TreePop();
+			}
+			if (ImGui::TreeNode("tree2"))
+			{
+				ImGui::TreePop();
+			}
+			if (ImGui::TreeNode("tree3"))
+			{
+				if (ImGui::TreeNode("tree4"))
+				{
+					ImGui::TreePop();
+				}
+				ImGui::TreePop();
+			}
+			ImGui::TreePop();
+		}
 	}
 	void RigelAPI::TestParam(String ^ info)
 	{
@@ -153,6 +172,55 @@ namespace RigelCore
 		return RigelCore::ModalMessageTip(ctitle, cinfo);
 	}
 
+	void RigelAPI::SameLine()
+	{
+		ImGui::SameLine();
+	}
+
+	bool RigelAPI::Begin(String ^ name)
+	{
+		std::string cname = marshal_as<string>(name);
+		return ImGui::Begin(cname.c_str(), CST_OPEN);
+	}
+
+	bool RigelAPI::Begin(String ^ name, int wid)
+	{
+		std::string cname = marshal_as<string>(name);
+		return ImGui::Begin(cname.c_str(), &((*EGUI_mWindowState)[wid]->open));
+	}
+
+	void RigelAPI::End()
+	{
+		ImGui::End();
+	}
+
+
 #pragma endregion
+
+	void RigelAPI::InitEGUI()
+	{
+		EGUI_mWindowState = new map<int, cEGUIwin*>();
+	}
+
+	int RigelAPI::EGUI_registerWindow(int wid)
+	{
+		if (EGUI_mWindowState->count(wid) > 0)
+		{
+			return wid;
+		}
+		else
+		{
+			cEGUIwin *tempwin = new cEGUIwin();
+			EGUI_mWindowState->insert(make_pair((int)tempwin,tempwin));
+			return (int)tempwin;
+		}
+	}
+
+	void RigelAPI::EGUI_unregisterWindow(int wind)
+	{
+		if(EGUI_mWindowState->count(wind) >0)
+			EGUI_mWindowState->erase(wind);
+	}
+
 
 }

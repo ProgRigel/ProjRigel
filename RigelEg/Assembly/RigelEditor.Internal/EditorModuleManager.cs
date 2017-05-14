@@ -83,7 +83,6 @@ namespace RigelEditor.Internal
             //EditorGUIUtil._onGUIState = true;
             foreach (var mod in mModules)
             {
-                if (!mod.Value.Enable) continue;
                 mod.Value.onGUI();
             }
             //EditorGUIUtil._onGUIState = false;

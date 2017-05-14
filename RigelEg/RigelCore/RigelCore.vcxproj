@@ -142,6 +142,7 @@
     <ClInclude Include="cRigelGuiUtil.h" />
     <ClInclude Include="cRigelProject.h" />
     <ClInclude Include="RigelAPI.h" />
+    <ClInclude Include="RigelAPIgui.h" />
     <ClInclude Include="RigelEditorApp.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
@@ -153,6 +154,7 @@
     <ClCompile Include="cRigelGuiUtil.cpp" />
     <ClCompile Include="cRigelProject.cpp" />
     <ClCompile Include="RigelAPI.cpp" />
+    <ClCompile Include="RigelAPIgui.cpp" />
     <ClCompile Include="RigelEditorApp.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

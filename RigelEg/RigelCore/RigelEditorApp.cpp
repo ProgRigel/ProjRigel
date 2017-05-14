@@ -9,7 +9,7 @@ namespace RigelCore
 		_app = new cRigelEditorApp(this);
 		_app->Create();
 
-		RigelAPI::Test();
+		RigelAPI::InitEGUI();
 	}
 
 	RigelEditorApp::~RigelEditorApp()

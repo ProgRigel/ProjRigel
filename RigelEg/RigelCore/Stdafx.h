@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vcclr.h>
+#include <map>
 
 #include <msclr\auto_gcroot.h>
 #include <msclr\marshal_cppstd.h>

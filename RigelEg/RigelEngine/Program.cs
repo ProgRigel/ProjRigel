@@ -15,6 +15,7 @@ namespace RigelEngine
         static void Main(string[] args)
         {
             Thread thread = new Thread(new ThreadStart(ThreadEditorApp));
+            thread.TrySetApartmentState(ApartmentState.STA);
             thread.Start();
         }
 

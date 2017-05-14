@@ -33,76 +33,98 @@ namespace RigelEditor.Internal
         public void Test() { }
         public void TestParam(string info) { }
 
-        public class RigelEGUI
+    }
+
+    public class RigelEGUI
+    {
+        public static void Text(string text)
         {
-            public static void Text(string text)
-            {
-                RigelAPI.Text(text);
-            }
-            public static void TextColored(string text, float r, float g, float b, float a)
-            {
-                RigelAPI.TextColored(text, r, g, b, a);
-            }
-            public static void TextDisabled(string text)
-            {
-                RigelAPI.TextDisabled(text);
-            }
-            public static void TextWrapped(string text)
-            {
-                RigelAPI.TextWrapped(text);
-            }
-            public static void LabelText(string label, string text)
-            {
-                RigelAPI.LabelText(label, text);
-            }
-            public static void Bullet()
-            {
-                RigelAPI.Bullet();
-            }
+            RigelAPI.Text(text);
+        }
+        public static void TextColored(string text, float r, float g, float b, float a)
+        {
+            RigelAPI.TextColored(text, r, g, b, a);
+        }
+        public static void TextDisabled(string text)
+        {
+            RigelAPI.TextDisabled(text);
+        }
+        public static void TextWrapped(string text)
+        {
+            RigelAPI.TextWrapped(text);
+        }
+        public static void LabelText(string label, string text)
+        {
+            RigelAPI.LabelText(label, text);
+        }
+        public static void Bullet()
+        {
+            RigelAPI.Bullet();
+        }
 
-            public static void BulletText(string text)
-            {
-                RigelAPI.BulletText(text);
-            }
-            public static bool Button(string text)
-            {
-                return RigelAPI.Button(text);
-            }
-            public static bool Button(string text, float with, float height)
-            {
-                return RigelAPI.Button(text, with, height);
-            }
+        public static void BulletText(string text)
+        {
+            RigelAPI.BulletText(text);
+        }
+        public static bool Button(string text)
+        {
+            return RigelAPI.Button(text);
+        }
+        public static bool Button(string text, float with, float height)
+        {
+            return RigelAPI.Button(text, with, height);
+        }
 
-            //menu bar
-            internal static void BeginMainMenuBar()
-            {
-                RigelAPI.BeginMainMenuBar();
-            }
-            internal static void EndMainMenuBar()
-            {
-                RigelAPI.EndMainMenuBar();
-            }
-            internal static bool BeginMenu(string label)
-            {
-                return RigelAPI.BeginMenu(label);
-            }
-            internal static void EndMenu(string label)
-            {
-                RigelAPI.EndMenu();
-            }
-            internal static bool MenuItem(string label)
-            {
-                return RigelAPI.MenuItem(label);
-            }
+        //menu bar
+        internal static bool BeginMainMenuBar()
+        {
+            return RigelAPI.BeginMainMenuBar();
+        }
+        internal static void EndMainMenuBar()
+        {
+            RigelAPI.EndMainMenuBar();
+        }
+        internal static bool BeginMenu(string label)
+        {
+            return RigelAPI.BeginMenu(label);
+        }
+        internal static void EndMenu()
+        {
+            RigelAPI.EndMenu();
+        }
+        internal static bool MenuItem(string label)
+        {
+            return RigelAPI.MenuItem(label);
+        }
 
-            //模态对话框 在onGUI中调用
-            internal static int ModalMessageBox(string title, string info)
-            {
-                return RigelAPI.ModalMessageBox(title, info);
-            }
+        //模态对话框 在onGUI中调用
+        internal static int ModalMessageBox(string title, string info)
+        {
+            return RigelAPI.ModalMessageBox(title, info);
+        }
+
+        internal static void SameLine() { RigelAPI.SameLine(); }
+
+        //window 
+        internal static bool Begin(String title)
+        {
+            return RigelAPI.Begin(title);
+        }
+        internal static bool Begin(String title, int wid)
+        {
+            return RigelAPI.Begin(title, wid);
+        }
+        internal static void End()
+        {
+            RigelAPI.End();
+        }
+
+        internal static int EGUI_registerWindow(int windowId)
+        {
+            return RigelAPI.EGUI_registerWindow(windowId);
         }
     }
 
-    
+
 
 }
