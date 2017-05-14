@@ -80,13 +80,13 @@ namespace RigelEditor.Internal
 
         public void ExecModuleOnGUI()
         {
-            EditorGUIUtil._onGUIState = true;
+            //EditorGUIUtil._onGUIState = true;
             foreach (var mod in mModules)
             {
                 if (!mod.Value.Enable) continue;
                 mod.Value.onGUI();
             }
-            EditorGUIUtil._onGUIState = false;
+            //EditorGUIUtil._onGUIState = false;
         }
     }
 }

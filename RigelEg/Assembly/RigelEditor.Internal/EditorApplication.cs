@@ -43,23 +43,23 @@ namespace RigelEditor.Internal
         private void DrawMainMenuBar()
         {
             
-            if (RigelEditorGUI.BeginMainMenuBar())
+            if (RigelAPI.BeginMainMenuBar())
             {
                 foreach (var menu in EditorModuleManager.Inst.MenuCata)
                 {
-                    if(RigelEditorGUI.BeginMenu(menu))
+                    if(RigelAPI.BeginMenu(menu))
                     {
                         foreach(var item in EditorModuleManager.Inst.MenuCataDict[menu])
                         {
-                            if (RigelEditorGUI.MenuItem(item.Item))
+                            if (RigelAPI.MenuItem(item.Item))
                                 EditorModuleManager.Inst.MenuItemDict[item].Invoke(null, null);
                         }
 
-                        RigelEditorGUI.EndMenu();
+                        RigelAPI.EndMenu();
                     }
                 }
 
-                RigelEditorGUI.EndMainMenuBar();
+                RigelAPI.EndMainMenuBar();
             }
         }
 
@@ -80,7 +80,7 @@ namespace RigelEditor.Internal
         {
             DrawMainMenuBar();
 
-            EditorGUIUtil.onGUI();
+            //EditorGUIUtil.onGUI();
 
             EditorModuleManager.Inst.ExecModuleOnGUI();
         }

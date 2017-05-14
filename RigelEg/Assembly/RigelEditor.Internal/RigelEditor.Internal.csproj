@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="EditorApplication.cs" />
     <Compile Include="EditorConfig.cs" />
-    <Compile Include="EditorGUI.cs" />
     <Compile Include="EditorGUIUtil.cs" />
     <Compile Include="EditorModule.cs" />
     <Compile Include="EditorModuleAttribute.cs" />
