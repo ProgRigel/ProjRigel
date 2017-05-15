@@ -20,6 +20,8 @@ namespace RigelEditor.Internal
             _nativeApp = new RigelEditorApp();
             _nativeApp.delOnGUI += NativeApp_delOnGUI;
 
+            RigelAPI.EGUI_loadTTF("yahei.ttf");
+
             mAssemblyRigelEditor = Assembly.GetAssembly(typeof(EditorApplication));
             EditorModuleManager.Inst.LoadModuleFromAssembly(mAssemblyRigelEditor);
 
@@ -57,6 +59,8 @@ namespace RigelEditor.Internal
         private void NativeApp_delOnGUI()
         {
             DrawMainMenuBar();
+
+            RigelAPI.Text("中文");
 
             EditorModuleManager.Inst.ExecModuleOnGUI();
         }

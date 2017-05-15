@@ -43,6 +43,9 @@
     <ClInclude Include="RigelAPIgui.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="cRigelUtil.h">
+      <Filter>Native\utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
@@ -69,5 +72,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="RigelAPIgui.cpp" />
+    <ClCompile Include="cRigelUtil.cpp" />
   </ItemGroup>
 </Project>

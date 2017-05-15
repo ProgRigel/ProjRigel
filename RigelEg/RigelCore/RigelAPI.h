@@ -62,7 +62,7 @@ namespace RigelCore
 		static void InitEGUI();
 		static int EGUI_registerWindow(int wind);
 		static void EGUI_unregisterWindow(int wind);
-
+		static void EGUI_loadTTF(String^ file);
 	private:
 		static std::map<int,cEGUIwin*>* EGUI_mWindowState;
 	};

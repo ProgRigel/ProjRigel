@@ -222,5 +222,12 @@ namespace RigelCore
 			EGUI_mWindowState->erase(wind);
 	}
 
+	void RigelAPI::EGUI_loadTTF(String^ file)
+	{
+		std::string cstr = marshal_as<string>(file);
+		ImGuiIO io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF(cstr.c_str(), 15.0f, NULL, io.Fonts->GetGlyphRangesChinese());
+	}
+
 
 }

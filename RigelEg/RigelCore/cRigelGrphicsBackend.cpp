@@ -101,6 +101,7 @@ namespace RigelCore
 	{
 		DebugLog("onStart");
 		ImGui_ImplDX11_Init(hwndWin, pd3dDevice, pd3dDeviceContext);
+
 	}
 	void cRigelGrphicsBackend::PreRender()
 	{
