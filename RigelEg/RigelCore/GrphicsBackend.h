@@ -5,11 +5,11 @@
 
 namespace RigelCore
 {
-	class cRigelGrphicsBackend
+	class GrphicsBackend
 	{
 	public:
-		cRigelGrphicsBackend();
-		~cRigelGrphicsBackend();
+		GrphicsBackend();
+		~GrphicsBackend();
 
 		HRESULT CreateDeviceD3D(HWND hWnd);
 		void CreateRenderTarget();

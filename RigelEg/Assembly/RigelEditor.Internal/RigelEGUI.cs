@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RigelEditor.Internal
 {
-    public static class RigelAPI
+    public static class RigelEGUI
     {
+
     }
 }

@@ -1,29 +1,23 @@
 #pragma once
 #include "Stdafx.h"
 #include "RigelEditorApp.h"
-#include "cRigelGrphicsBackend.h"
-#include "cRigelProject.h"
+#include "GrphicsBackend.h"
 
 namespace RigelCore
 {
 	ref class RigelEditorApp;
 
-	class cRigelEditorApp
+	class EditorApp
 	{
 	private:
 		msclr::auto_gcroot<RigelEditorApp^> mClr;
 		HWND hwndWin;
 		WNDCLASSEX wc;
 
-		cRigelGrphicsBackend	*mGraphicBackend;
-		cRigelProject			*mCurrentProject;
-
-	private:
-
-
+		GrphicsBackend *mGraphicBackend;
 	public:
-		cRigelEditorApp(RigelEditorApp^ clr);
-		~cRigelEditorApp();
+		EditorApp(RigelEditorApp^ clr);
+		~EditorApp();
 
 		void Create();
 		void Run();
@@ -34,15 +28,11 @@ namespace RigelCore
 		void Render();
 		void LateUpdate();
 
-		static cRigelEditorApp *GetApp();
+		static EditorApp *GetApp();
 
 		LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParams, LPARAM lParams);
-
 	public:
-
-
-	public:
-		static cRigelEditorApp *mInst;
+		static EditorApp *mInst;
 
 	};
 }

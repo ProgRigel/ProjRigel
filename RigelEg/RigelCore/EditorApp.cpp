@@ -1,27 +1,27 @@
 #include "Stdafx.h"
-#include "cRigelEditorApp.h"
+#include "EditorApp.h"
 
 namespace RigelCore
 {
-	cRigelEditorApp * cRigelEditorApp::mInst;
+	EditorApp * EditorApp::mInst;
 
 	LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		return cRigelEditorApp::GetApp()->MsgProc(hWnd,msg,wParam,lParam);
+		return EditorApp::GetApp()->MsgProc(hWnd,msg,wParam,lParam);
 	}
 
 
-	cRigelEditorApp::cRigelEditorApp(RigelEditorApp^ clr)
+	EditorApp::EditorApp(RigelEditorApp^ clr)
 	{
-		std::cout << "init" << std::endl;
+		DebugLog("Init NativeEditorApp");
 		mClr = clr;
 
 		mInst = this;
 	}
 
-	cRigelEditorApp::~cRigelEditorApp()
+	EditorApp::~EditorApp()
 	{
-		DebugLog("deconstruct cRigelEditorApp");
+		DebugLog("deconstruct EditorApp");
 		
 		delete mGraphicBackend;
 		mGraphicBackend = 0;
@@ -31,7 +31,7 @@ namespace RigelCore
 		UnregisterClass(_T("RigelEditorWinClass"), wc.hInstance);
 	}
 
-	void cRigelEditorApp::Create()
+	void EditorApp::Create()
 	{
 		// winapi window
 		wc = {
@@ -51,7 +51,7 @@ namespace RigelCore
 		hwndWin = CreateWindow(_T("RigelEditorWinClass"), _T("RigelEditorWinClass"), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
 
 		//init directx
-		mGraphicBackend = new cRigelGrphicsBackend();
+		mGraphicBackend = new GrphicsBackend();
 		if (mGraphicBackend->CreateDeviceD3D(hwndWin) < 0)
 		{
 			mGraphicBackend->CleanupDeviceD3D();
@@ -69,12 +69,12 @@ namespace RigelCore
 	}
 
 
-	void cRigelEditorApp::Update()
+	void EditorApp::Update()
 	{
 
 	}
 
-	void cRigelEditorApp::Run()
+	void EditorApp::Run()
 	{
 		DebugLog("cEditorApp Run");
 
@@ -104,12 +104,12 @@ namespace RigelCore
 		mClr->onWindowDestroy();
 	}
 
-	cRigelEditorApp * cRigelEditorApp::GetApp()
+	EditorApp * EditorApp::GetApp()
 	{
 		return mInst;
 	}
 
-	LRESULT cRigelEditorApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParams, LPARAM lParams)
+	LRESULT EditorApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParams, LPARAM lParams)
 	{
 		if (mGraphicBackend->ProcMsg(hwnd, msg, wParams, lParams) == 0)
 			return 0;

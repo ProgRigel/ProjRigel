@@ -45,16 +45,9 @@
   <ItemGroup>
     <Compile Include="EditorApplication.cs" />
     <Compile Include="EditorConfig.cs" />
-    <Compile Include="EditorGUIUtil.cs" />
-    <Compile Include="EditorModule.cs" />
-    <Compile Include="EditorModuleAttribute.cs" />
-    <Compile Include="EditorModuleManager.cs" />
-    <Compile Include="MainMenuItemAttribute.cs" />
-    <Compile Include="Module\InfoEditorModule.cs" />
-    <Compile Include="Module\ProjEditorModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RigelAPI.cs" />
-    <Compile Include="RigelInternalAttribute.cs" />
+    <Compile Include="RigelEGUI.cs" />
     <Compile Include="Util\Debug.cs" />
     <Compile Include="Util\IntercreptAttribute.cs" />
     <Compile Include="Util\Singleton.cs" />

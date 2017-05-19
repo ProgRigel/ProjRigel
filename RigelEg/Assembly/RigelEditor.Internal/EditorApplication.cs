@@ -13,58 +13,20 @@ namespace RigelEditor.Internal
     {
         private Assembly mAssemblyRigelEditor;
 
-        private RigelEditorApp _nativeApp;
+        private RigelEditorApp mNativeApp;
 
         public void Run()
         {
-            _nativeApp = new RigelEditorApp();
-            _nativeApp.delOnGUI += NativeApp_delOnGUI;
-
-            RigelAPI.EGUI_loadTTF("yahei.ttf");
-
+            mNativeApp = new RigelEditorApp();
+            mNativeApp.delOnGUI += EventOnGUI;
             mAssemblyRigelEditor = Assembly.GetAssembly(typeof(EditorApplication));
-            EditorModuleManager.Inst.LoadModuleFromAssembly(mAssemblyRigelEditor);
-
-            _nativeApp.Run();
+            mNativeApp.Run();
 
         }
 
-
-        private void DrawMainMenuBar()
+        private void EventOnGUI()
         {
-            
-            if (RigelEGUI.BeginMainMenuBar())
-            {
-                foreach (var menu in EditorModuleManager.Inst.MenuCata)
-                {
-                    if(RigelEGUI.BeginMenu(menu))
-                    {
-                        foreach(var item in EditorModuleManager.Inst.MenuCataDict[menu])
-                        {
-                            if (RigelEGUI.MenuItem(item.Item))
-                                EditorModuleManager.Inst.MenuItemDict[item].Invoke(null, null);
-                        }
 
-                        RigelEGUI.EndMenu();
-                    }
-                }
-
-                RigelEGUI.EndMainMenuBar();
-            }
         }
-
-
-        #region delegate
-
-        private void NativeApp_delOnGUI()
-        {
-            DrawMainMenuBar();
-
-            RigelAPI.Text("中文");
-
-            EditorModuleManager.Inst.ExecModuleOnGUI();
-        }
-
-        #endregion
     }
 }

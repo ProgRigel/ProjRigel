@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "RigelAPI.h"
 #include <imgui\imgui.h>
-#include "cRigelGuiUtil.h"
 using namespace msclr::interop;
 using namespace std;
 
@@ -160,16 +159,12 @@ namespace RigelCore
 
 	int RigelAPI::ModalMessageBox(String ^ title, String ^ info)
 	{
-		string ctitle = marshal_as<string>(title);
-		string cinfo = marshal_as<string>(info);
-		return RigelCore::ModalMessageBox(ctitle.c_str(), cinfo.c_str());
+		return 0;
 	}
 
 	bool RigelAPI::ModelMessageTip(String ^ title, String ^ info)
 	{
-		const char *ctitle = marshal_as<string>(title).c_str();
-		const char *cinfo = marshal_as<string>(info).c_str();
-		return RigelCore::ModalMessageTip(ctitle, cinfo);
+		return false;
 	}
 
 	void RigelAPI::SameLine()
@@ -183,11 +178,6 @@ namespace RigelCore
 		return ImGui::Begin(cname.c_str(), CST_OPEN);
 	}
 
-	bool RigelAPI::Begin(String ^ name, int wid)
-	{
-		std::string cname = marshal_as<string>(name);
-		return ImGui::Begin(cname.c_str(), &((*EGUI_mWindowState)[wid]->open));
-	}
 
 	void RigelAPI::End()
 	{
@@ -196,31 +186,6 @@ namespace RigelCore
 
 
 #pragma endregion
-
-	void RigelAPI::InitEGUI()
-	{
-		EGUI_mWindowState = new map<int, cEGUIwin*>();
-	}
-
-	int RigelAPI::EGUI_registerWindow(int wid)
-	{
-		if (EGUI_mWindowState->count(wid) > 0)
-		{
-			return wid;
-		}
-		else
-		{
-			cEGUIwin *tempwin = new cEGUIwin();
-			EGUI_mWindowState->insert(make_pair((int)tempwin,tempwin));
-			return (int)tempwin;
-		}
-	}
-
-	void RigelAPI::EGUI_unregisterWindow(int wind)
-	{
-		if(EGUI_mWindowState->count(wind) >0)
-			EGUI_mWindowState->erase(wind);
-	}
 
 	void RigelAPI::EGUI_loadTTF(String^ file)
 	{

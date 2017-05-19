@@ -1,20 +1,19 @@
 #include "stdafx.h"
 #include "RigelEditorApp.h"
-#include "cRigelEditorApp.h"
+#include "EditorApp.h"
 #include "RigelAPI.h"
 namespace RigelCore
 {
 	RigelEditorApp::RigelEditorApp()
 	{
-		_app = new cRigelEditorApp(this);
+		_app = new EditorApp(this);
 		_app->Create();
 
-		RigelAPI::InitEGUI();
 	}
 
 	RigelEditorApp::~RigelEditorApp()
 	{
-		std::cout << "~RigelEditorApp" << std::endl;
+		DebugLog("~RigelEditorApp");
 	}
 
 	void RigelEditorApp::Run()
@@ -24,7 +23,7 @@ namespace RigelCore
 
 	void RigelEditorApp::onWindowDestroy()
 	{
-		std::cout << "rigel editor app :: win destroy" << std::endl;
+		DebugLog("rigel editor app :: win destroy");
 
 		delete _app;
 		_app = 0;
@@ -33,19 +32,6 @@ namespace RigelCore
 	void RigelEditorApp::callbackOnGUI()
 	{
 		delOnGUI();
-	}
-
-	void RigelEditorApp::ProjectOpen(System::String ^ projFile)
-	{
-
-	}
-
-	void RigelEditorApp::ProjectClose()
-	{
-	}
-
-	void RigelEditorApp::ProjectSave()
-	{
 	}
 
 }

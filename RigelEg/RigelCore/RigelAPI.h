@@ -1,6 +1,5 @@
 #pragma once
 #include "Stdafx.h"
-#include "RigelAPIgui.h"
 
 using namespace System;
 
@@ -54,17 +53,11 @@ namespace RigelCore
 
 		//window
 		static bool Begin(String ^name);
-		static bool Begin(String ^name, int wid);
 		static void End();
 
 	//EditorGUI Util
 	public:
-		static void InitEGUI();
-		static int EGUI_registerWindow(int wind);
-		static void EGUI_unregisterWindow(int wind);
 		static void EGUI_loadTTF(String^ file);
-	private:
-		static std::map<int,cEGUIwin*>* EGUI_mWindowState;
 	};
 
 }

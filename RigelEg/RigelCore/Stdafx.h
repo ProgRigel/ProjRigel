@@ -14,3 +14,4 @@
 #include <msclr\marshal_cppstd.h>
 
 void DebugLog(const char* msg);
+void DebugLog(System::String ^ msg);

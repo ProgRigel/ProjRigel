@@ -1,10 +1,10 @@
 #pragma once
 #include "Stdafx.h"
-#include "cRigelEditorApp.h"
+#include "EditorApp.h"
 
 namespace RigelCore
 {
-	class cRigelEditorApp;
+	class EditorApp;
 
 	public ref class RigelEditorApp
 	{
@@ -13,7 +13,7 @@ namespace RigelCore
 		event DelEvent ^delOnGUI;
 
 	private:
-		cRigelEditorApp *_app;
+		EditorApp *_app;
 
 	public:
 		RigelEditorApp();
@@ -23,10 +23,6 @@ namespace RigelCore
 		void onWindowDestroy();
 
 		void callbackOnGUI();
-
-		void ProjectOpen(System::String ^projFile);
-		void ProjectClose();
-		void ProjectSave();
 	};
 
 }

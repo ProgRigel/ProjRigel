@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "cRigelGrphicsBackend.h"
+#include "GrphicsBackend.h"
 #include "cImguiImplDX11.h"
 
 #include <imgui\imgui.h>
@@ -13,16 +13,19 @@
 namespace RigelCore
 {
 
-	cRigelGrphicsBackend::cRigelGrphicsBackend()
+	GrphicsBackend::GrphicsBackend()
 	{
+		
 	}
 
 
-	cRigelGrphicsBackend::~cRigelGrphicsBackend()
+	GrphicsBackend::~GrphicsBackend()
 	{
+		CleanupRenderTarget();
+		CleanupDeviceD3D();
 	}
 
-	HRESULT cRigelGrphicsBackend::CreateDeviceD3D(HWND hWnd)
+	HRESULT GrphicsBackend::CreateDeviceD3D(HWND hWnd)
 	{
 		hwndWin = hWnd;
 
@@ -57,7 +60,7 @@ namespace RigelCore
 		return S_OK;
 	}
 
-	void cRigelGrphicsBackend::CreateRenderTarget()
+	void GrphicsBackend::CreateRenderTarget()
 	{
 		DXGI_SWAP_CHAIN_DESC sd;
 		pSwapChain->GetDesc(&sd);
@@ -74,7 +77,7 @@ namespace RigelCore
 		pBackBuffer->Release();
 	}
 
-	void cRigelGrphicsBackend::CleanupRenderTarget()
+	void GrphicsBackend::CleanupRenderTarget()
 	{
 		if (pMainRenderTargetView)
 		{
@@ -83,7 +86,7 @@ namespace RigelCore
 		}
 	}
 
-	void cRigelGrphicsBackend::CleanupDeviceD3D()
+	void GrphicsBackend::CleanupDeviceD3D()
 	{
 		CleanupRenderTarget();
 		if (pSwapChain)pSwapChain->Release(); pSwapChain = NULL;
@@ -97,13 +100,13 @@ namespace RigelCore
 			pd3dDevice = NULL;
 		}
 	}
-	void cRigelGrphicsBackend::onStart()
+	void GrphicsBackend::onStart()
 	{
 		DebugLog("onStart");
 		ImGui_ImplDX11_Init(hwndWin, pd3dDevice, pd3dDeviceContext);
 
 	}
-	void cRigelGrphicsBackend::PreRender()
+	void GrphicsBackend::PreRender()
 	{
 		//gui new frame
 		ImGui_ImplDX11_NewFrame();
@@ -111,19 +114,19 @@ namespace RigelCore
 		pd3dDeviceContext->ClearRenderTargetView(pMainRenderTargetView, clearColor);
 	}
 
-	void cRigelGrphicsBackend::Render()
+	void GrphicsBackend::Render()
 	{
 		ImGui::ShowTestWindow();
 
 		ImGui::Render();
 	}
 
-	void cRigelGrphicsBackend::Present()
+	void GrphicsBackend::Present()
 	{
 		pSwapChain->Present(0, 0);
 	}
 
-	LRESULT cRigelGrphicsBackend::ProcMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT GrphicsBackend::ProcMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		if (ImGui_ImplDX11_WndProcHandler(hWnd, msg, wParam, lParam))
 			return true;
@@ -151,7 +154,7 @@ namespace RigelCore
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
-	void cRigelGrphicsBackend::CreateTexture(const unsigned char * pixel, int width, int height)
+	void GrphicsBackend::CreateTexture(const unsigned char * pixel, int width, int height)
 	{
 		D3D11_TEXTURE2D_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
@@ -186,7 +189,7 @@ namespace RigelCore
 		pTexture->Release();
 	}
 	
-	void cRigelGrphicsBackend::onDestroy()
+	void GrphicsBackend::onDestroy()
 	{
 		DebugLog("onDestroy");
 		ImGui_ImplDX11_Shutdown();

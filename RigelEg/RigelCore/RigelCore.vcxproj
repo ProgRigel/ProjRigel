@@ -115,6 +115,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -137,26 +138,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cImguiImplDX11.h" />
-    <ClInclude Include="cRigelEditorApp.h" />
-    <ClInclude Include="cRigelGrphicsBackend.h" />
-    <ClInclude Include="cRigelGuiUtil.h" />
-    <ClInclude Include="cRigelProject.h" />
-    <ClInclude Include="cRigelUtil.h" />
+    <ClInclude Include="EditorApp.h" />
+    <ClInclude Include="GrphicsBackend.h" />
     <ClInclude Include="RigelAPI.h" />
-    <ClInclude Include="RigelAPIgui.h" />
     <ClInclude Include="RigelEditorApp.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="cImguiImplDX11.cpp" />
-    <ClCompile Include="cRigelEditorApp.cpp" />
-    <ClCompile Include="cRigelGrphicsBackend.cpp" />
-    <ClCompile Include="cRigelGuiUtil.cpp" />
-    <ClCompile Include="cRigelProject.cpp" />
-    <ClCompile Include="cRigelUtil.cpp" />
+    <ClCompile Include="EditorApp.cpp" />
+    <ClCompile Include="GrphicsBackend.cpp" />
     <ClCompile Include="RigelAPI.cpp" />
-    <ClCompile Include="RigelAPIgui.cpp" />
     <ClCompile Include="RigelEditorApp.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

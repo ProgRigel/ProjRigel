@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "RigelAPI.h"
 
-void DebugLog(const char * msg)
+
+void DebugLog(System::String ^ msg)
 {
-	std::cout << msg << std::endl;
+	System::Console::WriteLine(msg);
 }

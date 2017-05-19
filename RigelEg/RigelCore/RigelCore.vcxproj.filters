@@ -1,77 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Native">
-      <UniqueIdentifier>{2cf97151-ea6e-4567-8cc5-72f78930a9af}</UniqueIdentifier>
+    <Filter Include="H">
+      <UniqueIdentifier>{874267d6-ffb0-45aa-ade3-9a20f6f6cf5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{f102eda0-9300-4696-974f-a41b2ab0d082}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdPart">
-      <UniqueIdentifier>{c6ca1926-7d89-45f8-b6fe-a1efa630a881}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Native\tp">
+    <Filter Include="_TP">
       <UniqueIdentifier>{b49c640b-0a81-4794-a5e2-c14b06111764}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Native\utility">
-      <UniqueIdentifier>{fca20c03-7d55-4f2c-9cf1-9a4a5c9e513a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stdafx.h" />
-    <ClInclude Include="cRigelEditorApp.h">
-      <Filter>Native</Filter>
-    </ClInclude>
-    <ClInclude Include="RigelEditorApp.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="cImguiImplDX11.h">
-      <Filter>Native\tp</Filter>
-    </ClInclude>
-    <ClInclude Include="cRigelGrphicsBackend.h">
-      <Filter>Native</Filter>
-    </ClInclude>
-    <ClInclude Include="cRigelGuiUtil.h">
-      <Filter>Native\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cRigelProject.h">
-      <Filter>Native</Filter>
+      <Filter>_TP</Filter>
     </ClInclude>
     <ClInclude Include="RigelAPI.h">
-      <Filter>Core</Filter>
+      <Filter>H</Filter>
     </ClInclude>
-    <ClInclude Include="RigelAPIgui.h">
-      <Filter>Core</Filter>
+    <ClInclude Include="RigelEditorApp.h">
+      <Filter>H</Filter>
     </ClInclude>
-    <ClInclude Include="cRigelUtil.h">
-      <Filter>Native\utility</Filter>
+    <ClInclude Include="Stdafx.h">
+      <Filter>H</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorApp.h">
+      <Filter>H</Filter>
+    </ClInclude>
+    <ClInclude Include="GrphicsBackend.h">
+      <Filter>H</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Stdafx.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="cRigelEditorApp.cpp">
-      <Filter>Native</Filter>
-    </ClCompile>
-    <ClCompile Include="RigelEditorApp.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="cImguiImplDX11.cpp">
-      <Filter>Native\tp</Filter>
+      <Filter>_TP</Filter>
     </ClCompile>
-    <ClCompile Include="cRigelGrphicsBackend.cpp">
-      <Filter>Native</Filter>
-    </ClCompile>
-    <ClCompile Include="cRigelGuiUtil.cpp">
-      <Filter>Native\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cRigelProject.cpp">
-      <Filter>Native</Filter>
-    </ClCompile>
-    <ClCompile Include="RigelAPI.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="RigelAPIgui.cpp" />
-    <ClCompile Include="cRigelUtil.cpp" />
+    <ClCompile Include="RigelAPI.cpp" />
+    <ClCompile Include="RigelEditorApp.cpp" />
+    <ClCompile Include="EditorApp.cpp" />
+    <ClCompile Include="GrphicsBackend.cpp" />
   </ItemGroup>
 </Project>
