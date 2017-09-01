@@ -1,0 +1,12 @@
+/.vs/
+/Debug/*
+/Release/*
+/x64/*
+/x86/*
+/rigel.VC.db
+/rigel.VC.VC.opendb
+
+/*.vcxproj.filters merge=union
+
+*.log
+*.lastbuildstate
