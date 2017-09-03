@@ -61,11 +61,11 @@
     <ClCompile Include="rg_windowManager.cpp">
       <Filter>window</Filter>
     </ClCompile>
-    <ClCompile Include="rg_windowWindows.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="rg_log.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_windowWindows.cpp">
+      <Filter>window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

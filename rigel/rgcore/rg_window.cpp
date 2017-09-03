@@ -16,14 +16,46 @@ namespace rg {
 
 	}
 
-	void RgWindow::regCallbackMsgProc(RGWINDOW_CALLBACK_MSGPROC func)
+	void RgWindow::onResize()
 	{
-		m_funcMsgProc = func;
 	}
 
-	void RgWindow::regCallbackNewFrame(RGWINDOW_CALLBACK_NEWFRAME func)
+	void RgWindow::onPaint()
 	{
-		m_funcNewframe = func;
+	}
+
+	void RgWindow::onEnterSizeMove()
+	{
+	}
+
+	void RgWindow::onExitSizeMove()
+	{
+	}
+
+	void RgWindow::onKeyboard()
+	{
+	}
+
+	void RgWindow::onClose()
+	{
+		if(m_funcONCLOSE)
+			m_funcONCLOSE(this);
+	}
+
+	void RgWindow::onDestroy()
+	{
+	}
+
+	void RgWindow::onMouseButton()
+	{
+	}
+
+	void RgWindow::onMouseWheel()
+	{
+	}
+
+	void RgWindow::initWindow(RgWindowSettings * settings)
+	{
 	}
 
 	RgWindow::~RgWindow()
@@ -34,7 +66,7 @@ namespace rg {
 	{
 #ifdef _MSC_VER
 		*pwindow = new RgWindowWindows();
-		(*pwindow)->InitWindow(windowSettings);
+		(*pwindow)->initWindow(windowSettings);
 #else __GNUC__
 
 #endif

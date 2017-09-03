@@ -12,15 +12,21 @@ namespace rg {
 		
 	protected:
 		
-		void ReleaseWindow();
+		void releaseWindow();
 	public:
-		void InitWindow(RgWindowSettings* settings);
-		void ShowWindow();
-		void CloseWindow();
+		void initWindow(RgWindowSettings* settings);
+		void showWindow();
+		void closeWindow();
+
+
 
 	private:
 		RgWindowWindows(const RgWindowWindows&) = delete;
 		RgWindowWindows& operator=(const RgWindowWindows&) = delete;
+
+	private:
+		HINSTANCE m_hInstance;
+		HWND m_hWnd;
 	};
 
 }

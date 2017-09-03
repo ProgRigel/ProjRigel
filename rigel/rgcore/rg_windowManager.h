@@ -14,6 +14,8 @@ namespace rg {
 		void registerWindow(RgWindow* pwindow);
 		void releaseWindow();
 
+		int enterMainLoop();
+
 	private:
 		RgWindowManager();
 		~RgWindowManager();

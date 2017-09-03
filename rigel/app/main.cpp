@@ -1,4 +1,5 @@
 #include <rgcore\rgcore.h>
+#include <Windows.h>
 
 #include <rgcore\rg_module_font.h>
 
@@ -6,6 +7,15 @@ using namespace rg;
 
 //Modules
 RgModuleFont* g_pmoduleFont = new RgModuleFont();
+
+void WindowOnCreate(RgWindow* win) {
+
+
+}
+
+void WindowOnClose(RgWindow* win) {
+	RgLogD() << "window close";
+}
 
 int main() {
 
@@ -16,15 +26,16 @@ int main() {
 	RgWindowManager& windowMgr = RgWindowManager::getInstance();
 
 	RgWindow* mainWin = nullptr;
-	RgWindowCreateWindow(&mainWin, 0);
+	RgWindowSettings settings;
+	RgWindowCreateWindow(&mainWin, &settings);
 	windowMgr.registerWindow(mainWin);
 
-	mainWin->ShowWindow();
-	mainWin->CloseWindow();
+	mainWin->regCallbackONCREATE(WindowOnCreate);
+	mainWin->regCallbackONCLOSE(WindowOnClose);
 
-	RgLogD() << "debug";
+	mainWin->showWindow();
 
-	getchar();
+	windowMgr.enterMainLoop();
 
 	return 0;
 }
