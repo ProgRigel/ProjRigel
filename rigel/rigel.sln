@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{98F8
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rgcore", "rgcore\rgcore.vcxproj", "{C7DC67D0-C687-4627-9E31-DD87366EFDFE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rggraphics", "rggraphics\rggraphics.vcxproj", "{945FAD7A-A626-44EA-AEC8-E26ED15F4226}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,11 +36,20 @@ Global
 		{C7DC67D0-C687-4627-9E31-DD87366EFDFE}.Release|x64.Build.0 = Release|x64
 		{C7DC67D0-C687-4627-9E31-DD87366EFDFE}.Release|x86.ActiveCfg = Release|Win32
 		{C7DC67D0-C687-4627-9E31-DD87366EFDFE}.Release|x86.Build.0 = Release|Win32
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Debug|x64.ActiveCfg = Debug|x64
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Debug|x64.Build.0 = Debug|x64
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Debug|x86.ActiveCfg = Debug|Win32
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Debug|x86.Build.0 = Debug|Win32
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x64.ActiveCfg = Release|x64
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x64.Build.0 = Release|x64
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x86.ActiveCfg = Release|Win32
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C7DC67D0-C687-4627-9E31-DD87366EFDFE} = {98F848C0-81FF-4F18-A411-4088D5237351}
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226} = {98F848C0-81FF-4F18-A411-4088D5237351}
 	EndGlobalSection
 EndGlobal

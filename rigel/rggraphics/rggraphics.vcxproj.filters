@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="rg_graphicscontext.h" />
+    <ClInclude Include="rg_graphicsContextDX11.h" />
+    <ClInclude Include="rg_graphicsAPI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rg_graphicscontext.cpp" />
+    <ClCompile Include="rg_graphicsContextDX11.cpp" />
+    <ClCompile Include="rg_graphicsAPI.cpp" />
+  </ItemGroup>
+</Project>

@@ -11,3 +11,7 @@
 *.log
 *.lastbuildstate
 *.tlog
+/Release/
+/Debug/
+/x64/
+/x86/

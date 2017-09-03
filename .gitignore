@@ -32,3 +32,6 @@
 /Rigel_x64/*.pdb
 /Rigel_x86/*.ilk
 /Rigel_x64/*.ilk
+
+*.ipdb
+*.iobj
