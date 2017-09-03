@@ -22,11 +22,17 @@
     <ClInclude Include="rg_module_font.h" />
     <ClInclude Include="rg_pluginbase.h" />
     <ClInclude Include="rg_pluginmanager.h" />
+    <ClInclude Include="rg_window.h" />
+    <ClInclude Include="rg_windowManager.h" />
+    <ClInclude Include="rg_windowWindows.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
     <ClCompile Include="rg_pluginmanager.cpp" />
+    <ClCompile Include="rg_window.cpp" />
+    <ClCompile Include="rg_windowManager.cpp" />
+    <ClCompile Include="rg_windowWindows.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7DC67D0-C687-4627-9E31-DD87366EFDFE}</ProjectGuid>

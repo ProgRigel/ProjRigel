@@ -12,6 +12,9 @@
     <Filter Include="modules">
       <UniqueIdentifier>{386ea89c-eafe-44a4-8ac3-fd3926b1f11f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="window">
+      <UniqueIdentifier>{9474e3ea-8acd-4dc1-a4b4-e482d07217c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rg_pluginmanager.h">
@@ -23,6 +26,15 @@
     <ClInclude Include="rg_module_font.h">
       <Filter>modules</Filter>
     </ClInclude>
+    <ClInclude Include="rg_windowManager.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_window.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_windowWindows.h">
+      <Filter>window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_pluginmanager.cpp">
@@ -32,6 +44,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="rg_module_font.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_window.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_windowManager.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_windowWindows.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
