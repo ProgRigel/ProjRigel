@@ -9,12 +9,30 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="modules">
+      <UniqueIdentifier>{386ea89c-eafe-44a4-8ac3-fd3926b1f11f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <ClInclude Include="rg_pluginmanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_pluginbase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_module_font.h">
+      <Filter>modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rg_pluginmanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_pluginbase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_module_font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rg_module_font.h" />
+    <ClInclude Include="rg_pluginbase.h" />
+    <ClInclude Include="rg_pluginmanager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rg_module_font.cpp" />
+    <ClCompile Include="rg_pluginbase.cpp" />
+    <ClCompile Include="rg_pluginmanager.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7DC67D0-C687-4627-9E31-DD87366EFDFE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -137,9 +147,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
