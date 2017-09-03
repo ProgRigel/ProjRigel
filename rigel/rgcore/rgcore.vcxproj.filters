@@ -35,6 +35,15 @@
     <ClInclude Include="rg_windowWindows.h">
       <Filter>window</Filter>
     </ClInclude>
+    <ClInclude Include="rg_inc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="rgcore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_pluginmanager.cpp">
@@ -53,6 +62,9 @@
       <Filter>window</Filter>
     </ClCompile>
     <ClCompile Include="rg_windowWindows.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_log.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

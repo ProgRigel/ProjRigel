@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="rgcore.h" />
+    <ClInclude Include="rg_inc.h" />
+    <ClInclude Include="rg_log.h" />
     <ClInclude Include="rg_module_font.h" />
     <ClInclude Include="rg_pluginbase.h" />
     <ClInclude Include="rg_pluginmanager.h" />
@@ -27,6 +30,7 @@
     <ClInclude Include="rg_windowWindows.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rg_log.cpp" />
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
     <ClCompile Include="rg_pluginmanager.cpp" />

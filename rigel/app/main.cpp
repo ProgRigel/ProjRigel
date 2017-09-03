@@ -1,9 +1,7 @@
-#include <Windows.h>
-#include <iostream>
+#include <rgcore\rgcore.h>
 
-#include <rgcore\rg_pluginmanager.h>
-#include <rgcore\rg_windowManager.h>
 #include <rgcore\rg_module_font.h>
+
 using namespace rg;
 
 //Modules
@@ -23,6 +21,8 @@ int main() {
 
 	mainWin->ShowWindow();
 	mainWin->CloseWindow();
+
+	RgLogD() << "debug";
 
 	getchar();
 
