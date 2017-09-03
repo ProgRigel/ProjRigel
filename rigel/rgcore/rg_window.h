@@ -13,7 +13,7 @@ namespace rg {
 	typedef void(*RGWINDOW_CALLBACK_FRAME)(double fTime, float fElapsedTime);
 
 	typedef void(*RGWINDOW_CALLBACK_ONCLOSE)(RgWindow* win);
-	typedef void(*RGWINDOW_CALLBACK_ONCREATE)(RgWindow* win);
+	typedef void(*RGWINDOW_CALLBACK_REGISTER)(RgWindow* win);
 
 	struct RgWindowSettings
 	{
@@ -41,6 +41,7 @@ namespace rg {
 		virtual void showWindow() = 0;
 		virtual void closeWindow() = 0;
 
+		virtual void onRegister();
 		virtual void onResize();
 		virtual void onPaint();
 		virtual void onEnterSizeMove();
@@ -53,13 +54,13 @@ namespace rg {
 
 	private:
 		RGWINDOW_CALLBACK_DEF(ONCLOSE)
-		RGWINDOW_CALLBACK_DEF(ONCREATE)
+		RGWINDOW_CALLBACK_DEF(REGISTER)
 		RGWINDOW_CALLBACK_DEF(MSGPROC)
 		RGWINDOW_CALLBACK_DEF(FRAME)
 	public:
 
 		RGWINDOW_CALLBACK_SETTER(ONCLOSE)
-		RGWINDOW_CALLBACK_SETTER(ONCREATE)
+		RGWINDOW_CALLBACK_SETTER(REGISTER)
 		RGWINDOW_CALLBACK_SETTER(FRAME)
 		RGWINDOW_CALLBACK_SETTER(MSGPROC)
 
@@ -67,8 +68,4 @@ namespace rg {
 		friend class RgWindowManager;
 	};
 
-
-	
-
-	HRESULT RgWindowCreateWindow(RgWindow** pwindow, RgWindowSettings* windowSettings);
 }

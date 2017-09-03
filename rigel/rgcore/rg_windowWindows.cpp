@@ -115,6 +115,8 @@ namespace rg {
 	void RgWindowWindows::closeWindow()
 	{
 		std::cout << "winwindows close" << std::endl;
+		if(m_hWnd != nullptr)
+			CloseWindow(m_hWnd);
 	}
 
 

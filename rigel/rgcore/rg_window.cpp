@@ -16,6 +16,11 @@ namespace rg {
 
 	}
 
+	void RgWindow::onRegister()
+	{
+		if (m_funcREGISTER)m_funcREGISTER(this);
+	}
+
 	void RgWindow::onResize()
 	{
 	}
@@ -61,17 +66,6 @@ namespace rg {
 	RgWindow::~RgWindow()
 	{
 
-	}
-	HRESULT RgWindowCreateWindow(RgWindow ** pwindow, RgWindowSettings* windowSettings)
-	{
-#ifdef _MSC_VER
-		*pwindow = new RgWindowWindows();
-		(*pwindow)->initWindow(windowSettings);
-#else __GNUC__
-
-#endif
-
-		return S_OK;
 	}
 }
 

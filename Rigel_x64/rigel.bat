@@ -1,0 +1,2 @@
+RigelEditor.exe
+Pause

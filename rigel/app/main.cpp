@@ -8,8 +8,8 @@ using namespace rg;
 //Modules
 RgModuleFont* g_pmoduleFont = new RgModuleFont();
 
-void WindowOnCreate(RgWindow* win) {
-
+void WindowOnRegister(RgWindow* win) {
+	RgLogD() << "window register";
 
 }
 
@@ -27,11 +27,14 @@ int main() {
 
 	RgWindow* mainWin = nullptr;
 	RgWindowSettings settings;
-	RgWindowCreateWindow(&mainWin, &settings);
+	RgWindowManager::createWindow(&mainWin, &settings);
+
+	mainWin->regCallbackREGISTER(WindowOnRegister);
+	mainWin->regCallbackONCLOSE(WindowOnClose);
+
 	windowMgr.registerWindow(mainWin);
 
-	mainWin->regCallbackONCREATE(WindowOnCreate);
-	mainWin->regCallbackONCLOSE(WindowOnClose);
+	
 
 	mainWin->showWindow();
 

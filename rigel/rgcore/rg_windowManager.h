@@ -11,6 +11,7 @@ namespace rg {
 			return instance;
 		}
 	public:
+		static HRESULT createWindow(RgWindow** pwindow, RgWindowSettings* pwindowSettings);
 		void registerWindow(RgWindow* pwindow);
 		void releaseWindow();
 

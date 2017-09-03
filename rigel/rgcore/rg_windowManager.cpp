@@ -1,9 +1,26 @@
 #include "rg_windowManager.h"
 
+#ifdef  _MSC_VER
+#include "rg_windowWindows.h"
+#endif //  _MSC_VER
+
+
 namespace rg {
+	HRESULT RgWindowManager::createWindow(RgWindow ** pwindow, RgWindowSettings * pwindowSettings)
+	{
+#ifdef _MSC_VER
+		*pwindow = new RgWindowWindows();
+		(*pwindow)->initWindow(pwindowSettings);
+#else __GNUC__
+
+#endif
+
+		return S_OK;
+	}
 	void RgWindowManager::registerWindow(RgWindow * pwindow)
 	{
 		m_vWindows.push_back(pwindow);
+		pwindow->onRegister();
 	}
 	void RgWindowManager::releaseWindow()
 	{
