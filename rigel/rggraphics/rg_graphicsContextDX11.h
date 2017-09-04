@@ -1,7 +1,22 @@
 #pragma once
 #include "rg_graphicscontext.h"
 
+#include <rgcore\rgcore.h>
+
+#include <d3d11.h>
+#include <dxgi.h>
+#include <DirectXMath.h>
+#include <d3dcompiler.h>
+
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"dxgi.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib,"dxguid.lib")
+
+
 namespace rg {
+
+
 	class RgGraphicsContextDX11 : public RgGraphicsContext
 	{
 	protected:
@@ -10,6 +25,26 @@ namespace rg {
 
 		void init();
 		void release();
+
+	public:
+		void createBuffer();
+		void createShader();
+		void createSampleState();
+		void createTexture();
+		void createResourceView();
+		void createLayout();
+
+	private:
+		ID3D11Device *m_pD3D11Device;
+		ID3D11DeviceContext *m_pD3D11DeviceContext;
+		IDXGISwapChain * m_pSwapChain;
+		
+		ID3D11RenderTargetView* m_pRenderTargetView;
+
+		HRESULT createDeviceAndContext();
+		void releaseDeviceAndContext();
+		HRESULT createSwapChain();
+
 
 	public:
 		friend class RgGraphicsAPI;

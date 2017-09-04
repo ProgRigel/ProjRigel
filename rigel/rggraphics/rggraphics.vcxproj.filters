@@ -2,12 +2,21 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="rg_graphicscontext.h" />
-    <ClInclude Include="rg_graphicsContextDX11.h" />
     <ClInclude Include="rg_graphicsAPI.h" />
+    <ClInclude Include="rg_graphicsContextDX11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />
-    <ClCompile Include="rg_graphicsContextDX11.cpp" />
     <ClCompile Include="rg_graphicsAPI.cpp" />
+    <ClCompile Include="rg_graphicsContextDX11.cpp">
+      <Filter>dx11</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dx11">
+      <UniqueIdentifier>{6866c8dc-7457-4803-863d-2fab8f4018fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -1,10 +1,14 @@
 #pragma once
 
 namespace rg {
+
+
 	class RgGraphicsContext
 	{
 	public:
 		RgGraphicsContext();
+
+		
 		
 	protected:
 		virtual ~RgGraphicsContext();
