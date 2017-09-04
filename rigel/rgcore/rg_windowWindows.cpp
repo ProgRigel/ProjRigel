@@ -33,13 +33,12 @@ namespace rg {
 
 		}
 
-
 		switch (uMsg) {
 		case WM_PAINT:
 			g_winwindow->onPaint();
 			break;
 		case WM_SIZE:
-			g_winwindow->onResize();
+			g_winwindow->onResize((UINT)LOWORD(lParam),(UINT)HIWORD(lParam));
 			break;
 		case WM_ENTERSIZEMOVE:
 			g_winwindow->onEnterSizeMove();
@@ -56,7 +55,9 @@ namespace rg {
 			break;
 		}
 
-		return DefWindowProc(hwnd,uMsg,wParam,lParam);
+		//TODO ?? hwnd is null??
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+		
 	}
 
 

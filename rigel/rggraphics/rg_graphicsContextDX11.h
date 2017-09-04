@@ -34,14 +34,15 @@ namespace rg {
 		void createResourceView();
 		void createLayout();
 
+
 	private:
 		
 
-		ID3D11Device *m_pD3D11Device;
-		ID3D11DeviceContext *m_pD3D11DeviceContext;
-		IDXGISwapChain * m_pSwapChain;
+		ID3D11Device *m_pD3D11Device = nullptr;
+		ID3D11DeviceContext *m_pD3D11DeviceContext = nullptr;
+		IDXGISwapChain * m_pSwapChain = nullptr;
 		
-		ID3D11RenderTargetView* m_pRenderTargetView;
+		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
 
 		HRESULT createDeviceAndContext();
 		void releaseDeviceAndContext();

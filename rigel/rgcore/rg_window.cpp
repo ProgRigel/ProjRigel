@@ -19,11 +19,14 @@ namespace rg {
 
 	void RgWindow::onRegister()
 	{
-		if (m_funcREGISTER)m_funcREGISTER(this);
+		if (m_func_REGISTER)m_func_REGISTER(this);
 	}
 
-	void RgWindow::onResize()
+	void RgWindow::onResize(unsigned int width, unsigned int height)
 	{
+		m_width = width;
+		m_height = height;
+		if (m_func_ONRESIZE)m_func_ONRESIZE(this,width,height);
 	}
 
 	void RgWindow::onPaint()
@@ -32,10 +35,12 @@ namespace rg {
 
 	void RgWindow::onEnterSizeMove()
 	{
+		if (m_func_ENTER_RESIZE_MOVE) m_func_ENTER_RESIZE_MOVE(this);
 	}
 
 	void RgWindow::onExitSizeMove()
 	{
+		if (m_func_EXIT_RESIZE_MOVE)m_func_EXIT_RESIZE_MOVE(this);
 	}
 
 	void RgWindow::onKeyboard()
@@ -44,8 +49,8 @@ namespace rg {
 
 	void RgWindow::onClose()
 	{
-		if(m_funcONCLOSE)
-			m_funcONCLOSE(this);
+		if(m_func_ONCLOSE)
+			m_func_ONCLOSE(this);
 	}
 
 	void RgWindow::onDestroy()

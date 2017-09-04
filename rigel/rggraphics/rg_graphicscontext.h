@@ -6,10 +6,10 @@ namespace rg {
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{
-		unsigned int BufferWidth;
-		unsigned int BufferHeight;
-		bool Windowed;
-		HWND OutputWindow;
+		unsigned int BufferWidth = 0;
+		unsigned int BufferHeight = 0;
+		bool Windowed = true;
+		HWND OutputWindow = nullptr;
 	};
 
 
@@ -18,7 +18,7 @@ namespace rg {
 	public:
 		RgGraphicsContext();
 
-		
+		void resizeBuffer(unsigned int width, unsigned int height);
 		
 	protected:
 		virtual ~RgGraphicsContext();

@@ -9,7 +9,7 @@ using namespace rg;
 //Modules
 RgModuleFont* g_pmoduleFont = new RgModuleFont();
 
-RgGraphicsContext * graphicsCtx;
+RgGraphicsContext * graphicsCtx = nullptr;
 
 void WindowOnRegister(RgWindow* win) {
 	RgLogD() << "window register";
@@ -23,6 +23,16 @@ void WindowOnRegister(RgWindow* win) {
 
 	graphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_APY_DX11,&settings);
 
+}
+
+void WindowOnResize(RgWindow* win, UINT width, UINT height) {
+
+}
+
+void WindowOnExitSizeMove(RgWindow* win) {
+	
+	
+	
 }
 
 void WindowOnClose(RgWindow* win) {
@@ -45,8 +55,10 @@ int main() {
 	RgWindowSettings settings;
 	RgWindowManager::createWindow(&mainWin, &settings);
 
-	mainWin->regCallbackREGISTER(WindowOnRegister);
-	mainWin->regCallbackONCLOSE(WindowOnClose);
+	mainWin->regCallback_REGISTER(WindowOnRegister);
+	mainWin->regCallback_ONCLOSE(WindowOnClose);
+	mainWin->regCallback_ONRESIZE(WindowOnResize);
+	mainWin->regCallback_EXIT_RESIZE_MOVE(WindowOnExitSizeMove);
 
 	windowMgr.registerWindow(mainWin);
 
