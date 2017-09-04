@@ -49,6 +49,11 @@ namespace rg {
 	}
 	void RgGraphicsContextDX11::releaseDeviceAndContext()
 	{
+		if (m_pSwapChain) {
+			m_pSwapChain->Release();
+			m_pSwapChain = nullptr;
+		}
+
 		if (m_pD3D11DeviceContext) {
 			m_pD3D11DeviceContext->Release();
 			m_pD3D11DeviceContext = nullptr;
@@ -78,6 +83,9 @@ namespace rg {
 			RgLogE() << GetLastError();
 		}
 
+
+		RgLogD() << m_settings.BufferWidth << m_settings.BufferHeight;
+
 		DXGI_SWAP_CHAIN_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
 		desc.BufferCount = 2;
@@ -88,7 +96,7 @@ namespace rg {
 		desc.BufferDesc.RefreshRate.Denominator = 1;
 		desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 		desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		desc.OutputWindow = nullptr;
+		desc.OutputWindow = m_settings.OutputWindow;
 		desc.SampleDesc.Count = 1;
 		desc.SampleDesc.Quality = 0;
 		desc.Windowed = true;
@@ -96,7 +104,9 @@ namespace rg {
 
 
 		result = pIDXGIFactory->CreateSwapChain(m_pD3D11Device, &desc,&m_pSwapChain);
-
+		if (result != S_OK) {
+			RgLogE() << GetLastError();
+		}
 
 		return result;
 	}
