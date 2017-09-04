@@ -66,6 +66,12 @@ namespace rg {
 		g_winwindow = this;
 	}
 
+	void * RgWindowWindows::getHandler() const
+	{
+		return m_hWnd;
+	}
+
+
 	void RgWindowWindows::initWindow(RgWindowSettings* settings)
 	{
 		if (settings == nullptr) {
@@ -93,6 +99,9 @@ namespace rg {
 			RgLogE() << "register windows window error";
 			return;
 		}
+
+		m_width = 800;
+		m_height = 600;
 
 		m_hWnd = CreateWindow(settings->windowTitle, settings->windowTitle, WS_OVERLAPPEDWINDOW, settings->x, settings->y, 800, 600, 0, nullptr, hInstance, 0);
 		if (!m_hWnd) {

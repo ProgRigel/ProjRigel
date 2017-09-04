@@ -9,6 +9,8 @@ namespace rg {
 	{
 	public:
 		RgWindowWindows();
+
+		void* getHandler() const;
 		
 	protected:
 		

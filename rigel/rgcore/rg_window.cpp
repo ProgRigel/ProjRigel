@@ -1,4 +1,5 @@
 #include "rg_window.h"
+#include "rg_window.h"
 #include "rg_windowManager.h"
 
 #include <iostream>
@@ -58,6 +59,7 @@ namespace rg {
 	void RgWindow::onMouseWheel()
 	{
 	}
+
 
 	void RgWindow::initWindow(RgWindowSettings * settings)
 	{

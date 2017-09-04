@@ -23,7 +23,7 @@ namespace rg {
 		RgGraphicsContextDX11();
 		~RgGraphicsContextDX11();
 
-		void init();
+		void init(RG_GRAPHICS_INIT_SETTINGS *settings);
 		void release();
 
 	public:
@@ -35,6 +35,8 @@ namespace rg {
 		void createLayout();
 
 	private:
+		
+
 		ID3D11Device *m_pD3D11Device;
 		ID3D11DeviceContext *m_pD3D11DeviceContext;
 		IDXGISwapChain * m_pSwapChain;

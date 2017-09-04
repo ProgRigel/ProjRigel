@@ -6,7 +6,7 @@ namespace rg {
 
 	RgGraphicsContext * RgGraphicsAPI::s_pGraphicContext;
 
-	RgGraphicsContext* rg::RgGraphicsAPI::InitAPI(RG_GRAPHICS_API apitype)
+	RgGraphicsContext* rg::RgGraphicsAPI::InitAPI(RG_GRAPHICS_API apitype, RG_GRAPHICS_INIT_SETTINGS* settings)
 	{
 		switch (apitype)
 		{
@@ -16,7 +16,9 @@ namespace rg {
 			s_pGraphicContext = new RgGraphicsContextDX11();
 			break;
 		}
-		s_pGraphicContext->init();
+
+	
+		s_pGraphicContext->init(settings);
 		return s_pGraphicContext;
 	}
 	void RgGraphicsAPI::ReleaseAPI(RgGraphicsContext * ctx)

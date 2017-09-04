@@ -41,6 +41,8 @@ namespace rg {
 		virtual void showWindow() = 0;
 		virtual void closeWindow() = 0;
 
+		virtual void* getHandler() const = 0;
+
 		virtual void onRegister();
 		virtual void onResize();
 		virtual void onPaint();
@@ -51,6 +53,12 @@ namespace rg {
 		virtual void onDestroy();
 		virtual void onMouseButton();
 		virtual void onMouseWheel();
+
+		inline unsigned int getWidth() { return m_width; }
+		inline unsigned int getHeight() { return m_height; }
+		
+	protected:
+		unsigned int m_width,m_height;
 
 	private:
 		RGWINDOW_CALLBACK_DEF(ONCLOSE)

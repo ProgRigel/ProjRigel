@@ -14,7 +14,14 @@ RgGraphicsContext * graphicsCtx;
 void WindowOnRegister(RgWindow* win) {
 	RgLogD() << "window register";
 
-	graphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_APY_DX11);
+	RG_GRAPHICS_INIT_SETTINGS settings;
+	settings.Windowed = true;
+	settings.OutputWindow = (HWND)win->getHandler();
+	settings.BufferWidth = win->getWidth();
+	settings.BufferHeight = win->getHeight();
+
+
+	graphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_APY_DX11,&settings);
 
 }
 
