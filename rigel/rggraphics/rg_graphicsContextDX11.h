@@ -44,7 +44,11 @@ namespace rg {
 		ID3D11DeviceContext *m_pD3D11DeviceContext = nullptr;
 		IDXGISwapChain * m_pSwapChain = nullptr;
 		
+		ID3D11Texture2D * m_depthStencilBuffer = nullptr;
+		ID3D11DepthStencilState *m_pdepthStencilState = nullptr;
+		ID3D11DepthStencilView *m_pdepthStencilView = nullptr;
 		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
+		ID3D11RasterizerState* m_pRasterizerState = nullptr;
 
 		HRESULT createDeviceAndContext();
 		void releaseDeviceAndContext();

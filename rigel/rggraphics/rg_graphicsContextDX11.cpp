@@ -18,6 +18,7 @@ namespace rg {
 		std::cout << "init dx11 api" << std::endl;
 		createDeviceAndContext();
 		createSwapChain();
+		createRenderTarget();
 	}
 
 	void RgGraphicsContextDX11::release()
@@ -114,20 +115,151 @@ namespace rg {
 	}
 	HRESULT RgGraphicsContextDX11::createRenderTarget()
 	{
-		return E_NOTIMPL;
+		HRESULT hr;
+
+		//DEPTH STENCIL BUFFER
+		D3D11_TEXTURE2D_DESC depthBufferDesc;
+		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+		depthBufferDesc.Width = m_settings.BufferWidth;
+		depthBufferDesc.Height = m_settings.BufferHeight;
+		depthBufferDesc.MipLevels = 1;
+		depthBufferDesc.ArraySize = 1;
+		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthBufferDesc.SampleDesc.Count = 1;
+		depthBufferDesc.SampleDesc.Quality = 0;
+		depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthBufferDesc.CPUAccessFlags = 0;
+		depthBufferDesc.MiscFlags = 0;
+
+		hr = m_pD3D11Device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
+		HR_CEHCK(hr);
+
+		//DEPTH STENCIL STATE
+		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+		depthStencilDesc.DepthEnable = true;
+		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+		depthStencilDesc.StencilEnable = true;
+		depthStencilDesc.StencilReadMask = 0xFF;
+		depthStencilDesc.StencilWriteMask = 0xFF;
+
+		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		hr = m_pD3D11Device->CreateDepthStencilState(&depthStencilDesc, &m_pdepthStencilState);
+		HR_CEHCK(hr);
+
+		m_pD3D11DeviceContext->OMSetDepthStencilState(m_pdepthStencilState, 1);
+
+		//DEPTH STENCIL VIEW
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+		depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+		hr = m_pD3D11Device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_pdepthStencilView);
+		HR_CEHCK(hr);
+
+		//RTV
+		DXGI_SWAP_CHAIN_DESC swapchainDesc;
+		m_pSwapChain->GetDesc(&swapchainDesc);
+
+		ID3D11Texture2D *pBackBuffer;
+		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+		ZeroMemory(&rtvDesc, sizeof(rtvDesc));
+		rtvDesc.Format = swapchainDesc.BufferDesc.Format;
+		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+
+		hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+		hr = m_pD3D11Device->CreateRenderTargetView(pBackBuffer, &rtvDesc, &m_pRenderTargetView);
+		HR_CEHCK(hr);
+
+		m_pD3D11DeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pdepthStencilView);
+
+		pBackBuffer->Release();
+
+		D3D11_RASTERIZER_DESC rasterDesc;
+		rasterDesc.AntialiasedLineEnable = false;
+		rasterDesc.CullMode = D3D11_CULL_NONE;
+		rasterDesc.DepthBias = 0;
+		rasterDesc.DepthBiasClamp = 0.0f;
+		rasterDesc.DepthClipEnable = true;
+		rasterDesc.FillMode = D3D11_FILL_SOLID;;
+		rasterDesc.FrontCounterClockwise = false;
+		rasterDesc.MultisampleEnable = false;
+		rasterDesc.ScissorEnable = false;
+		rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+		hr = m_pD3D11Device->CreateRasterizerState(&rasterDesc, &m_pRasterizerState);
+
+		m_pD3D11DeviceContext->RSSetState(m_pRasterizerState);
+
+		//VIEW PORT
+		D3D11_VIEWPORT viewport;
+		viewport.Width = (float)m_settings.BufferWidth;
+		viewport.Height = (float)m_settings.BufferHeight;
+		viewport.MaxDepth = 1.0f;
+		viewport.MinDepth = 0.0f;
+		viewport.TopLeftX = 0.0f;
+		viewport.TopLeftY = 0.0f;
+		m_pD3D11DeviceContext->RSSetViewports(1, &viewport);
+
+		RgLogD() << "create render target done!";
+		return S_OK;
 	}
 	HRESULT RgGraphicsContextDX11::clearRenderTarget()
 	{
-		return E_NOTIMPL;
+		if (m_pRenderTargetView) {
+			m_pRenderTargetView->Release();
+			m_pRenderTargetView = nullptr;
+		}
+
+		if (m_depthStencilBuffer) {
+			m_depthStencilBuffer->Release();
+			m_depthStencilBuffer = nullptr;
+		}
+
+		if (m_pdepthStencilState) {
+			m_pdepthStencilState->Release();
+			m_pdepthStencilState = nullptr;
+		}
+		if (m_pdepthStencilView) {
+			m_pdepthStencilView->Release();
+			m_pdepthStencilView = nullptr;
+		}
+		if (m_pRasterizerState)
+		{
+			m_pRasterizerState->Release();
+			m_pRasterizerState = nullptr;
+		}
+		return S_OK;
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
+
+		if (m_pD3D11Device == nullptr) return;
+
+		clearRenderTarget();
+		m_pD3D11DeviceContext->ClearState();
 		RgLogD() << "resize buffer";
 		HRESULT hr = m_pSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 		HR_CEHCK(hr);
 
 		m_settings.BufferWidth = width;
 		m_settings.BufferHeight = height;
+
+		createRenderTarget();
 	}
 }
 
