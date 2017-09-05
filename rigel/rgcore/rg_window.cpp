@@ -26,6 +26,7 @@ namespace rg {
 	{
 		m_width = width;
 		m_height = height;
+		m_resized = true;
 		if (m_func_ONRESIZE)m_func_ONRESIZE(this,width,height);
 	}
 
@@ -41,6 +42,7 @@ namespace rg {
 	void RgWindow::onExitSizeMove()
 	{
 		if (m_func_EXIT_RESIZE_MOVE)m_func_EXIT_RESIZE_MOVE(this);
+		m_resized = false;
 	}
 
 	void RgWindow::onKeyboard()

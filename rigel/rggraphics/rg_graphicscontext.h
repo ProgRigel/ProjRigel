@@ -18,7 +18,7 @@ namespace rg {
 	public:
 		RgGraphicsContext();
 
-		void resizeBuffer(unsigned int width, unsigned int height);
+		virtual void resizeBuffer(unsigned int width, unsigned int height);
 		
 	protected:
 		virtual ~RgGraphicsContext();

@@ -59,9 +59,11 @@ namespace rg {
 
 		unsigned int getWidth() { return m_width; }
 		unsigned int getHeight() { return m_height; }
+		bool getIsResized() { return m_resized; }
 	protected:
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
+		bool m_resized = false;
 
 	private:
 		RGWINDOW_CALLBACK_DEF(ONCLOSE)

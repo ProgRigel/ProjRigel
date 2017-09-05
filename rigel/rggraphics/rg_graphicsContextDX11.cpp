@@ -1,6 +1,8 @@
 #include "rg_graphicsContextDX11.h"
 #include <iostream>
 
+#define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
+
 namespace rg {
 	RgGraphicsContextDX11::RgGraphicsContextDX11()
 	{
@@ -109,6 +111,23 @@ namespace rg {
 		}
 
 		return result;
+	}
+	HRESULT RgGraphicsContextDX11::createRenderTarget()
+	{
+		return E_NOTIMPL;
+	}
+	HRESULT RgGraphicsContextDX11::clearRenderTarget()
+	{
+		return E_NOTIMPL;
+	}
+	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
+	{
+		RgLogD() << "resize buffer";
+		HRESULT hr = m_pSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+		HR_CEHCK(hr);
+
+		m_settings.BufferWidth = width;
+		m_settings.BufferHeight = height;
 	}
 }
 

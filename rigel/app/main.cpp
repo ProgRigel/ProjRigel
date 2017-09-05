@@ -26,12 +26,13 @@ void WindowOnRegister(RgWindow* win) {
 }
 
 void WindowOnResize(RgWindow* win, UINT width, UINT height) {
-
 }
 
 void WindowOnExitSizeMove(RgWindow* win) {
 	
-	
+	if (win->getIsResized()) {
+		graphicsCtx->resizeBuffer(win->getWidth(), win->getHeight());
+	}
 	
 }
 

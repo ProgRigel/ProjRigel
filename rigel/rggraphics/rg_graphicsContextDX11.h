@@ -34,6 +34,8 @@ namespace rg {
 		void createResourceView();
 		void createLayout();
 
+		void resizeBuffer(unsigned int width, unsigned int height);
+
 
 	private:
 		
@@ -47,6 +49,9 @@ namespace rg {
 		HRESULT createDeviceAndContext();
 		void releaseDeviceAndContext();
 		HRESULT createSwapChain();
+
+		HRESULT createRenderTarget();
+		HRESULT clearRenderTarget();
 
 
 	public:
