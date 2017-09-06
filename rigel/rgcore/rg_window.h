@@ -18,6 +18,7 @@ namespace rg {
 	typedef void(*RGWINDOW_CALLBACK_ONRESIZE)(RgWindow* win, unsigned int width, unsigned int height);
 	RGWINDOW_CALLBACK_FUNC(ENTER_RESIZE_MOVE);
 	RGWINDOW_CALLBACK_FUNC(EXIT_RESIZE_MOVE);
+	RGWINDOW_CALLBACK_FUNC(ON_FRAME);
 	struct RgWindowSettings
 	{
 		const WCHAR* windowTitle = L"RgWindow";
@@ -57,6 +58,8 @@ namespace rg {
 		virtual void onMouseButton();
 		virtual void onMouseWheel();
 
+		virtual void onFrame();
+
 		unsigned int getWidth() { return m_width; }
 		unsigned int getHeight() { return m_height; }
 		bool getIsResized() { return m_resized; }
@@ -74,6 +77,7 @@ namespace rg {
 
 		RGWINDOW_CALLBACK_DEF(ENTER_RESIZE_MOVE)
 		RGWINDOW_CALLBACK_DEF(EXIT_RESIZE_MOVE)
+		RGWINDOW_CALLBACK_DEF(ON_FRAME)
 
 	public:
 
@@ -85,7 +89,7 @@ namespace rg {
 
 		RGWINDOW_CALLBACK_SETTER(ENTER_RESIZE_MOVE)
 		RGWINDOW_CALLBACK_SETTER(EXIT_RESIZE_MOVE)
-
+		RGWINDOW_CALLBACK_SETTER(ON_FRAME)
 	public:
 		friend class RgWindowManager;
 	};

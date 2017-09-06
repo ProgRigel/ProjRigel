@@ -25,6 +25,8 @@ namespace rg {
 	{
 		std::cout << "release dx11 api" << std::endl;
 
+		clearRenderTarget();
+		releaseSwapChain();
 		releaseDeviceAndContext();
 	}
 	HRESULT RgGraphicsContextDX11::createDeviceAndContext()
@@ -111,8 +113,23 @@ namespace rg {
 			RgLogE() << GetLastError();
 		}
 
+		pDXGIDevice->Release();
+		pDXGIDevice = nullptr;
+		pDXGIAdapter->Release();
+		pDXGIAdapter = nullptr;
+
+		pIDXGIFactory->Release();
+		pIDXGIFactory = nullptr;
+
 		return result;
 	}
+
+	void RgGraphicsContextDX11::releaseSwapChain()
+	{
+		m_pSwapChain->Release();
+		m_pSwapChain = nullptr;
+	}
+
 	HRESULT RgGraphicsContextDX11::createRenderTarget()
 	{
 		HRESULT hr;
@@ -251,15 +268,26 @@ namespace rg {
 		if (m_pD3D11Device == nullptr) return;
 
 		clearRenderTarget();
-		m_pD3D11DeviceContext->ClearState();
+
 		RgLogD() << "resize buffer";
-		HRESULT hr = m_pSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+		HRESULT hr = m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 		HR_CEHCK(hr);
 
 		m_settings.BufferWidth = width;
 		m_settings.BufferHeight = height;
 
 		createRenderTarget();
+	}
+
+	float color[4] = { 0.1f,0.4f,0.3f,1.0f };
+
+	void RgGraphicsContextDX11::render()
+	{
+
+		m_pD3D11DeviceContext->ClearRenderTargetView(m_pRenderTargetView, color);
+		m_pD3D11DeviceContext->ClearDepthStencilView(m_pdepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+		m_pSwapChain->Present(0, 0);
 	}
 }
 

@@ -26,6 +26,8 @@ namespace rg {
 		void init(RG_GRAPHICS_INIT_SETTINGS *settings);
 		void release();
 
+		
+
 	public:
 		void createBuffer();
 		void createShader();
@@ -36,6 +38,7 @@ namespace rg {
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 
+		void render();
 
 	private:
 		
@@ -53,6 +56,7 @@ namespace rg {
 		HRESULT createDeviceAndContext();
 		void releaseDeviceAndContext();
 		HRESULT createSwapChain();
+		void releaseSwapChain();
 
 		HRESULT createRenderTarget();
 		HRESULT clearRenderTarget();

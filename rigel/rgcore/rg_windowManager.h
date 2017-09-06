@@ -25,5 +25,7 @@ namespace rg {
 
 	private:
 		std::vector<RgWindow*> m_vWindows;
+
+		RgWindow * m_pWindow = nullptr;
 	};
 }

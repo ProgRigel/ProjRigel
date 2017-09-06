@@ -19,6 +19,7 @@ namespace rg {
 	}
 	void RgWindowManager::registerWindow(RgWindow * pwindow)
 	{
+		m_pWindow = pwindow;
 		m_vWindows.push_back(pwindow);
 		pwindow->onRegister();
 	}
@@ -49,6 +50,10 @@ namespace rg {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+
+			if (m_pWindow != nullptr) m_pWindow->onFrame();
+			
+			
 		}
 
 		return 0;

@@ -28,6 +28,11 @@ void WindowOnRegister(RgWindow* win) {
 void WindowOnResize(RgWindow* win, UINT width, UINT height) {
 }
 
+void WindowOnFrame(RgWindow* win) {
+	if(graphicsCtx != nullptr)
+		graphicsCtx->render();
+}
+
 void WindowOnExitSizeMove(RgWindow* win) {
 	
 	if (win->getIsResized()) {
@@ -60,7 +65,7 @@ int main() {
 	mainWin->regCallback_ONCLOSE(WindowOnClose);
 	mainWin->regCallback_ONRESIZE(WindowOnResize);
 	mainWin->regCallback_EXIT_RESIZE_MOVE(WindowOnExitSizeMove);
-
+	mainWin->regCallback_ON_FRAME(WindowOnFrame);
 	windowMgr.registerWindow(mainWin);
 
 	

@@ -32,6 +32,7 @@ namespace rg {
 
 	void RgWindow::onPaint()
 	{
+
 	}
 
 	void RgWindow::onEnterSizeMove()
@@ -65,6 +66,12 @@ namespace rg {
 
 	void RgWindow::onMouseWheel()
 	{
+	}
+
+	void RgWindow::onFrame()
+	{
+		if (m_func_ON_FRAME)
+			m_func_ON_FRAME(this);
 	}
 
 

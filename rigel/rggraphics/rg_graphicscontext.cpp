@@ -8,6 +8,9 @@ namespace rg {
 	void RgGraphicsContext::resizeBuffer(unsigned int width, unsigned int height)
 	{
 	}
+	void RgGraphicsContext::render()
+	{
+	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
 	}
