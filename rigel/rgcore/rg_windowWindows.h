@@ -9,9 +9,10 @@ namespace rg {
 	{
 	public:
 		RgWindowWindows();
-
+		~RgWindowWindows();
 		void* getHandler() const;
-		
+		LRESULT memberWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 	protected:
 		
 		void releaseWindow();
@@ -25,6 +26,7 @@ namespace rg {
 	private:
 		RgWindowWindows(const RgWindowWindows&) = delete;
 		RgWindowWindows& operator=(const RgWindowWindows&) = delete;
+		
 
 	private:
 		HINSTANCE m_hInstance;

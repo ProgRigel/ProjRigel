@@ -3,61 +3,15 @@
 #include <iostream>
 namespace rg {
 
-	RgWindow *g_winwindow;
+#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
+#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
+
+	RgWindowWindows *g_winwindow = nullptr;
 
 	LRESULT CALLBACK RgWindowWindowsWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-
-		if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP || uMsg == WM_SYSKEYDOWN || uMsg == WM_SYSKEYUP) {
-			g_winwindow->onKeyboard();
-		}
-		else if (uMsg == WM_LBUTTONDOWN ||
-			uMsg == WM_LBUTTONUP ||
-			uMsg == WM_LBUTTONDBLCLK ||
-			uMsg == WM_MBUTTONDOWN ||
-			uMsg == WM_MBUTTONUP ||
-			uMsg == WM_MBUTTONDBLCLK ||
-			uMsg == WM_RBUTTONDOWN ||
-			uMsg == WM_RBUTTONUP ||
-			uMsg == WM_RBUTTONDBLCLK ||
-			uMsg == WM_XBUTTONDOWN ||
-			uMsg == WM_XBUTTONUP ||
-			uMsg == WM_XBUTTONDBLCLK)
-		{
-			g_winwindow->onMouseButton();
-		}
-		else if (uMsg == WM_MOUSEWHEEL)
-		{
-			g_winwindow->onMouseWheel();
-		}
-		else if (uMsg == WM_MOUSEMOVE) {
-
-		}
-
-		switch (uMsg) {
-		case WM_PAINT:
-			g_winwindow->onPaint();
-			break;
-		case WM_SIZE:
-			g_winwindow->onResize((UINT)LOWORD(lParam),(UINT)HIWORD(lParam));
-			break;
-		case WM_ENTERSIZEMOVE:
-			g_winwindow->onEnterSizeMove();
-			break;
-		case WM_EXITSIZEMOVE:
-			g_winwindow->onExitSizeMove();
-			break;
-		case WM_CLOSE:
-			g_winwindow->onClose();
-			break;
-		case WM_DESTROY:
-			g_winwindow->onDestroy();
-			PostQuitMessage(0);
-			break;
-		}
-
-		//TODO ?? hwnd is null??
+		if(g_winwindow)
+			return g_winwindow->memberWndProc(hwnd, uMsg, wParam, lParam);
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
-		
 	}
 
 
@@ -67,10 +21,17 @@ namespace rg {
 		g_winwindow = this;
 	}
 
+	RgWindowWindows::~RgWindowWindows()
+	{
+		g_winwindow = nullptr;
+		RgLogD() << "winwindows dctor";
+	}
+
 	void * RgWindowWindows::getHandler() const
 	{
 		return m_hWnd;
 	}
+
 
 
 	void RgWindowWindows::initWindow(RgWindowSettings* settings)
@@ -115,18 +76,79 @@ namespace rg {
 	}
 	void RgWindowWindows::releaseWindow()
 	{
-		std::cout << "winwindows release" << std::endl;
+
 	}
 	void RgWindowWindows::showWindow()
 	{
 		ShowWindow(m_hWnd, SW_SHOW);
-		RgLogD() << "winwindows show";
 	}
 	void RgWindowWindows::closeWindow()
 	{
 		std::cout << "winwindows close" << std::endl;
 		if(m_hWnd != nullptr)
 			CloseWindow(m_hWnd);
+	}
+
+	LRESULT RgWindowWindows::memberWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP || uMsg == WM_SYSKEYDOWN || uMsg == WM_SYSKEYUP) {
+			
+		}
+		else if (uMsg == WM_LBUTTONDOWN ||
+			uMsg == WM_LBUTTONUP ||
+			uMsg == WM_LBUTTONDBLCLK ||
+			uMsg == WM_MBUTTONDOWN ||
+			uMsg == WM_MBUTTONUP ||
+			uMsg == WM_MBUTTONDBLCLK ||
+			uMsg == WM_RBUTTONDOWN ||
+			uMsg == WM_RBUTTONUP ||
+			uMsg == WM_RBUTTONDBLCLK ||
+			uMsg == WM_XBUTTONDOWN ||
+			uMsg == WM_XBUTTONUP ||
+			uMsg == WM_XBUTTONDBLCLK)
+		{
+			int mouseButtonState = LOWORD(wParam);
+
+			m_windowInput.LButton = ((mouseButtonState & MK_LBUTTON) != 0);
+			m_windowInput.RButton = ((mouseButtonState & MK_RBUTTON) != 0);
+			m_windowInput.MButton = ((mouseButtonState & MK_MBUTTON) != 0);
+
+			EventOnMouseButton.emit();
+		}
+		else if (uMsg == WM_MOUSEWHEEL)
+		{
+			EventOnMouseWheel.emit(GET_WHEEL_DELTA_WPARAM(wParam));
+		}
+		else if (uMsg == WM_MOUSEMOVE) {
+			EventOnMouseMove.emit(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		}
+
+		switch (uMsg) {
+		case WM_PAINT:
+			break;
+		case WM_SIZE:
+			m_width = (UINT)LOWORD(lParam);
+			m_height = (UINT)HIWORD(lParam);
+			m_resized = true;
+			EventOnResize.emit(m_width, m_height);
+			break;
+		case WM_ENTERSIZEMOVE:
+			EventOnEnterSizeMove.emit();
+			break;
+		case WM_EXITSIZEMOVE:
+			EventOnExitSizeMove.emit();
+			m_resized = false;
+			break;
+		case WM_CLOSE:
+			EventOnClose.emit();
+			break;
+		case WM_DESTROY:
+			EventOnDestroy.emit();
+			PostQuitMessage(0);
+			break;
+		}
+
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
 

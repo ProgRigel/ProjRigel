@@ -17,66 +17,18 @@ namespace rg {
 
 	}
 
-	void RgWindow::onRegister()
-	{
-		if (m_func_REGISTER)m_func_REGISTER(this);
-	}
-
-	void RgWindow::onResize(unsigned int width, unsigned int height)
-	{
-		m_width = width;
-		m_height = height;
-		m_resized = true;
-		if (m_func_ONRESIZE)m_func_ONRESIZE(this,width,height);
-	}
-
-	void RgWindow::onPaint()
-	{
-
-	}
-
-	void RgWindow::onEnterSizeMove()
-	{
-		if (m_func_ENTER_RESIZE_MOVE) m_func_ENTER_RESIZE_MOVE(this);
-	}
-
-	void RgWindow::onExitSizeMove()
-	{
-		if (m_func_EXIT_RESIZE_MOVE)m_func_EXIT_RESIZE_MOVE(this);
-		m_resized = false;
-	}
-
-	void RgWindow::onKeyboard()
-	{
-	}
-
-	void RgWindow::onClose()
-	{
-		if(m_func_ONCLOSE)
-			m_func_ONCLOSE(this);
-	}
-
-	void RgWindow::onDestroy()
-	{
-	}
-
-	void RgWindow::onMouseButton()
-	{
-	}
-
-	void RgWindow::onMouseWheel()
-	{
-	}
-
 	void RgWindow::onFrame()
 	{
-		if (m_func_ON_FRAME)
-			m_func_ON_FRAME(this);
 	}
 
+	void RgWindow::onRegister()
+	{
+		EventOnRegister.emit();
+	}
 
 	void RgWindow::initWindow(RgWindowSettings * settings)
 	{
+
 	}
 
 	RgWindow::~RgWindow()

@@ -52,8 +52,15 @@ void WindowOnClose(RgWindow* win) {
 	graphicsCtx = 0;
 }
 
+void tt() {
+
+}
+
 int main() {
 
+	Signal<void()> t;
+	t.connect<tt>();
+	t.emit();
 
 	RgPluginManager& pluginMgr = RgPluginManager::getInstance();
 	pluginMgr.registerPlugin(g_pmoduleFont);
@@ -65,11 +72,12 @@ int main() {
 	RgWindowSettings settings;
 	RgWindowManager::createWindow(&mainWin, &settings);
 
-	mainWin->regCallback_REGISTER(WindowOnRegister);
-	mainWin->regCallback_ONCLOSE(WindowOnClose);
-	mainWin->regCallback_ONRESIZE(WindowOnResize);
-	mainWin->regCallback_EXIT_RESIZE_MOVE(WindowOnExitSizeMove);
-	mainWin->regCallback_ON_FRAME(WindowOnFrame);
+
+	//mainWin->regCallback_REGISTER(WindowOnRegister);
+	//mainWin->regCallback_ONCLOSE(WindowOnClose);
+	//mainWin->regCallback_ONRESIZE(WindowOnResize);
+	//mainWin->regCallback_EXIT_RESIZE_MOVE(WindowOnExitSizeMove);
+	//mainWin->regCallback_ON_FRAME(WindowOnFrame);
 	windowMgr.registerWindow(mainWin);
 
 	

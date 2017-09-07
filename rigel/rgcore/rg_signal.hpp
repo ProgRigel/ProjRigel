@@ -5,6 +5,9 @@
 #include <array>
 #include <cstdint>
 
+#ifndef RG_SIGNAL_H
+#define RG_SIGNAL_H
+
 namespace rg {
 
 	using DelegateKey = std::array<std::uintptr_t, 2>;
@@ -51,11 +54,11 @@ namespace rg {
 		static inline Function bind(L* pointer)
 		{
 			return
-			{ 
-				pointer, 
-				[](void *this_ptr, Args... args){ 
-				return (static_cast<L*>(this_ptr)->operator()(std::forward<Args>(args)...)); 
-				}
+			{
+				pointer,
+				[](void *this_ptr, Args... args) {
+				return (static_cast<L*>(this_ptr)->operator()(std::forward<Args>(args)...));
+			}
 			};
 		}
 		inline operator DelegateKey() const
@@ -334,3 +337,9 @@ namespace rg {
 
 	};
 }
+
+
+#endif // !RG_SIGNAL_H
+
+
+
