@@ -4,6 +4,9 @@
 #include <rgcore\rg_module_font.h>
 #include <rggraphics\rg_graphicsAPI.h>
 
+
+
+
 using namespace rg;
 
 //Modules
@@ -51,6 +54,7 @@ void WindowOnClose(RgWindow* win) {
 
 int main() {
 
+
 	RgPluginManager& pluginMgr = RgPluginManager::getInstance();
 	pluginMgr.registerPlugin(g_pmoduleFont);
 
@@ -76,3 +80,4 @@ int main() {
 
 	return 0;
 }
+
