@@ -19,6 +19,7 @@ namespace rg {
 
 	void RgWindow::onFrame()
 	{
+		EventOnFrame.emit();
 	}
 
 	void RgWindow::onRegister()

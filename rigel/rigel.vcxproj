@@ -164,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="app.cpp" />
     <ClCompile Include="app\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +174,9 @@
     <ProjectReference Include="rggraphics\rggraphics.vcxproj">
       <Project>{945fad7a-a626-44ea-aec8-e26ed15f4226}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
