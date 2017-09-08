@@ -29,12 +29,7 @@ namespace rg {
 		
 
 	public:
-		void createBuffer();
-		void createShader();
-		void createSampleState();
-		void createTexture();
-		void createResourceView();
-		void createLayout();
+		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 

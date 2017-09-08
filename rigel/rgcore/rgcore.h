@@ -5,3 +5,5 @@
 #include "rg_windowManager.h"
 
 #include "rg_signal.hpp"
+#include "rg_utility.h"
+

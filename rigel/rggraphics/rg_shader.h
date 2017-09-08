@@ -14,8 +14,8 @@ namespace rg {
 
 	class RgShaderOptions {
 		RG_SHADER_TYPE ShaderType = RG_SHADER_TYPE_DEFAULT;
-		std::wstring EntryPoint = nullptr;
-		std::wstring ShaderTarget = nullptr;
+		std::wstring EntryPoint;
+		std::wstring ShaderTarget;
 		void * ShaderInclude = nullptr;
 		unsigned int ShaderIncludeCount = 0;
 		unsigned int Flag1 = 0;

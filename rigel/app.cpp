@@ -1,6 +1,5 @@
 #include "app.h"
 
-
 RigelApp::RigelApp()
 {
 	RgWindowSettings settings;
@@ -23,6 +22,13 @@ RigelApp::~RigelApp()
 
 void RigelApp::Run()
 {
+	//create shader test
+	RgShaderOptions options;
+
+	std::wstring fpath = GetWorkDirectory();
+	fpath.append(L"/vs.hlsl");
+	m_pGraphicsCtx->CompileShaderFromFile(fpath, options);
+
 	RgWindowManager::getInstance().enterMainLoop();
 }
 

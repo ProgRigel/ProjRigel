@@ -26,6 +26,7 @@
     <ClInclude Include="rg_pluginbase.h" />
     <ClInclude Include="rg_pluginmanager.h" />
     <ClInclude Include="rg_signal.hpp" />
+    <ClInclude Include="rg_utility.h" />
     <ClInclude Include="rg_window.h" />
     <ClInclude Include="rg_windowManager.h" />
     <ClInclude Include="rg_windowWindows.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
     <ClCompile Include="rg_pluginmanager.cpp" />
+    <ClCompile Include="rg_utility.cpp" />
     <ClCompile Include="rg_window.cpp" />
     <ClCompile Include="rg_windowManager.cpp" />
     <ClCompile Include="rg_windowWindows.cpp" />

@@ -1,6 +1,5 @@
 #include "rg_graphicsContextDX11.h"
 #include <iostream>
-
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
 namespace rg {
@@ -261,6 +260,19 @@ namespace rg {
 			m_pRasterizerState = nullptr;
 		}
 		return S_OK;
+	}
+	std::shared_ptr<RgShader> RgGraphicsContextDX11::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
+	{
+
+		ID3DBlob * shaderBlob;
+		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "main", "vs_4_0_level_9_1", D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);
+		HR_CEHCK(result);
+
+		shaderBlob->Release();
+		shaderBlob = nullptr;
+
+		return nullptr;
+
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
