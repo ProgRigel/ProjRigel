@@ -1,6 +1,10 @@
 #pragma once
 #include <Windows.h>
+#include <memory>
 
+#include "rg_shader.h"
+#include "rg_texture.h"
+#include "rg_material.h"
 
 namespace rg {
 
@@ -20,6 +24,11 @@ namespace rg {
 
 		virtual void resizeBuffer(unsigned int width, unsigned int height);
 		virtual void render();
+
+		virtual std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
+		virtual std::shared_ptr<RgShader> CompileShaderFromSource(std::wstring source, RgShaderOptions& options);
+		virtual std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
+		virtual std::shared_ptr<RgMaterial> CreateMaterial(std::shared_ptr<RgShader> shader);
 		
 	protected:
 		virtual ~RgGraphicsContext();

@@ -6,6 +6,9 @@
     <ClInclude Include="rg_graphicsContextDX11.h">
       <Filter>dx11</Filter>
     </ClInclude>
+    <ClInclude Include="rg_shader.h" />
+    <ClInclude Include="rg_material.h" />
+    <ClInclude Include="rg_texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />

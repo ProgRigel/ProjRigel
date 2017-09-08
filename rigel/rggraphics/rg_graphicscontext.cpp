@@ -11,6 +11,22 @@ namespace rg {
 	void RgGraphicsContext::render()
 	{
 	}
+	std::shared_ptr<RgShader> RgGraphicsContext::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
+	{
+		return std::make_shared<RgShader>();
+	}
+	std::shared_ptr<RgShader> RgGraphicsContext::CompileShaderFromSource(std::wstring source, RgShaderOptions & options)
+	{
+		return std::shared_ptr<RgShader>();
+	}
+	std::shared_ptr<RgTexture> RgGraphicsContext::CreateTexture(RgTextureSettings & settings)
+	{
+		return std::make_shared<RgTexture>();
+	}
+	std::shared_ptr<RgMaterial> RgGraphicsContext::CreateMaterial(std::shared_ptr<RgShader> shader)
+	{
+		return std::make_shared<RgMaterial>();
+	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
 	}
