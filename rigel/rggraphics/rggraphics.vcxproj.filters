@@ -9,6 +9,9 @@
     <ClInclude Include="rg_shader.h" />
     <ClInclude Include="rg_material.h" />
     <ClInclude Include="rg_texture.h" />
+    <ClInclude Include="rg_shaderDX11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />
@@ -16,6 +19,11 @@
     <ClCompile Include="rg_graphicsContextDX11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
+    <ClCompile Include="rg_shader.cpp" />
+    <ClCompile Include="rg_shaderDX11.cpp">
+      <Filter>dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dx11">

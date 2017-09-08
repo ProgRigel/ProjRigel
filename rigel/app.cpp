@@ -27,7 +27,7 @@ void RigelApp::Run()
 
 	std::wstring fpath = GetWorkDirectory();
 	fpath.append(L"/vs.hlsl");
-	m_pGraphicsCtx->CompileShaderFromFile(fpath, options);
+	auto vertexShader = m_pGraphicsCtx->CompileShaderFromFile(fpath, options);
 
 	RgWindowManager::getInstance().enterMainLoop();
 }

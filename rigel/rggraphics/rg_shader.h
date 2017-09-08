@@ -12,7 +12,12 @@ namespace rg {
 		RG_SAHDER_TYPE_EFFECT,
 	};
 
-	class RgShaderOptions {
+	enum class RG_SHADER_ENTRY {
+		Vertex,
+		Pixel,
+	};
+
+	struct RgShaderOptions {
 		RG_SHADER_TYPE ShaderType = RG_SHADER_TYPE_DEFAULT;
 		std::wstring EntryPoint;
 		std::wstring ShaderTarget;
@@ -24,6 +29,12 @@ namespace rg {
 	};
 
 	class RgShader {
+	protected:
 		RgShaderOptions m_sShaderOptions;
+
+	public:
+		RgShader();
+		RgShader(RgShaderOptions& options);
+		virtual ~RgShader();
 	};
 }

@@ -1,5 +1,6 @@
 #include "rg_graphicsContextDX11.h"
 #include <iostream>
+#include "rg_shaderDX11.h"
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
 namespace rg {
@@ -267,11 +268,20 @@ namespace rg {
 		ID3DBlob * shaderBlob;
 		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "main", "vs_4_0_level_9_1", D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);
 		HR_CEHCK(result);
+		if (shaderBlob == nullptr) {
+			return nullptr;
+		}
+		
+		ID3D11VertexShader * shader = nullptr;
+		result = m_pD3D11Device->CreateVertexShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), nullptr, &shader);
+		if (result != S_OK) {
+			RgLogE() << "create shader error";
+			shaderBlob->Release();
+			shaderBlob = nullptr;
+			return nullptr;
+		}
 
-		shaderBlob->Release();
-		shaderBlob = nullptr;
-
-		return nullptr;
+		return std::make_shared<RgShaderDX11>(options,shader);
 
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)

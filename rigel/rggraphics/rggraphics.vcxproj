@@ -24,12 +24,16 @@
     <ClInclude Include="rg_graphicsContextDX11.h" />
     <ClInclude Include="rg_material.h" />
     <ClInclude Include="rg_shader.h" />
+    <ClInclude Include="rg_shaderDX11.h" />
     <ClInclude Include="rg_texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicsAPI.cpp" />
     <ClCompile Include="rg_graphicscontext.cpp" />
     <ClCompile Include="rg_graphicsContextDX11.cpp" />
+    <ClCompile Include="rg_shader.cpp" />
+    <ClCompile Include="rg_shaderDX11.cpp" />
+    <ClCompile Include="rg_texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rgcore\rgcore.vcxproj">
