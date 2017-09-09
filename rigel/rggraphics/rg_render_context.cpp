@@ -12,7 +12,7 @@ namespace rg {
 	}
 
 
-	void RgRenderContext::InputSetBuffer(std::shared_ptr<RgBuffer> buffer)
+	void RgRenderContext::InputSetBuffer(RgBuffer* buffer)
 	{
 	}
 

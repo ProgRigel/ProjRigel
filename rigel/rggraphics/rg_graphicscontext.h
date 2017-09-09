@@ -46,7 +46,7 @@ namespace rg {
 
 		virtual RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size) = 0;
 
-		virtual std::shared_ptr<RgBuffer> CreateBuffer(RgBufferSettings settings);
+		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
 
 		RgRenderContext* GetRenderContext();
 		
@@ -60,7 +60,7 @@ namespace rg {
 
 	protected:
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
-		std::vector<std::shared_ptr<RgBuffer>> m_vBuffers;
+		std::vector<RgBuffer*> m_vBuffers;
 
 		RgRenderContext *m_pRenderContext = nullptr;
 

@@ -24,9 +24,9 @@ private:
 	std::shared_ptr<RgShader> m_pShaderUIvertex;
 	std::shared_ptr<RgShader> m_pShaderUIfragment;
 
-	std::shared_ptr<RgBuffer> m_pBufferUIvertex;
-	std::shared_ptr<RgBuffer> m_pBufferUIindices;
-	std::shared_ptr<RgBuffer> m_pBufferUIconst;
+	RgBuffer* m_pBufferUIvertex = nullptr;
+	RgBuffer* m_pBufferUIindices = nullptr;
+	RgBuffer* m_pBufferUIconst = nullptr;
 
 
 };

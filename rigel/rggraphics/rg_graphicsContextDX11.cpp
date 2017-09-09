@@ -308,9 +308,9 @@ namespace rg {
 		return std::make_shared<RgShaderDX11>(options,shader);
 
 	}
-	std::shared_ptr<RgBuffer> RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
+	RgBuffer* RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
 	{
-		auto buffer = std::make_shared<RgBufferDX11>(settings);
+		auto buffer = new RgBufferDX11(settings);
 		HRESULT hr = buffer->Create(m_pD3D11Device);
 		HR_CEHCK(hr);
 

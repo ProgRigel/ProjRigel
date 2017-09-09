@@ -27,9 +27,9 @@ namespace rg {
 	{
 		return std::make_shared<RgMaterial>();
 	}
-	std::shared_ptr<RgBuffer> RgGraphicsContext::CreateBuffer(RgBufferSettings settings)
+	RgBuffer* RgGraphicsContext::CreateBuffer(RgBufferSettings settings)
 	{
-		return std::shared_ptr<RgBuffer>();
+		return nullptr;
 	}
 	RgRenderContext * RgGraphicsContext::GetRenderContext()
 	{
@@ -40,7 +40,10 @@ namespace rg {
 		//release buffers
 		for each (auto buffer in m_vBuffers)
 		{
-			buffer.reset();
+			if (buffer) {
+				buffer->Release();
+				delete buffer;
+			}
 		}
 
 		if (m_pRenderContext != nullptr) {

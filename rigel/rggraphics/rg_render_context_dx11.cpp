@@ -2,14 +2,13 @@
 #include "rg_bufferDX11.h"
 
 namespace rg {
-	void RgRenderContextDX11::InputSetBuffer(std::shared_ptr<RgBuffer> buffer)
+	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer)
 	{
 		unsigned int stride = buffer->GetSettings().Stride;
 		unsigned int offset = 0;
 
 		auto bindtype = buffer->GetSettings().BindFlag;
-		RgBuffer * rawbuffer = buffer.get();
-		auto bufferdx11 = dynamic_cast<RgBufferDX11*>(rawbuffer);
+		auto bufferdx11 = dynamic_cast<RgBufferDX11*>(buffer);
 		switch (bindtype)
 		{
 		case rg::RgBufferBind::IndexBuffer:

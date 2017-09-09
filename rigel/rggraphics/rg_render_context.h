@@ -19,7 +19,7 @@ namespace rg {
 
 
 	public:
-		virtual void InputSetBuffer(std::shared_ptr<RgBuffer> buffer);
+		virtual void InputSetBuffer(RgBuffer* buffer);
 		virtual void InputSetMaterial(std::shared_ptr<RgMaterial> material);
 		virtual void InputSetShader(std::shared_ptr<RgShader> shader);
 		virtual void InputSetPrimitiveTopology();
