@@ -38,6 +38,11 @@ namespace rg {
 		{
 			buffer.reset();
 		}
+
+		if (m_pRenderContext != nullptr) {
+			delete m_pRenderContext;
+			m_pRenderContext = nullptr;
+		}
 	}
 }
 

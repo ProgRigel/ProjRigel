@@ -26,7 +26,11 @@ namespace rg {
 		void init(RG_GRAPHICS_INIT_SETTINGS *settings);
 		void release();
 
-		
+		void DrawSetBuffer(std::shared_ptr<RgBuffer> buffer);
+		void DrawSetMaterial(std::shared_ptr<RgMaterial> material);
+		void DrawSetShader(std::shared_ptr<RgShader> shader);
+		void DrawSetPrimitiveTopology();
+		void DrawIndexed(unsigned int size);
 
 	public:
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);

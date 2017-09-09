@@ -24,6 +24,12 @@
     <ClInclude Include="rg_buffer.h">
       <Filter>struct</Filter>
     </ClInclude>
+    <ClInclude Include="rg_render_context.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_render_context_dx11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />
@@ -45,6 +51,12 @@
     </ClCompile>
     <ClCompile Include="rg_buffer.cpp">
       <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_render_context.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_render_context_dx11.cpp">
+      <Filter>dx11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

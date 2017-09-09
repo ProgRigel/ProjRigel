@@ -2,6 +2,7 @@
 #include <iostream>
 #include "rg_shaderDX11.h"
 #include "rg_bufferDX11.h"
+#include "rg_render_context_dx11.h"
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
 namespace rg {
@@ -20,6 +21,11 @@ namespace rg {
 		createDeviceAndContext();
 		createSwapChain();
 		createRenderTarget();
+
+		//set rendercontext
+		auto renderctx = new RgRenderContextDX11();
+		renderctx->m_pDeviceContext = m_pD3D11DeviceContext;
+		m_pRenderContext = renderctx;
 	}
 
 	void RgGraphicsContextDX11::release()
@@ -29,6 +35,15 @@ namespace rg {
 		clearRenderTarget();
 		releaseSwapChain();
 		releaseDeviceAndContext();
+	}
+	void RgGraphicsContextDX11::DrawSetBuffer(std::shared_ptr<RgBuffer> buffer)
+	{
+	}
+	void RgGraphicsContextDX11::DrawSetMaterial(std::shared_ptr<RgMaterial> material)
+	{
+	}
+	void RgGraphicsContextDX11::DrawSetShader(std::shared_ptr<RgShader> shader)
+	{
 	}
 	HRESULT RgGraphicsContextDX11::createDeviceAndContext()
 	{
@@ -262,6 +277,13 @@ namespace rg {
 			m_pRasterizerState = nullptr;
 		}
 		return S_OK;
+	}
+	void RgGraphicsContextDX11::DrawSetPrimitiveTopology()
+	{
+	}
+	void RgGraphicsContextDX11::DrawIndexed(unsigned int size)
+	{
+		m_pD3D11DeviceContext->DrawIndexed(size, 0, 0);
 	}
 	std::shared_ptr<RgShader> RgGraphicsContextDX11::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{

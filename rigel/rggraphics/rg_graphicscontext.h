@@ -8,6 +8,7 @@
 #include "rg_texture.h"
 #include "rg_material.h"
 #include "rg_buffer.h"
+#include "rg_render_context.h"
 
 namespace rg {
 
@@ -49,6 +50,8 @@ namespace rg {
 	protected:
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
 		std::vector<std::shared_ptr<RgBuffer>> m_vBuffers;
+
+		RgRenderContext *m_pRenderContext = nullptr;
 
 	public:
 		friend class RgGraphicsAPI;
