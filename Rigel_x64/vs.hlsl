@@ -12,6 +12,6 @@ struct PixelInput
 PixelInput main(VertexInput v)
 {
 	PixelInput o;
-	o.position = float4(v.position.xy, 0, 0);
+	o.position = float4(v.position.xy, 0, 1.0);
 	return o;
 }

@@ -56,6 +56,7 @@ namespace rg {
 	}
 	void RgRenderContextDX11::DrawIndexed(unsigned int size)
 	{
+		m_pDeviceContext->DrawIndexed(size, 0, 0);
 	}
 	void RgRenderContextDX11::Draw()
 	{

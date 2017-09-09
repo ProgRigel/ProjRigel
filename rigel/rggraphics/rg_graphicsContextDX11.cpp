@@ -236,7 +236,7 @@ namespace rg {
 		rasterDesc.DepthBias = 0;
 		rasterDesc.DepthBiasClamp = 0.0f;
 		rasterDesc.DepthClipEnable = true;
-		rasterDesc.FillMode = D3D11_FILL_SOLID;;
+		rasterDesc.FillMode = D3D11_FILL_SOLID;
 		rasterDesc.FrontCounterClockwise = false;
 		rasterDesc.MultisampleEnable = false;
 		rasterDesc.ScissorEnable = false;
@@ -250,6 +250,7 @@ namespace rg {
 		D3D11_VIEWPORT viewport;
 		viewport.Width = (float)m_settings.BufferWidth;
 		viewport.Height = (float)m_settings.BufferHeight;
+
 		viewport.MaxDepth = 1.0f;
 		viewport.MinDepth = 0.0f;
 		viewport.TopLeftX = 0.0f;
