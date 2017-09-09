@@ -4,6 +4,7 @@
 namespace rg {
 
 	class RgGraphicsContext;
+	class RgRenderContext;
 
 	enum class RgBufferUsage
 	{
@@ -35,6 +36,7 @@ namespace rg {
 		RgBuffer(RgBufferSettings setting);
 
 		virtual void Release() = 0;
+		virtual void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size) = 0;
 
 	protected:
 		RgBuffer(const RgBuffer&) = delete;

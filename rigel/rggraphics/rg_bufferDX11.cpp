@@ -1,4 +1,5 @@
 #include "rg_bufferDX11.h"
+#include "rg_render_context_dx11.h"
 
 namespace rg {
 
@@ -33,6 +34,26 @@ namespace rg {
 			RgLogW() << "release buffer";
 		}
 		
+	}
+
+	void RgBufferDX11::SetData(RgRenderContext * renderctx, void * pdata, unsigned int size)
+	{
+		auto ctx = dynamic_cast<RgRenderContextDX11*>(renderctx);
+		if (ctx == nullptr) return;
+
+		D3D11_MAPPED_SUBRESOURCE bufferres;
+		{
+			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferres);
+			if (hr != S_OK) {
+				RgLogE() << "map buffer data error";
+				return;
+			}
+			auto dataptr = bufferres.pData;
+			memcpy(dataptr, pdata, size);
+			ctx->m_pDeviceContext->Unmap(m_pbuffer, 0);
+		}
+
+		RgLogD() << "map buffer data succeed";
 	}
 
 	HRESULT RgBufferDX11::Create(ID3D11Device * device)

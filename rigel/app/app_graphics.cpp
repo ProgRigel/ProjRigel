@@ -34,6 +34,9 @@ void RigelAppGraphics::Init(RgWindow * window)
 	bufferVertexDesc.Usage = RgBufferUsage::Dynamic;
 	m_pBufferUIvertex = m_pRgGraphicsCtx->CreateBuffer(bufferVertexDesc);
 
+	float data[6];
+	m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), &data, sizeof(data));
+
 	RgBufferSettings bufferIndicesDesc;
 	bufferIndicesDesc.ByteWidth = 3 * sizeof(unsigned int);
 	bufferIndicesDesc.BindFlag = RgBufferBind::IndexBuffer;

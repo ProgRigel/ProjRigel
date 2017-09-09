@@ -4,6 +4,7 @@
 namespace rg {
 	class RgGraphicsContextDX11;
 	class RgBuffer;
+	class RgRenderContext;
 
 	class RgBufferDX11 : public RgBuffer {
 
@@ -11,7 +12,8 @@ namespace rg {
 		RgBufferDX11(RgBufferSettings settings);
 		~RgBufferDX11();
 
-		virtual void Release();
+		void Release();
+		void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size);
 	protected:
 		HRESULT Create(ID3D11Device * device);
 

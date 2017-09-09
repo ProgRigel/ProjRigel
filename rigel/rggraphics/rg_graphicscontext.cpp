@@ -1,5 +1,5 @@
 #include "rg_graphicscontext.h"
-
+#include "rg_render_context.h"
 
 namespace rg {
 	RgGraphicsContext::RgGraphicsContext()
@@ -30,6 +30,10 @@ namespace rg {
 	std::shared_ptr<RgBuffer> RgGraphicsContext::CreateBuffer(RgBufferSettings settings)
 	{
 		return std::shared_ptr<RgBuffer>();
+	}
+	RgRenderContext * RgGraphicsContext::GetRenderContext()
+	{
+		return m_pRenderContext;
 	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{

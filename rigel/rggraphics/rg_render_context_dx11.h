@@ -16,5 +16,6 @@ namespace rg {
 		ID3D11DeviceContext *m_pDeviceContext = nullptr;
 	public:
 		friend class RgGraphicsContextDX11;
+		friend class RgBufferDX11;
 	};
 }
