@@ -265,7 +265,7 @@ namespace rg {
 	std::shared_ptr<RgShader> RgGraphicsContextDX11::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{
 
-		ID3DBlob * shaderBlob;
+		ID3DBlob * shaderBlob = nullptr;
 		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "main", "vs_4_0_level_9_1", D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);
 		HR_CEHCK(result);
 		if (shaderBlob == nullptr) {
