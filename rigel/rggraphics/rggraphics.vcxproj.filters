@@ -61,7 +61,9 @@
     <ClCompile Include="rg_render_context_dx11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
-    <ClCompile Include="rg_inputlayout.cpp" />
+    <ClCompile Include="rg_inputlayout.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dx11">

@@ -3,17 +3,19 @@
 #include <d3d11.h>
 
 namespace rg {
-
+	class RgGraphicsContextDX11;
 	class RgShaderDX11 : public RgShader {
 
 	public:
 		RgShaderDX11(): RgShader(){}
 		~RgShaderDX11();
-		RgShaderDX11(RgShaderOptions options, ID3D11VertexShader * shader);
+		RgShaderDX11(RgShaderOptions options,ID3DBlob * shaderblob);
 
-	protected:
-		ID3D11VertexShader * m_pVertexShader;
+	public:
+		ID3D11VertexShader * m_pVertexShader = nullptr;
+		ID3D11PixelShader * m_pPixelShader = nullptr;
+		ID3DBlob * m_pShaderBlob = nullptr;
 
-
+		friend class RgGraphicsContextDX11;
 	};
 }

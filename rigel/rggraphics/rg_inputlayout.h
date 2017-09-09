@@ -11,6 +11,7 @@ namespace rg {
 	enum class RgInputSlotClass
 	{
 		PER_VERTEX_DATA,
+		PER_ELEMENT_DATA,
 	};
 
 	struct RgInputLayoutElement {

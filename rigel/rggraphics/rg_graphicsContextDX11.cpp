@@ -33,6 +33,13 @@ namespace rg {
 	{
 		std::cout << "release dx11 api" << std::endl;
 
+		for each(auto inputlayout in m_vInputLayouts) {
+			if (inputlayout != nullptr) {
+				inputlayout->Release();
+				inputlayout = nullptr;
+			}
+		}
+
 		clearRenderTarget();
 		releaseSwapChain();
 		releaseDeviceAndContext();
@@ -288,25 +295,54 @@ namespace rg {
 	}
 	std::shared_ptr<RgShader> RgGraphicsContextDX11::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{
+		const char* entrypoint = options.EntryPoint.c_str();
+		const char* shadertarget = options.ShaderTarget.c_str();
+
+		RgLogD() << shadertarget;
 
 		ID3DBlob * shaderBlob = nullptr;
-		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, "main", "vs_4_0_level_9_1", D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);
+		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, entrypoint, shadertarget, D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);
 		HR_CEHCK(result);
-		if (shaderBlob == nullptr) {
-			return nullptr;
-		}
-		
-		ID3D11VertexShader * shader = nullptr;
-		result = m_pD3D11Device->CreateVertexShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), nullptr, &shader);
 		if (result != S_OK) {
-			RgLogE() << "create shader error";
-			shaderBlob->Release();
-			shaderBlob = nullptr;
+			RgLogE() << "compile shader error "<< options.ShaderTarget;
+			if (shaderBlob) {
+				shaderBlob->Release();
+				shaderBlob = nullptr;
+			}
 			return nullptr;
 		}
 
-		return std::make_shared<RgShaderDX11>(options,shader);
+		
+		if (options.ShaderEntry == RG_SHADER_ENTRY::Vertex) {
+			ID3D11VertexShader * shader = nullptr;
+			result = m_pD3D11Device->CreateVertexShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), nullptr, &shader);
+			HR_CEHCK(result);
+			if (result != S_OK) {
+				RgLogE() << "create vertex shader error";
+				shaderBlob->Release();
+				shaderBlob = nullptr;
+				return nullptr;
+			}
+			auto rgshader = std::make_shared<RgShaderDX11>(options, shaderBlob);
+			rgshader->m_pVertexShader = shader;
+			return rgshader;
+		}
+		else if (options.ShaderEntry == RG_SHADER_ENTRY::Pixel) {
+			ID3D11PixelShader * shader = nullptr;
+			result = m_pD3D11Device->CreatePixelShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), nullptr, &shader);
+			HR_CEHCK(result);
+			if (result != S_OK) {
+				RgLogE() << "create pixel shader error";
+				shaderBlob->Release();
+				shaderBlob = nullptr;
+				return nullptr;
+			}
+			auto rgshader = std::make_shared<RgShaderDX11>(options, shaderBlob);
+			rgshader->m_pPixelShader = shader;
+			return rgshader;
+		}
 
+		return nullptr;
 	}
 	RgBuffer* RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
 	{
@@ -329,7 +365,7 @@ namespace rg {
 		desc.InstanceDataStepRate = 0;
 	}
 
-	RgInputLayout * RgGraphicsContextDX11::CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size)
+	RgInputLayout * RgGraphicsContextDX11::CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size,std::shared_ptr<RgShader> vertexShader)
 	{
 		auto layout = new RgInputLayout(elements, size);
 		D3D11_INPUT_ELEMENT_DESC * desc = new D3D11_INPUT_ELEMENT_DESC[size];
@@ -337,7 +373,20 @@ namespace rg {
 		{
 			ConvertInputLayout(desc[i],elements[i]);
 		}
-		//m_pD3D11Device->CreateInputLayout(desc,size,)
+		RgShader * shaderptr = vertexShader.get();
+		auto shaderblob = dynamic_cast<RgShaderDX11*>(shaderptr)->m_pShaderBlob;
+
+		ID3D11InputLayout *inputlayout;
+		HRESULT hr = m_pD3D11Device->CreateInputLayout(desc, size, shaderblob->GetBufferPointer(), shaderblob->GetBufferSize(), &inputlayout);
+		HR_CEHCK(hr);
+		if (hr != S_OK) {
+			RgLogE() << "create inputlayout error";
+			delete layout;
+			return nullptr;
+		}
+		layout->pLayout = inputlayout;
+
+		m_vInputLayouts.push_back(inputlayout);
 
 		return layout;
 	}

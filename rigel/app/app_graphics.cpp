@@ -61,6 +61,35 @@ void RigelAppGraphics::Init(RgWindow * window)
 	renderctx->InputSetBuffer(m_pBufferUIvertex);
 	renderctx->InputSetBuffer(m_pBufferUIindices);
 
+	//create shader
+
+	RgShaderOptions options;
+	options.ShaderEntry = RG_SHADER_ENTRY::Vertex;
+	options.EntryPoint = "main";
+	options.ShaderTarget = "vs_4_0";
+	std::wstring fpath = GetWorkDirectory();
+	fpath = fpath.append(L"/vs.hlsl");
+	RgLogD() << fpath;
+	m_pShaderUIvertex = m_pRgGraphicsCtx->CompileShaderFromFile(fpath, options);
+
+	RgShaderOptions options1;
+	options1.ShaderEntry = RG_SHADER_ENTRY::Pixel;
+	options1.EntryPoint = "main";
+	options1.ShaderTarget = "ps_4_0";
+	std::wstring fpath1 = GetWorkDirectory();
+	fpath1 = fpath1.append(L"/ps.hlsl");
+	RgLogD() << fpath1;
+	m_pShaderUIfragment = m_pRgGraphicsCtx->CompileShaderFromFile(fpath1, options1);
+
+	RgInputLayoutElement layoute;
+	layoute.SemanticName = "position";
+	layoute.SemanticIndex = 0;
+	layoute.Format = RgGraphicsFormat::R32G32_FLOAT;
+	layoute.InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
+	layoute.InputSlot = 0;
+
+	m_pInputlayout = m_pRgGraphicsCtx->CreateInputLayout(&layoute, 1, m_pShaderUIvertex);
+
 
 }
 

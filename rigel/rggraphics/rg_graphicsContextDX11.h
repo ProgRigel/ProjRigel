@@ -35,7 +35,7 @@ namespace rg {
 	public:
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
-		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements,const unsigned int size);
+		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements,const unsigned int size, std::shared_ptr<RgShader> vertexShader);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
@@ -62,6 +62,8 @@ namespace rg {
 		HRESULT createRenderTarget();
 		HRESULT clearRenderTarget();
 
+	private:
+		std::vector<ID3D11InputLayout*> m_vInputLayouts;
 
 	public:
 		friend class RgGraphicsAPI;

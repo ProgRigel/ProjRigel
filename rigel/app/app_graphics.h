@@ -4,6 +4,7 @@
 #include <rgcore\rg_window.h>
 #include <rggraphics\rg_buffer.h>
 #include <rggraphics\rg_shader.h>
+#include <rggraphics\rg_inputlayout.h>
 
 using namespace rg;
 
@@ -28,5 +29,6 @@ private:
 	RgBuffer* m_pBufferUIindices = nullptr;
 	RgBuffer* m_pBufferUIconst = nullptr;
 
+	RgInputLayout * m_pInputlayout = nullptr;
 
 };

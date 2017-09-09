@@ -13,14 +13,16 @@ namespace rg {
 	};
 
 	enum class RG_SHADER_ENTRY {
+		Default,
 		Vertex,
 		Pixel,
 	};
 
 	struct RgShaderOptions {
 		RG_SHADER_TYPE ShaderType = RG_SHADER_TYPE_DEFAULT;
-		std::wstring EntryPoint;
-		std::wstring ShaderTarget;
+		RG_SHADER_ENTRY ShaderEntry = RG_SHADER_ENTRY::Default;
+		std::string EntryPoint;
+		std::string ShaderTarget;
 		void * ShaderInclude = nullptr;
 		unsigned int ShaderIncludeCount = 0;
 		unsigned int Flag1 = 0;
@@ -31,7 +33,7 @@ namespace rg {
 	class RgShader {
 	protected:
 		RgShaderOptions m_sShaderOptions;
-
+		
 	public:
 		RgShader();
 		RgShader(RgShaderOptions& options);

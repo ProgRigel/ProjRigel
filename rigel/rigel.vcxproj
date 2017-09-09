@@ -180,6 +180,9 @@
     <ClInclude Include="app\app.h" />
     <ClInclude Include="app\app_graphics.h" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Rigel_x64\vs.hlsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
