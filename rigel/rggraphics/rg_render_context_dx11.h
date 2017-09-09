@@ -8,6 +8,8 @@ namespace rg {
 
 	class RgRenderContextDX11 : public RgRenderContext {
 
+	public:
+		void InputSetBuffer(std::shared_ptr<RgBuffer> buffer);
 	protected:
 		RgRenderContextDX11();
 		~RgRenderContextDX11();

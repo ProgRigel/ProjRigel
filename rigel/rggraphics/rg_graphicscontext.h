@@ -16,6 +16,8 @@ namespace rg {
 	class RgShader;
 	class RgTexture;
 	class RgRenderContext;
+	class RgInputLayout;
+	struct RgInputLayoutElement;
 
 
 	struct RgBufferSettings;
@@ -41,6 +43,8 @@ namespace rg {
 		virtual std::shared_ptr<RgShader> CompileShaderFromSource(std::wstring source, RgShaderOptions& options);
 		virtual std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
 		virtual std::shared_ptr<RgMaterial> CreateMaterial(std::shared_ptr<RgShader> shader);
+
+		virtual RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size) = 0;
 
 		virtual std::shared_ptr<RgBuffer> CreateBuffer(RgBufferSettings settings);
 

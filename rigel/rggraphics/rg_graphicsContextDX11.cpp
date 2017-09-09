@@ -3,6 +3,7 @@
 #include "rg_shaderDX11.h"
 #include "rg_bufferDX11.h"
 #include "rg_render_context_dx11.h"
+#include "rg_inputlayout.h"
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
 namespace rg {
@@ -317,6 +318,28 @@ namespace rg {
 			m_vBuffers.push_back(buffer);
 		}
 		return buffer;
+	}
+	void ConvertInputLayout(D3D11_INPUT_ELEMENT_DESC& desc,const RgInputLayoutElement element) {
+		desc.SemanticName = element.SemanticName;
+		desc.SemanticIndex = element.SemanticIndex;
+		desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		desc.InputSlot = element.InputSlot;
+		desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		desc.AlignedByteOffset = 0;
+		desc.InstanceDataStepRate = 0;
+	}
+
+	RgInputLayout * RgGraphicsContextDX11::CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size)
+	{
+		auto layout = new RgInputLayout(elements, size);
+		D3D11_INPUT_ELEMENT_DESC * desc = new D3D11_INPUT_ELEMENT_DESC[size];
+		for (unsigned int i = 0; i < size; i++)
+		{
+			ConvertInputLayout(desc[i],elements[i]);
+		}
+		//m_pD3D11Device->CreateInputLayout(desc,size,)
+
+		return layout;
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{

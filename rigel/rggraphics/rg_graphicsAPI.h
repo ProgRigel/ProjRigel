@@ -1,6 +1,4 @@
 #pragma once
-#include "rg_graphicscontext.h"
-
 
 namespace rg {
 
@@ -11,6 +9,11 @@ namespace rg {
 	{
 		RG_GRAPHICS_API_OPENGL,
 		RG_GRAPHICS_APY_DX11,
+	};
+
+	enum class RgGraphicsFormat {
+		UNKNOWN = 0,
+		R32G32_FLOAT = 1,
 	};
 
 	class RgGraphicsAPI

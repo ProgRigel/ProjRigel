@@ -1,15 +1,6 @@
-cbuffer MatrixBuffer:register(b0)
-{
-	float4x4 worldMatrix;
-	//matrix viewMatrix;
-	//matrix projectionMatrix;
-};
-
 struct VertexInput
 {
 	float2 position:POSITION;
-	float2 uv:TEXCOORD0;
-	float4 color:COLOR0;
 };
 
 struct PixelInput

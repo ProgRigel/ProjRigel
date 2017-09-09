@@ -35,6 +35,7 @@ namespace rg {
 	public:
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 		virtual std::shared_ptr<RgBuffer> CreateBuffer(RgBufferSettings settings);
+		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements,const unsigned int size);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();

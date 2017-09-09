@@ -19,6 +19,8 @@ namespace rg {
 		m_bufferdesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;;
 		m_bufferdesc.MiscFlags = 0;
 		m_bufferdesc.StructureByteStride = 0;
+
+		
 	}
 
 	RgBufferDX11::~RgBufferDX11()

@@ -1,5 +1,6 @@
 #include "rg_graphicsAPI.h"
 
+#include "rg_graphicscontext.h"
 #include "rg_graphicsContextDX11.h"
 
 namespace rg {

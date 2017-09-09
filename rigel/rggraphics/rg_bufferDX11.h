@@ -22,5 +22,6 @@ namespace rg {
 
 	public:
 		friend class RgGraphicsContextDX11;
+		friend class RgRenderContextDX11;
 	};
 }

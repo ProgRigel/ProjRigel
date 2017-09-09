@@ -2,6 +2,8 @@
 #include <rgcore\rgcore.h>
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rgcore\rg_window.h>
+#include <rggraphics\rg_buffer.h>
+#include <rggraphics\rg_shader.h>
 
 using namespace rg;
 

@@ -1,13 +1,23 @@
 #include "rg_buffer.h"
 
-rg::RgBuffer::RgBuffer()
-{
-}
+namespace rg {
 
-rg::RgBuffer::~RgBuffer()
-{
-}
+	RgBuffer::RgBuffer()
+	{
+	}
 
-rg::RgBuffer::RgBuffer(RgBufferSettings setting)
-{
+	RgBuffer::~RgBuffer()
+	{
+	}
+
+	RgBuffer::RgBuffer(RgBufferSettings setting)
+	{
+		m_setting = setting;
+	}
+
+	RgBufferSettings & RgBuffer::GetSettings()
+	{
+		return m_setting;
+	}
+
 }
