@@ -8,7 +8,15 @@ namespace rg {
 	{
 		Raw,
 		Targa,
+		PNG,
 	};
+
+	enum class RgImageFormat {
+		NONE,
+		R8G8B8A8_UCHAR,
+	};
+
+	class RgImageLoader;
 
 	class RgImage 
 	{
@@ -22,12 +30,18 @@ namespace rg {
 		unsigned int GetHeight();
 		unsigned char* GetData();
 
+
 	protected:
 		RgImage();
 		virtual ~RgImage();
+		RgImage(const RgImage&) = delete;
+		RgImage& operator= (const RgImage&) = delete;
 
 		unsigned char* m_pData = nullptr;
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
+		RgImageFormat m_format = RgImageFormat::NONE;
+	public:
+		friend class RgImageLoader;
 	};
 }

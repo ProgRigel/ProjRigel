@@ -1,13 +1,22 @@
+#pragma once
 #include "rg_image.h"
-#include "rg_image_provider.cpp"
+
+#include "rg_image_loader.h"
 
 namespace rg{
 	RgImage * RgImage::RgImageLoad(std::wstring filename, RgImageType imgtype)
 	{
-		return nullptr;
+		FILE *fileptr;
+		int error = _wfopen_s(&fileptr, filename.c_str(), L"rb");
+		if (error != 0)
+		{
+			return false;
+		}
+		return RgImageLoader::Load(fileptr, imgtype);
 	}
 	void RgImage::RgImageSave(std::wstring filename, RgImage * img)
 	{
+
 	}
 	void RgImage::RgImageSave(std::wstring filename, unsigned char * data, unsigned int width, unsigned int height, RgImageType imgtype)
 	{

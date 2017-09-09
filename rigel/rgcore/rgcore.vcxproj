@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="rgcore.h" />
     <ClInclude Include="rg_image.h" />
+    <ClInclude Include="rg_image_loader.h" />
     <ClInclude Include="rg_inc.h" />
     <ClInclude Include="rg_log.h" />
     <ClInclude Include="rg_module_font.h" />
@@ -34,7 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_image.cpp" />
-    <ClCompile Include="rg_image_provider.cpp" />
+    <ClCompile Include="rg_image_loader.cpp" />
     <ClCompile Include="rg_log.cpp" />
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
@@ -98,16 +99,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(SolutionDir)thirdpart\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)thirdpart\$(PlatformTarget);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(SolutionDir)thirdpart\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)thirdpart\$(PlatformTarget);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)thirdpart\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)thirdpart\$(PlatformTarget);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)thirdpart\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)thirdpart\$(PlatformTarget);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
