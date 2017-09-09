@@ -38,5 +38,7 @@ namespace rg {
 		RgShader();
 		RgShader(RgShaderOptions& options);
 		virtual ~RgShader();
+
+		RG_SHADER_ENTRY GetShaderEntry();
 	};
 }

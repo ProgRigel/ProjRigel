@@ -11,6 +11,10 @@ namespace rg {
 	RgShader::~RgShader()
 	{
 	}
+	RG_SHADER_ENTRY RgShader::GetShaderEntry()
+	{
+		return m_sShaderOptions.ShaderEntry;
+	}
 }
 
 

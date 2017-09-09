@@ -39,6 +39,7 @@ namespace rg {
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
+		void prerender();
 
 
 	private:

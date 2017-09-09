@@ -7,6 +7,7 @@ namespace rg {
 	class RgBuffer;
 	class RgShader;
 	class RgMaterial;
+	class RgInputLayout;
 
 	class RgRenderContext {
 
@@ -23,6 +24,7 @@ namespace rg {
 		virtual void InputSetMaterial(std::shared_ptr<RgMaterial> material);
 		virtual void InputSetShader(std::shared_ptr<RgShader> shader);
 		virtual void InputSetPrimitiveTopology();
+		virtual void InputSetInputLayout(RgInputLayout * layout);
 
 		virtual void DrawIndexed(unsigned int size);
 		virtual void Draw();

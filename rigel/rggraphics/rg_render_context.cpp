@@ -28,6 +28,10 @@ namespace rg {
 	{
 	}
 
+	void RgRenderContext::InputSetInputLayout(RgInputLayout * layout)
+	{
+	}
+
 	void RgRenderContext::DrawIndexed(unsigned int size)
 	{
 	}

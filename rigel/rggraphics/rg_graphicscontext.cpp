@@ -11,6 +11,9 @@ namespace rg {
 	void RgGraphicsContext::render()
 	{
 	}
+	void RgGraphicsContext::prerender()
+	{
+	}
 	std::shared_ptr<RgShader> RgGraphicsContext::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{
 		return std::make_shared<RgShader>();

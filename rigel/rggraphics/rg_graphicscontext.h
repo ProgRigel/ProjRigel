@@ -38,6 +38,7 @@ namespace rg {
 
 		virtual void resizeBuffer(unsigned int width, unsigned int height);
 		virtual void render();
+		virtual void prerender();
 
 		virtual std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 		virtual std::shared_ptr<RgShader> CompileShaderFromSource(std::wstring source, RgShaderOptions& options);

@@ -347,6 +347,7 @@ namespace rg {
 	RgBuffer* RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
 	{
 		auto buffer = new RgBufferDX11(settings);
+		buffer->m_setting = settings;
 		HRESULT hr = buffer->Create(m_pD3D11Device);
 		HR_CEHCK(hr);
 
@@ -411,11 +412,12 @@ namespace rg {
 
 	void RgGraphicsContextDX11::render()
 	{
-
+		m_pSwapChain->Present(0, 0);
+	}
+	void RgGraphicsContextDX11::prerender()
+	{
 		m_pD3D11DeviceContext->ClearRenderTargetView(m_pRenderTargetView, color);
 		m_pD3D11DeviceContext->ClearDepthStencilView(m_pdepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-		m_pSwapChain->Present(0, 0);
 	}
 }
 

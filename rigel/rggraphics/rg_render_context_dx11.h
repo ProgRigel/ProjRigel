@@ -10,6 +10,13 @@ namespace rg {
 
 	public:
 		void InputSetBuffer(RgBuffer* buffer);
+		void InputSetShader(std::shared_ptr<RgShader> shader);
+		void InputSetPrimitiveTopology();
+		void InputSetInputLayout(RgInputLayout * layout);
+
+		void DrawIndexed(unsigned int size);
+		void Draw();
+
 	protected:
 		RgRenderContextDX11();
 		~RgRenderContextDX11();
