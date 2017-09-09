@@ -49,6 +49,9 @@
     <ClInclude Include="rg_utility.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="rg_image.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_module_font.cpp">
@@ -73,5 +76,9 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="rg_utility.cpp" />
+    <ClCompile Include="rg_image.cpp" />
+    <ClCompile Include="rg_image_provider.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

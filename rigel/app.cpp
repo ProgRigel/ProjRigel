@@ -11,6 +11,8 @@ RigelApp::RigelApp()
 	windowmgr.registerWindow(m_pWindow);
 
 	m_pWindow->showWindow();
+
+	RgImage::RgImageLoad(L"test", RgImageType::Raw);
 }
 
 RigelApp::~RigelApp()
