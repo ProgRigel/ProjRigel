@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="rg_buffer.h" />
+    <ClInclude Include="rg_bufferDX11.h" />
     <ClInclude Include="rg_graphicsAPI.h" />
     <ClInclude Include="rg_graphicscontext.h" />
     <ClInclude Include="rg_graphicsContextDX11.h" />
@@ -28,6 +30,8 @@
     <ClInclude Include="rg_texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="rg_buffer.cpp" />
+    <ClCompile Include="rg_bufferDX11.cpp" />
     <ClCompile Include="rg_graphicsAPI.cpp" />
     <ClCompile Include="rg_graphicscontext.cpp" />
     <ClCompile Include="rg_graphicsContextDX11.cpp" />

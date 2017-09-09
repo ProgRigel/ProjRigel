@@ -5,8 +5,12 @@
 #include "rg_shader.h"
 #include "rg_texture.h"
 #include "rg_material.h"
+#include "rg_buffer.h"
 
 namespace rg {
+
+	class RgBuffer;
+	struct RgBufferSettings;
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{
@@ -29,6 +33,8 @@ namespace rg {
 		virtual std::shared_ptr<RgShader> CompileShaderFromSource(std::wstring source, RgShaderOptions& options);
 		virtual std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
 		virtual std::shared_ptr<RgMaterial> CreateMaterial(std::shared_ptr<RgShader> shader);
+
+		virtual std::shared_ptr<RgBuffer> CraeteBuffer(RgBufferSettings settings);
 		
 	protected:
 		virtual ~RgGraphicsContext();

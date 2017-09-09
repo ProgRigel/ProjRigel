@@ -13,5 +13,7 @@ namespace rg {
 
 	protected:
 		ID3D11VertexShader * m_pVertexShader;
+
+
 	};
 }

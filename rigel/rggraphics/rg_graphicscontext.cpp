@@ -27,6 +27,10 @@ namespace rg {
 	{
 		return std::make_shared<RgMaterial>();
 	}
+	std::shared_ptr<RgBuffer> RgGraphicsContext::CraeteBuffer(RgBufferSettings settings)
+	{
+		return std::shared_ptr<RgBuffer>();
+	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
 	}

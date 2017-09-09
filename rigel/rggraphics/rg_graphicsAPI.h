@@ -4,6 +4,9 @@
 
 namespace rg {
 
+	class RgGraphicsContext;
+	struct RG_GRAPHICS_INIT_SETTINGS;
+
 	enum RG_GRAPHICS_API
 	{
 		RG_GRAPHICS_API_OPENGL,
