@@ -12,14 +12,44 @@ namespace rg{
 		{
 			return false;
 		}
-		return RgImageLoader::Load(fileptr, imgtype);
-	}
-	void RgImage::RgImageSave(std::wstring filename, RgImage * img)
-	{
+		
+		RgImage* img = nullptr;
+
+		switch (imgtype)
+		{
+		case rg::RgImageType::Raw:
+			break;
+		case rg::RgImageType::Targa:
+			RgImageLoader::RgImageLoadTarga(fileptr, &img);
+			break;
+		case rg::RgImageType::PNG:
+			RgImageLoader::RgImageLoadPng(fileptr, &img);
+			break;
+		default:
+			break;
+		}
+
+		return img;
 
 	}
-	void RgImage::RgImageSave(std::wstring filename, unsigned char * data, unsigned int width, unsigned int height, RgImageType imgtype)
+	bool RgImage::RgImageSave(std::wstring filename, RgImage * img, RgImageType imgtype)
 	{
+		if (img == nullptr) return false;
+		return RgImageSave(filename, img->m_pData, img->m_width, img->m_height, imgtype, img->m_format);
+	}
+	bool RgImage::RgImageSave(std::wstring filename, unsigned char * data, unsigned int width, unsigned int height, RgImageType imgtype, RgImageFormat format)
+	{
+		switch (imgtype)
+		{
+		case rg::RgImageType::Raw:
+			break;
+		case rg::RgImageType::Targa:
+			break;
+		case rg::RgImageType::PNG:
+			return RgImageLoader::RgImageWritePng(filename.c_str(), data, width, height, format);
+		default:
+			break;
+		}
 	}
 	void RgImage::Release()
 	{

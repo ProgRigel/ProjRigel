@@ -13,7 +13,8 @@ namespace rg {
 
 	enum class RgImageFormat {
 		NONE,
-		R8G8B8A8_UCHAR,
+		R8G8B8A8,
+		R8G8B8,
 	};
 
 	class RgImageLoader;
@@ -22,8 +23,8 @@ namespace rg {
 	{
 	public:
 		static RgImage* RgImageLoad(std::wstring filename, RgImageType imgtype);
-		static void RgImageSave(std::wstring filename, RgImage* img);
-		static void RgImageSave(std::wstring filename, unsigned char* data, unsigned int width, unsigned int height, RgImageType imgtype);
+		static bool RgImageSave(std::wstring filename, RgImage* img,RgImageType imgtype);
+		static bool RgImageSave(std::wstring filename, unsigned char* data, unsigned int width, unsigned int height, RgImageType imgtype, RgImageFormat format);
 
 		void Release();
 		unsigned int GetWidth();
