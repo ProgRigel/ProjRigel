@@ -15,14 +15,32 @@ namespace rg {
 			m_bufferdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		m_bufferdesc.ByteWidth = settings.ByteWidth;
-		m_bufferdesc.CPUAccessFlags = settings.DX_AccessFlag;
+		m_bufferdesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;;
 		m_bufferdesc.MiscFlags = 0;
 		m_bufferdesc.StructureByteStride = 0;
 	}
 
+	RgBufferDX11::~RgBufferDX11()
+	{
+		Release();
+	}
+
+	void RgBufferDX11::Release()
+	{
+		if (m_pbuffer != nullptr) {
+			m_pbuffer->Release();
+			m_pbuffer = nullptr;
+			RgLogW() << "release buffer";
+		}
+		
+	}
+
 	HRESULT RgBufferDX11::Create(ID3D11Device * device)
 	{
-		return device->CreateBuffer(&m_bufferdesc, nullptr, &m_pbuffer);
+		assert(device);
+		auto hr = device->CreateBuffer(&m_bufferdesc, nullptr, &m_pbuffer);
+
+		return hr;
 	}
 
 }

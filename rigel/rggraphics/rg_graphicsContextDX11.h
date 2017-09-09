@@ -30,12 +30,11 @@ namespace rg {
 
 	public:
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
-
-		virtual std::shared_ptr<RgBuffer> CraeteBuffer(RgBufferSettings settings);
+		virtual std::shared_ptr<RgBuffer> CreateBuffer(RgBufferSettings settings);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
-
 		void render();
+
 
 	private:
 		

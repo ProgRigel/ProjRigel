@@ -285,12 +285,15 @@ namespace rg {
 		return std::make_shared<RgShaderDX11>(options,shader);
 
 	}
-	std::shared_ptr<RgBuffer> RgGraphicsContextDX11::CraeteBuffer(RgBufferSettings settings)
+	std::shared_ptr<RgBuffer> RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
 	{
 		auto buffer = std::make_shared<RgBufferDX11>(settings);
 		HRESULT hr = buffer->Create(m_pD3D11Device);
 		HR_CEHCK(hr);
 
+		if (buffer != nullptr) {
+			m_vBuffers.push_back(buffer);
+		}
 		return buffer;
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)

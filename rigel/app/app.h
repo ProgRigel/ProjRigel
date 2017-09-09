@@ -6,14 +6,15 @@
 #include <rgcore\rg_module_font.h>
 #include <rggraphics\rg_graphicsAPI.h>
 
+#include "app_graphics.h"
+
 using namespace rg;
 
 class RigelApp {
 
 private:
 	RgWindow *m_pWindow = nullptr;
-	RgGraphicsContext * m_pGraphicsCtx = nullptr;
-
+	RigelAppGraphics * m_pAppGraphics = nullptr;
 public:
 	RigelApp();
 	~RigelApp();

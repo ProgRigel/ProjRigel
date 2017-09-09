@@ -31,8 +31,10 @@ namespace rg {
 
 	public:
 		RgBuffer();
-		~RgBuffer();
+		virtual ~RgBuffer();
 		RgBuffer(RgBufferSettings setting);
+
+		virtual void Release() = 0;
 
 	protected:
 		RgBuffer(const RgBuffer&) = delete;

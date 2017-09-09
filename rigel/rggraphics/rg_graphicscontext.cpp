@@ -27,12 +27,17 @@ namespace rg {
 	{
 		return std::make_shared<RgMaterial>();
 	}
-	std::shared_ptr<RgBuffer> RgGraphicsContext::CraeteBuffer(RgBufferSettings settings)
+	std::shared_ptr<RgBuffer> RgGraphicsContext::CreateBuffer(RgBufferSettings settings)
 	{
 		return std::shared_ptr<RgBuffer>();
 	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
+		//release buffers
+		for each (auto buffer in m_vBuffers)
+		{
+			buffer.reset();
+		}
 	}
 }
 

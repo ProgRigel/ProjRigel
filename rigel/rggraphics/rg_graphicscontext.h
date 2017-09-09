@@ -1,6 +1,8 @@
 #pragma once
+#include <rgcore\rgcore.h>
 #include <Windows.h>
 #include <memory>
+#include <vector>
 
 #include "rg_shader.h"
 #include "rg_texture.h"
@@ -34,7 +36,7 @@ namespace rg {
 		virtual std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
 		virtual std::shared_ptr<RgMaterial> CreateMaterial(std::shared_ptr<RgShader> shader);
 
-		virtual std::shared_ptr<RgBuffer> CraeteBuffer(RgBufferSettings settings);
+		virtual std::shared_ptr<RgBuffer> CreateBuffer(RgBufferSettings settings);
 		
 	protected:
 		virtual ~RgGraphicsContext();
@@ -44,7 +46,9 @@ namespace rg {
 		RgGraphicsContext(const RgGraphicsContext&) = delete;
 		const RgGraphicsContext& operator=(const RgGraphicsContext&) = delete;
 
+	protected:
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
+		std::vector<std::shared_ptr<RgBuffer>> m_vBuffers;
 
 	public:
 		friend class RgGraphicsAPI;

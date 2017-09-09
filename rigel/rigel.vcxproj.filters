@@ -21,9 +21,15 @@
     <ClCompile Include="app\app.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="app\app_graphics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app\app.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="app\app_graphics.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,44 +9,31 @@ RigelApp::RigelApp()
 	m_pWindow->EventOnFrame.connect<RigelApp, &RigelApp::onRender>(this);
 	auto& windowmgr = RgWindowManager::getInstance();
 	windowmgr.registerWindow(m_pWindow);
-
 	m_pWindow->showWindow();
-
-	RgImage::RgImageLoad(L"test", RgImageType::Raw);
 }
 
 RigelApp::~RigelApp()
 {
-	RgGraphicsAPI::ReleaseAPI(m_pGraphicsCtx);
-	m_pGraphicsCtx = nullptr;
+	m_pAppGraphics->Release();
+	delete m_pAppGraphics;
+
 	RgWindowManager::getInstance().releaseWindow();
+}
+
+
+
+void RigelApp::onRegisterWindow()
+{
+	m_pAppGraphics = new RigelAppGraphics();
+	m_pAppGraphics->Init(m_pWindow);
 }
 
 void RigelApp::Run()
 {
-	//create shader test
-	RgShaderOptions options;
-
-	std::wstring fpath = GetWorkDirectory();
-	fpath.append(L"/vs.hlsl");
-	auto vertexShader = m_pGraphicsCtx->CompileShaderFromFile(fpath, options);
-
 	RgWindowManager::getInstance().enterMainLoop();
-}
-
-void RigelApp::onRegisterWindow()
-{
-	//init graphics
-	RG_GRAPHICS_INIT_SETTINGS settings;
-	settings.Windowed = true;
-	settings.OutputWindow = (HWND)m_pWindow->getHandler();
-	settings.BufferHeight = m_pWindow->getHeight();
-	settings.BufferWidth = m_pWindow->getWidth();
-	m_pGraphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_APY_DX11, &settings);
 }
 
 void RigelApp::onRender()
 {
-	if (m_pGraphicsCtx)
-		m_pGraphicsCtx->render();
+	m_pAppGraphics->Render();
 }

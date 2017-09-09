@@ -6,15 +6,23 @@
     <ClInclude Include="rg_graphicsContextDX11.h">
       <Filter>dx11</Filter>
     </ClInclude>
-    <ClInclude Include="rg_shader.h" />
-    <ClInclude Include="rg_material.h" />
-    <ClInclude Include="rg_texture.h" />
     <ClInclude Include="rg_shaderDX11.h">
       <Filter>dx11</Filter>
     </ClInclude>
-    <ClInclude Include="rg_buffer.h" />
     <ClInclude Include="rg_bufferDX11.h">
       <Filter>dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_material.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_shader.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_texture.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_buffer.h">
+      <Filter>struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -23,19 +31,28 @@
     <ClCompile Include="rg_graphicsContextDX11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
-    <ClCompile Include="rg_shader.cpp" />
     <ClCompile Include="rg_shaderDX11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
-    <ClCompile Include="rg_texture.cpp" />
-    <ClCompile Include="rg_buffer.cpp" />
     <ClCompile Include="rg_bufferDX11.cpp">
       <Filter>dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_shader.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_texture.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_buffer.cpp">
+      <Filter>struct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dx11">
       <UniqueIdentifier>{6866c8dc-7457-4803-863d-2fab8f4018fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="struct">
+      <UniqueIdentifier>{aaaea347-9e82-4acc-a1cb-dcf1745a44db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
