@@ -20,6 +20,7 @@ void RigelAppGraphics::Release()
 	m_pRgGraphicsCtx = nullptr;
 }
 
+
 void RigelAppGraphics::Init(RgWindow * window)
 {
 	RG_GRAPHICS_INIT_SETTINGS settings;
@@ -30,34 +31,55 @@ void RigelAppGraphics::Init(RgWindow * window)
 
 	m_pRgGraphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_API::RG_GRAPHICS_APY_DX11, &settings);
 
+	//register callback
+	window->EventOnResize.connect<RgGraphicsContext,&RgGraphicsContext::resizeBuffer>(m_pRgGraphicsCtx);
+
 	//init draws
-	RgBufferSettings bufferVertexDesc;
-	bufferVertexDesc.ByteWidth = 3 * sizeof(float) * 2;
-	bufferVertexDesc.BindFlag = RgBufferBind::VertexBuffer;
-	bufferVertexDesc.Usage = RgBufferUsage::Dynamic;
-	bufferVertexDesc.Stride = sizeof(float)*2;
-	m_pBufferUIvertex = m_pRgGraphicsCtx->CreateBuffer(bufferVertexDesc);
+	{
+		RgBufferSettings bufferVertexDesc;
+		bufferVertexDesc.ByteWidth = 4 * sizeof(float) * 2;
+		bufferVertexDesc.BindFlag = RgBufferBind::VertexBuffer;
+		bufferVertexDesc.Usage = RgBufferUsage::Dynamic;
+		bufferVertexDesc.Stride = sizeof(float) * 2;
+		m_pBufferUIvertex = m_pRgGraphicsCtx->CreateBuffer(bufferVertexDesc);
 
-	float data[6];
-	data[0] = 0.0f;
-	data[1] = 1.0f;
-	data[2] = 0.0f;
-	data[3] = 0.0f;
-	data[4] = 1.0f;
-	data[5] = .0f;
-	m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), &data, sizeof(data));
+		float data[8];
+		data[0] = 0.0f;
+		data[1] = 1.0f;
+		data[2] = 0.0f;
+		data[3] = 0.0f;
+		data[4] = 1.0f;
+		data[5] = 0.0f;
+		data[6] = 1.0f;
+		data[7] = 1.0f;
+		m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), &data, sizeof(data));
+	}
 
-	RgBufferSettings bufferIndicesDesc;
-	bufferIndicesDesc.ByteWidth = 6 * sizeof(unsigned int);
-	bufferIndicesDesc.BindFlag = RgBufferBind::IndexBuffer;
-	bufferIndicesDesc.Usage = RgBufferUsage::Dynamic;
-	bufferIndicesDesc.Stride = sizeof(unsigned int);
-	m_pBufferUIindices = m_pRgGraphicsCtx->CreateBuffer(bufferIndicesDesc);
+	{
+		RgBufferSettings bufferIndicesDesc;
+		bufferIndicesDesc.ByteWidth = 6 * sizeof(unsigned int);
+		bufferIndicesDesc.BindFlag = RgBufferBind::IndexBuffer;
+		bufferIndicesDesc.Usage = RgBufferUsage::Dynamic;
+		bufferIndicesDesc.Stride = sizeof(unsigned int);
+		m_pBufferUIindices = m_pRgGraphicsCtx->CreateBuffer(bufferIndicesDesc);
 
-	unsigned int datai[3]{ 0,1,2};
-	m_pBufferUIindices->SetData(m_pRgGraphicsCtx->GetRenderContext(), &datai, sizeof(datai));
+		unsigned int datai[6]{ 0,1,2,0,2,3 };
+		m_pBufferUIindices->SetData(m_pRgGraphicsCtx->GetRenderContext(), &datai, sizeof(datai));
+	}
+	//const buffer
+	{
+		RgBufferSettings bufferconstDesc;
+		bufferconstDesc.ByteWidth = sizeof(float) * 4;
+		bufferconstDesc.BindFlag = RgBufferBind::ConstBuffer;
+		bufferconstDesc.Usage = RgBufferUsage::Dynamic;
+		bufferconstDesc.Stride = sizeof(float) * 4;
+		m_pBufferUIconst = m_pRgGraphicsCtx->CreateBuffer(bufferconstDesc);
 
-	
+		float color[4] = {
+			1.0f,1.0f,0.2f,1.0f
+		};
+		m_pBufferUIconst->SetData(m_pRgGraphicsCtx->GetRenderContext(), &color, sizeof(color));
+	}
 
 	//create shader
 
@@ -66,7 +88,7 @@ void RigelAppGraphics::Init(RgWindow * window)
 	options.EntryPoint = "main";
 	options.ShaderTarget = "vs_4_0";
 	std::wstring fpath = GetWorkDirectory();
-	fpath = fpath.append(L"/vs.hlsl");
+	fpath = fpath.append(L"/Data/Res/vs.hlsl");
 	RgLogD() << fpath;
 	m_pShaderUIvertex = m_pRgGraphicsCtx->CompileShaderFromFile(fpath, options);
 
@@ -75,7 +97,7 @@ void RigelAppGraphics::Init(RgWindow * window)
 	options1.EntryPoint = "main";
 	options1.ShaderTarget = "ps_4_0";
 	std::wstring fpath1 = GetWorkDirectory();
-	fpath1 = fpath1.append(L"/ps.hlsl");
+	fpath1 = fpath1.append(L"/Data/Res/ps.hlsl");
 	RgLogD() << fpath1;
 	m_pShaderUIfragment = m_pRgGraphicsCtx->CompileShaderFromFile(fpath1, options1);
 
@@ -91,6 +113,7 @@ void RigelAppGraphics::Init(RgWindow * window)
 	auto renderctx = m_pRgGraphicsCtx->GetRenderContext();
 	renderctx->InputSetBuffer(m_pBufferUIvertex);
 	renderctx->InputSetBuffer(m_pBufferUIindices);
+	renderctx->InputSetBuffer(m_pBufferUIconst,RgGraphicsPipelineStage::Pixel);
 
 	renderctx->InputSetInputLayout(m_pInputlayout);
 	renderctx->InputSetShader(m_pShaderUIvertex);
@@ -104,7 +127,7 @@ void RigelAppGraphics::Render()
 	m_pRgGraphicsCtx->prerender();
 
 
-	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(3);
+	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(6);
 
 
 	m_pRgGraphicsCtx->render();

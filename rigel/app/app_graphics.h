@@ -18,6 +18,8 @@ public:
 	void Init(rg::RgWindow *window);
 	void Render();
 
+private:
+
 public:
 	rg::RgGraphicsContext * m_pRgGraphicsCtx = nullptr;
 

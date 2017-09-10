@@ -12,7 +12,7 @@ namespace rg {
 	}
 
 
-	void RgRenderContext::InputSetBuffer(RgBuffer* buffer)
+	void RgRenderContext::InputSetBuffer(RgBuffer* buffer, unsigned int tarstage)
 	{
 	}
 

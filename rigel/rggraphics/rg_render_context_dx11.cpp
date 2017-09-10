@@ -3,7 +3,7 @@
 #include "rg_shaderDX11.h"
 #include "rg_inputlayout.h"
 namespace rg {
-	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer)
+	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, unsigned int tarstage)
 	{
 		unsigned int stride = buffer->GetSettings().Stride;
 		unsigned int offset = 0;
@@ -21,6 +21,9 @@ namespace rg {
 			m_pDeviceContext->IASetVertexBuffers(0, 1, &bufferdx11->m_pbuffer,&stride,&offset);
 			RgLogW() << "set vertex buffer";
 			break;
+		case rg::RgBufferBind::ConstBuffer:
+			if ((tarstage & (unsigned int)RgGraphicsPipelineStage::Vertex) != 0)m_pDeviceContext->VSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
+			if ((tarstage & (unsigned int)RgGraphicsPipelineStage::Pixel) != 0)m_pDeviceContext->PSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
 		default:
 			break;
 		}

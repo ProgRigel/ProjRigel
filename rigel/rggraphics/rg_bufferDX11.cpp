@@ -14,13 +14,14 @@ namespace rg {
 			m_bufferdesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		if (settings.BindFlag == RgBufferBind::VertexBuffer)
 			m_bufferdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		if (settings.BindFlag == RgBufferBind::ConstBuffer)
+			m_bufferdesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 		m_bufferdesc.ByteWidth = settings.ByteWidth;
 		m_bufferdesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;;
 		m_bufferdesc.MiscFlags = 0;
 		m_bufferdesc.StructureByteStride = 0;
 
-		
 	}
 
 	RgBufferDX11::~RgBufferDX11()

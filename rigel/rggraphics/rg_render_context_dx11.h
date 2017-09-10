@@ -9,7 +9,7 @@ namespace rg {
 	class RgRenderContextDX11 : public RgRenderContext {
 
 	public:
-		void InputSetBuffer(RgBuffer* buffer);
+		void InputSetBuffer(RgBuffer* buffer,unsigned int tarstage = 0 );
 		void InputSetShader(std::shared_ptr<RgShader> shader);
 		void InputSetPrimitiveTopology();
 		void InputSetInputLayout(RgInputLayout * layout);

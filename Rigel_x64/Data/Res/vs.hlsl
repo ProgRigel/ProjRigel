@@ -1,3 +1,6 @@
+
+
+
 struct VertexInput
 {
 	float2 position:POSITION;
