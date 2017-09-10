@@ -40,4 +40,17 @@ namespace rg {
 	{
 	}
 
+	void RgRenderContext::ClearState()
+	{
+	}
+
+	bool RgRenderContext::FinishCommandList(bool restorectx, RgCommandList ** pcommandlist)
+	{
+		return false;
+	}
+
+	void RgRenderContext::ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx)
+	{
+	}
+
 }

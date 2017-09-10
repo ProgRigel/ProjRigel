@@ -2,6 +2,9 @@
 #include "rg_bufferDX11.h"
 #include "rg_shaderDX11.h"
 #include "rg_inputlayout.h"
+#include "rg_command_list_dx11.h"
+#include "rg_command_list.h"
+
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, unsigned int tarstage)
 	{
@@ -65,12 +68,46 @@ namespace rg {
 	{
 		m_pDeviceContext->DrawIndexed(3, 0, 0);
 	}
-	RgRenderContextDX11::RgRenderContextDX11()
+	void RgRenderContextDX11::ClearState()
 	{
+		m_pDeviceContext->ClearState();
+	}
+	bool RgRenderContextDX11::FinishCommandList(bool restorectx, RgCommandList ** pcommandlist)
+	{
+		
+		ID3D11CommandList * pcmdlist = nullptr;
+		HRESULT hr = m_pDeviceContext->FinishCommandList(restorectx, &pcmdlist);
+		if (hr != S_OK) {
+			RgLogE() << "finish command list error"<<hr;
+			return false;
+		}
+		RgCommandListDX11 * rgcmdlist = new RgCommandListDX11();
+		rgcmdlist->m_pCommandList = pcmdlist;
+		(*pcommandlist) = rgcmdlist;
+		RgLogD() << "finish commandlist done!";
+		return true;
+	}
+	void RgRenderContextDX11::ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx)
+	{
+		if (pcommandlist == nullptr || m_bIsImmediateContext == false) {
+			RgLogW() << "skip exec command list";
+		}
+		RgCommandListDX11 *pcmdlistdx11 = dynamic_cast<RgCommandListDX11*>(pcommandlist);
+
+		m_pDeviceContext->ExecuteCommandList(pcmdlistdx11->m_pCommandList, restorectx);
+
+	}
+	RgRenderContextDX11::RgRenderContextDX11(bool immedctx)
+	{
+		m_bIsImmediateContext = immedctx;
 	}
 
 	RgRenderContextDX11::~RgRenderContextDX11()
 	{
+		if (m_bIsImmediateContext == false) {
+			m_pDeviceContext->Release();
+			RgLogD() << "release deferred context";
+		}
 		m_pDeviceContext = nullptr;
 	}
 

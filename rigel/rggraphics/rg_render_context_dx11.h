@@ -6,6 +6,7 @@
 namespace rg {
 	class RgGraphicsContextDX11;
 
+
 	class RgRenderContextDX11 : public RgRenderContext {
 
 	public:
@@ -17,11 +18,15 @@ namespace rg {
 		void DrawIndexed(unsigned int size);
 		void Draw();
 
+		void ClearState();
+		bool FinishCommandList(bool restorectx, RgCommandList ** pcommandlist);
+		void ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx);
+
 	protected:
-		RgRenderContextDX11();
+		RgRenderContextDX11(bool immedctx);
 		~RgRenderContextDX11();
 
-
+		bool m_bIsImmediateContext = true;
 		ID3D11DeviceContext *m_pDeviceContext = nullptr;
 	public:
 		friend class RgGraphicsContextDX11;

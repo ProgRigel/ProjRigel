@@ -5,7 +5,7 @@
 #include <rggraphics\rg_buffer.h>
 #include <rggraphics\rg_shader.h>
 #include <rggraphics\rg_inputlayout.h>
-
+#include <rggraphics\rg_command_list.h>
 using namespace rg;
 
 class RigelAppGraphics {
@@ -33,4 +33,6 @@ private:
 
 	RgInputLayout * m_pInputlayout = nullptr;
 
+
+	RgCommandList * m_pCommandList = nullptr;
 };

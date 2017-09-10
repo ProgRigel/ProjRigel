@@ -8,6 +8,7 @@ namespace rg {
 	class RgShader;
 	class RgMaterial;
 	class RgInputLayout;
+	class RgCommandList;
 
 	class RgRenderContext {
 
@@ -29,6 +30,10 @@ namespace rg {
 		virtual void DrawIndexed(unsigned int size);
 		virtual void Draw();
 
+
+		virtual void ClearState();
+		virtual bool FinishCommandList(bool restorectx, RgCommandList ** pcommandlist);
+		virtual void ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx);
 	public:
 		friend class RgGraphicsContext;
 	};

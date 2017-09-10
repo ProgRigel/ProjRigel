@@ -50,6 +50,7 @@ namespace rg {
 		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
 
 		RgRenderContext* GetRenderContext();
+		virtual RgRenderContext * CreateDeferredContext() = 0;
 		
 	protected:
 		virtual ~RgGraphicsContext();
@@ -62,6 +63,7 @@ namespace rg {
 	protected:
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
 		std::vector<RgBuffer*> m_vBuffers;
+		std::vector<RgRenderContext *> m_vRenderContexts;
 
 		RgRenderContext *m_pRenderContext = nullptr;
 

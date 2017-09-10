@@ -9,7 +9,6 @@
 namespace rg {
 	RgGraphicsContextDX11::RgGraphicsContextDX11()
 	{
-		
 	}
 	RgGraphicsContextDX11::~RgGraphicsContextDX11()
 	{
@@ -24,7 +23,7 @@ namespace rg {
 		createRenderTarget();
 
 		//set rendercontext
-		auto renderctx = new RgRenderContextDX11();
+		auto renderctx = new RgRenderContextDX11(true);
 		renderctx->m_pDeviceContext = m_pD3D11DeviceContext;
 		m_pRenderContext = renderctx;
 	}
@@ -391,6 +390,19 @@ namespace rg {
 		m_vInputLayouts.push_back(inputlayout);
 
 		return layout;
+	}
+	RgRenderContext * RgGraphicsContextDX11::CreateDeferredContext()
+	{
+		ID3D11DeviceContext * devicectx = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateDeferredContext(0, &devicectx);
+		HR_CEHCK(hr);
+		if (hr != S_OK) {
+			return nullptr;
+		}
+		RgRenderContextDX11 * ctx = new RgRenderContextDX11(false);
+		ctx->m_pDeviceContext = devicectx;
+		m_vRenderContexts.push_back(ctx);
+		return ctx;
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{

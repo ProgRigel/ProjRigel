@@ -49,6 +49,13 @@ namespace rg {
 			}
 		}
 
+		for each (auto ctx in m_vRenderContexts)
+		{
+			delete ctx;
+			ctx = nullptr;
+		}
+		std::vector<RgRenderContext*>().swap(m_vRenderContexts);
+
 		if (m_pRenderContext != nullptr) {
 			delete m_pRenderContext;
 			m_pRenderContext = nullptr;

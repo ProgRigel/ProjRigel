@@ -37,9 +37,12 @@ namespace rg {
 		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
 		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements,const unsigned int size, std::shared_ptr<RgShader> vertexShader);
 
+		RgRenderContext * CreateDeferredContext();
+
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
 		void prerender();
+
 
 
 	private:

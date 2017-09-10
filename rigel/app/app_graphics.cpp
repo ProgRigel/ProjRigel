@@ -3,6 +3,7 @@
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggraphics\rg_graphicscontext.h>
 #include <rggraphics\rg_inputlayout.h>
+
 using namespace rg;
 
 RigelAppGraphics::RigelAppGraphics()
@@ -120,15 +121,14 @@ void RigelAppGraphics::Init(RgWindow * window)
 	renderctx->InputSetShader(m_pShaderUIfragment);
 
 	renderctx->InputSetPrimitiveTopology();
+
 }
 
 void RigelAppGraphics::Render()
 {
 	m_pRgGraphicsCtx->prerender();
-
-
+	
 	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(6);
-
 
 	m_pRgGraphicsCtx->render();
 }
