@@ -7,4 +7,5 @@
 #include "rg_signal.hpp"
 #include "rg_utility.h"
 #include "rg_image.h"
+#include "rg_math.h"
 

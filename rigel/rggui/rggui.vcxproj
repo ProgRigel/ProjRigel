@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="rg_gui.h" />
     <ClInclude Include="rg_gui_context.h" />
+    <ClInclude Include="rg_gui_draw_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_gui.cpp" />
     <ClCompile Include="rg_gui_context.cpp" />
+    <ClCompile Include="rg_gui_draw_buffer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{15D95F53-D75B-48BA-91FC-C02600A7E59E}</ProjectGuid>
