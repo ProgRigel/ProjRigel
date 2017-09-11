@@ -11,6 +11,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rgcore", "rgcore\rgcore.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rggraphics", "rggraphics\rggraphics.vcxproj", "{945FAD7A-A626-44EA-AEC8-E26ED15F4226}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rggui", "rggui\rggui.vcxproj", "{15D95F53-D75B-48BA-91FC-C02600A7E59E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{945FAD7A-A626-44EA-AEC8-E26ED15F4226} = {945FAD7A-A626-44EA-AEC8-E26ED15F4226}
+		{C7DC67D0-C687-4627-9E31-DD87366EFDFE} = {C7DC67D0-C687-4627-9E31-DD87366EFDFE}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -44,6 +50,14 @@ Global
 		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x64.Build.0 = Release|x64
 		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x86.ActiveCfg = Release|Win32
 		{945FAD7A-A626-44EA-AEC8-E26ED15F4226}.Release|x86.Build.0 = Release|Win32
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Debug|x64.ActiveCfg = Debug|x64
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Debug|x64.Build.0 = Debug|x64
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Debug|x86.ActiveCfg = Debug|Win32
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Debug|x86.Build.0 = Debug|Win32
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x64.ActiveCfg = Release|x64
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x64.Build.0 = Release|x64
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x86.ActiveCfg = Release|Win32
+		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@
 #include <rgcore\rg_windowManager.h>
 #include <rgcore\rg_module_font.h>
 #include <rggraphics\rg_graphicsAPI.h>
+#include <rggui\rg_gui.h>
 
 #include "app_graphics.h"
 
