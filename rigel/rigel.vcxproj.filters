@@ -5,16 +5,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="editor">
       <UniqueIdentifier>{1e905e89-11d5-4d41-8ad9-dd32baff5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{dce003f6-0d4a-4abe-b39a-22044d810f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Res">
+      <UniqueIdentifier>{9a37b423-7281-4aff-9b0c-648fd544dbeb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,5 +33,13 @@
     <ClInclude Include="app\app_graphics.h">
       <Filter>源文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Data\Res\ps.hlsl">
+      <Filter>Data\Res</Filter>
+    </FxCompile>
+    <FxCompile Include="Data\Res\vs.hlsl">
+      <Filter>Data\Res</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
