@@ -18,7 +18,9 @@ namespace rg {
 		~RgGUIDrawBuffer();
 
 		void ResetBuffer();
-
+		unsigned int GetBufferSize();
+		unsigned int GetVertexCount();
+		void * GetDataPtr();
 
 	private:
 		RgGUIDrawBuffer(const RgGUIDrawBuffer&) = delete;

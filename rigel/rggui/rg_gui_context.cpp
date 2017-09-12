@@ -31,6 +31,12 @@ namespace rg {
 		m_pDrawBuffer->ExtendBufferCheck();
 	}
 
+	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()
+	{
+		return m_pDrawBuffer;
+	}
+
+
 	RgGUIContext::RgGUIContext()
 	{
 		m_pDrawBuffer = new RgGUIDrawBuffer();

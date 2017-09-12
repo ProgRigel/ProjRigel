@@ -3,7 +3,8 @@
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggraphics\rg_graphicscontext.h>
 #include <rggraphics\rg_inputlayout.h>
-
+#include <rggui\rg_gui.h>
+#include <rggui\rg_gui_draw_buffer.h>
 using namespace rg;
 
 RigelAppGraphics::RigelAppGraphics()
@@ -35,25 +36,32 @@ void RigelAppGraphics::Init(RgWindow * window)
 	//register callback
 	window->EventOnResize.connect<RgGraphicsContext,&RgGraphicsContext::resizeBuffer>(m_pRgGraphicsCtx);
 
+	RgGUIContext * guictx = nullptr;
+	RgGUI::CreateRgGUIContext(&guictx);
+	guictx->DrawRect(RgVec2(-.2f, .3f), RgVec2(.5f, .4f));
+	auto guibuf = guictx->GetDrawBuffer();
+
 	//init draws
 	{
 		RgBufferSettings bufferVertexDesc;
-		bufferVertexDesc.ByteWidth = 4 * sizeof(float) * 2;
+		bufferVertexDesc.ByteWidth = guibuf->GetVertexCount()+ sizeof(RgGUIDrawBuffer);
 		bufferVertexDesc.BindFlag = RgBufferBind::VertexBuffer;
 		bufferVertexDesc.Usage = RgBufferUsage::Dynamic;
-		bufferVertexDesc.Stride = sizeof(float) * 2;
+		bufferVertexDesc.Stride = sizeof(RgGUIDrawBuffer);
 		m_pBufferUIvertex = m_pRgGraphicsCtx->CreateBuffer(bufferVertexDesc);
 
-		float data[8];
-		data[0] = 0.0f;
-		data[1] = 1.0f;
-		data[2] = 0.0f;
-		data[3] = 0.0f;
-		data[4] = 1.0f;
-		data[5] = 0.0f;
-		data[6] = 1.0f;
-		data[7] = 1.0f;
-		m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), &data, sizeof(data));
+		m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
+
+		//float data[8];
+		//data[0] = 0.0f;
+		//data[1] = 1.0f;
+		//data[2] = 0.0f;
+		//data[3] = 0.0f;
+		//data[4] = 1.0f;
+		//data[5] = 0.0f;
+		//data[6] = 1.0f;
+		//data[7] = 1.0f;
+		//m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), &data, sizeof(data));
 	}
 
 	{
@@ -128,7 +136,7 @@ void RigelAppGraphics::Render()
 {
 	m_pRgGraphicsCtx->prerender();
 	
-	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(6);
+	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(4);
 
 	m_pRgGraphicsCtx->render();
 }

@@ -5,6 +5,7 @@ namespace rg {
 	RgGUIDrawBuffer::RgGUIDrawBuffer()
 	{
 		m_pData = new RgGUIVertex[BUFFER_SIZE_INIT];
+		m_pPos = m_pData;
 	}
 
 	RgGUIDrawBuffer::~RgGUIDrawBuffer()
@@ -34,6 +35,21 @@ namespace rg {
 	{
 		m_pPos = m_pData;
 		ZeroMemory(m_pData, m_sBufferSize * VERTEX_SIZE);
+	}
+
+	unsigned int RgGUIDrawBuffer::GetBufferSize()
+	{
+		return m_sBufferSize;
+	}
+
+	unsigned int RgGUIDrawBuffer::GetVertexCount()
+	{
+		return (unsigned int)(m_pPos - m_pData);
+	}
+
+	void * RgGUIDrawBuffer::GetDataPtr()
+	{
+		return m_pData;
 	}
 
 }

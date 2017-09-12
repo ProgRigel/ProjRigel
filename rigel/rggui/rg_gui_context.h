@@ -1,10 +1,9 @@
 #pragma once
 #include <rgcore\rgcore.h>
-
+#include "rg_gui_draw_buffer.h"
 namespace rg {
 
 	class RgGUI;
-	class RgGUIDrawBuffer;
 
 	class RgGUIContext {
 
@@ -14,6 +13,8 @@ namespace rg {
 	public:
 		void DrawLine();
 		void DrawRect(const RgVec2& lp,const RgVec2& size) const;
+
+		RgGUIDrawBuffer * GetDrawBuffer();
 
 	private:
 		RgGUIContext();
