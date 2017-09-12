@@ -57,6 +57,7 @@ namespace rg {
 	}
 	void RgRenderContextDX11::InputSetInputLayout(RgInputLayout * layout)
 	{
+		RG_ASSERT(layout);
 		ID3D11InputLayout * dx11layout = (ID3D11InputLayout*)layout->pLayout;
 		m_pDeviceContext->IASetInputLayout(dx11layout);
 	}

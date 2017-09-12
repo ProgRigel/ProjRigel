@@ -38,18 +38,20 @@ void RigelAppGraphics::Init(RgWindow * window)
 
 	RgGUIContext * guictx = nullptr;
 	RgGUI::CreateRgGUIContext(&guictx);
-	guictx->DrawRect(RgVec2(-.2f, .3f), RgVec2(.5f, .4f));
+	guictx->DrawRect(RgVec2(.0f,.0f), RgVec2(.5f, .3f));
 	auto guibuf = guictx->GetDrawBuffer();
 
 	//init draws
 	{
 		RgBufferSettings bufferVertexDesc;
-		bufferVertexDesc.ByteWidth = guibuf->GetVertexCount()+ sizeof(RgGUIDrawBuffer);
+		bufferVertexDesc.ByteWidth = guibuf->GetVertexCount() * sizeof(RgGUIVertex);
 		bufferVertexDesc.BindFlag = RgBufferBind::VertexBuffer;
 		bufferVertexDesc.Usage = RgBufferUsage::Dynamic;
-		bufferVertexDesc.Stride = sizeof(RgGUIDrawBuffer);
+		bufferVertexDesc.Stride = sizeof(RgGUIVertex);
 		m_pBufferUIvertex = m_pRgGraphicsCtx->CreateBuffer(bufferVertexDesc);
 
+
+		RgLogD() << "VS:" << (unsigned int)sizeof(RgGUIVertex) <<(unsigned int) (guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 		m_pBufferUIvertex->SetData(m_pRgGraphicsCtx->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
 		//float data[8];
@@ -110,15 +112,30 @@ void RigelAppGraphics::Init(RgWindow * window)
 	RgLogD() << fpath1;
 	m_pShaderUIfragment = m_pRgGraphicsCtx->CompileShaderFromFile(fpath1, options1);
 
-	RgInputLayoutElement layoute;
-	layoute.SemanticName = "position";
-	layoute.SemanticIndex = 0;
-	layoute.Format = RgGraphicsFormat::R32G32_FLOAT;
-	layoute.InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
-	layoute.InputSlot = 0;
+	RgInputLayoutElement layoute[3];
+	layoute[0].SemanticName = "POSITION";
+	layoute[0].SemanticIndex = 0;
+	layoute[0].Format = RgGraphicsFormat::R32G32B32_FLOAT;
+	layoute[0].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
+	layoute[0].InputSlot = 0;
+	layoute[0].AlignedByteOffset = 0;
 
-	m_pInputlayout = m_pRgGraphicsCtx->CreateInputLayout(&layoute, 1, m_pShaderUIvertex);
+	layoute[1].SemanticName = "COLOR";
+	layoute[1].SemanticIndex = 0;
+	layoute[1].Format = RgGraphicsFormat::R32G32B32_FLOAT;
+	layoute[1].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
+	layoute[1].InputSlot = 0;
+	layoute[0].AlignedByteOffset = 0xffffffff;
 
+	layoute[2].SemanticName = "TEXCOORD";
+	layoute[2].SemanticIndex = 0;
+	layoute[2].Format = RgGraphicsFormat::R32G32_FLOAT;
+	layoute[2].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
+	layoute[2].InputSlot = 0;
+	layoute[0].AlignedByteOffset = 0xffffffff;
+
+	m_pInputlayout = m_pRgGraphicsCtx->CreateInputLayout(layoute, 3, m_pShaderUIvertex);
+	RG_ASSERT(m_pInputlayout);
 	auto renderctx = m_pRgGraphicsCtx->GetRenderContext();
 	renderctx->InputSetBuffer(m_pBufferUIvertex);
 	renderctx->InputSetBuffer(m_pBufferUIindices);
@@ -136,7 +153,7 @@ void RigelAppGraphics::Render()
 {
 	m_pRgGraphicsCtx->prerender();
 	
-	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(4);
+	m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(6);
 
 	m_pRgGraphicsCtx->render();
 }

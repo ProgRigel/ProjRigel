@@ -359,10 +359,15 @@ namespace rg {
 	void ConvertInputLayout(D3D11_INPUT_ELEMENT_DESC& desc,const RgInputLayoutElement element) {
 		desc.SemanticName = element.SemanticName;
 		desc.SemanticIndex = element.SemanticIndex;
-		desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		if(element.Format == RgGraphicsFormat::R32G32_FLOAT)
+			desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		else if (element.Format == RgGraphicsFormat::R32G32B32_FLOAT)
+		{
+			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		}
 		desc.InputSlot = element.InputSlot;
 		desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		desc.AlignedByteOffset = 0;
+		desc.AlignedByteOffset = element.AlignedByteOffset;
 		desc.InstanceDataStepRate = 0;
 	}
 
@@ -377,7 +382,8 @@ namespace rg {
 		RgShader * shaderptr = vertexShader.get();
 		auto shaderblob = dynamic_cast<RgShaderDX11*>(shaderptr)->m_pShaderBlob;
 
-		ID3D11InputLayout *inputlayout;
+
+		ID3D11InputLayout *inputlayout = nullptr;
 		HRESULT hr = m_pD3D11Device->CreateInputLayout(desc, size, shaderblob->GetBufferPointer(), shaderblob->GetBufferSize(), &inputlayout);
 		HR_CEHCK(hr);
 		if (hr != S_OK) {
@@ -385,6 +391,7 @@ namespace rg {
 			delete layout;
 			return nullptr;
 		}
+
 		layout->pLayout = inputlayout;
 
 		m_vInputLayouts.push_back(inputlayout);

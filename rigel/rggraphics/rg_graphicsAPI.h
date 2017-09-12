@@ -14,6 +14,8 @@ namespace rg {
 	enum class RgGraphicsFormat {
 		UNKNOWN = 0,
 		R32G32_FLOAT = 1,
+		R32G32B32_FLOAT = 2,
+		R32G32B32A32_FLOAT = 3,
 	};
 
 	class RgGraphicsPipelineStage {
