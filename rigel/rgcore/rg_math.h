@@ -42,4 +42,13 @@ namespace rg {
 	inline const RgVec4 operator-(const RgVec4& v1, const RgVec4& v2) {
 		return{ v1.x - v2.x,v1.y - v2.y,v1.z - v2.z,v1.z - v2.z };
 	}
+	inline const float operator*(const RgVec2& v1, const RgVec2& v2) {
+		return v1.x*v2.x + v1.y*v2.y;
+	}
+	inline const float operator*(const RgVec3& v1, const RgVec3& v2) {
+		return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+	}
+	inline const float operator*(const RgVec4& v1, const RgVec4& v2) {
+		return v1.w*v2.w + v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+	}
 }
