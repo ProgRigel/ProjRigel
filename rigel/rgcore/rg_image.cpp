@@ -50,6 +50,8 @@ namespace rg{
 		default:
 			break;
 		}
+
+		return false;
 	}
 	void RgImage::Release()
 	{

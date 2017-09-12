@@ -5,9 +5,16 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include <assert.h>
+
 #include <memory>
 #include <algorithm>
+
+#ifdef _DEBUG
+#include <assert.h>
+#define RG_ASSERT(x) assert(x)
+#else
+#define RG_ASSERT(x)
+#endif
 
 typedef int RgInt;
 typedef unsigned int RgUInt;
