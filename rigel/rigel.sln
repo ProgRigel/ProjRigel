@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rggui", "rggui\rggui.vcxpro
 		{C7DC67D0-C687-4627-9E31-DD87366EFDFE} = {C7DC67D0-C687-4627-9E31-DD87366EFDFE}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unitest", "unitest\unitest.vcxproj", "{7CAC7088-15D5-4709-AC86-54D6F80137DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -58,6 +60,14 @@ Global
 		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x64.Build.0 = Release|x64
 		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x86.ActiveCfg = Release|Win32
 		{15D95F53-D75B-48BA-91FC-C02600A7E59E}.Release|x86.Build.0 = Release|Win32
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Debug|x64.ActiveCfg = Debug|x64
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Debug|x64.Build.0 = Debug|x64
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Debug|x86.Build.0 = Debug|Win32
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Release|x64.ActiveCfg = Release|x64
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Release|x64.Build.0 = Release|x64
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Release|x86.ActiveCfg = Release|Win32
+		{7CAC7088-15D5-4709-AC86-54D6F80137DE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
