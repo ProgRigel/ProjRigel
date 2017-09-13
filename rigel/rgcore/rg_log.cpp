@@ -1,4 +1,5 @@
-#include "rg_log.h"
+#pragma once
+#include "rgcore.h"
 
 namespace rg
 {

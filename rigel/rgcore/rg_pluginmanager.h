@@ -1,8 +1,10 @@
 #pragma once
-#include "rg_pluginbase.h"
 #include <vector>
 
 namespace rg {
+
+	class RgPluginBase;
+
 	class RgPluginManager
 	{
 	public:

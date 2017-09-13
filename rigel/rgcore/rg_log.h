@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdlib.h>
+#include <Windows.h>
 
 
 #define RgLogD rg::RgLogger(__FILE__,__FUNCTION__,__LINE__).Debug

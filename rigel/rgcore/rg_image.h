@@ -1,6 +1,5 @@
 #pragma once
 #include "rg_inc.h"
-#include <string>
 
 namespace rg {
 

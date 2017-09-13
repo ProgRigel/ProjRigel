@@ -1,3 +1,5 @@
+#pragma once
+#include "rgcore.h"
 #include "rg_windowWindows.h"
 #include "rg_log.h"
 #include <iostream>

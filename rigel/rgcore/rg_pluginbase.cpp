@@ -1,5 +1,5 @@
-#include "rg_pluginbase.h"
-#include "rg_pluginmanager.h"
+#pragma once
+#include "rgcore.h"
 
 namespace rg {
 	RgPluginBase::RgPluginBase()

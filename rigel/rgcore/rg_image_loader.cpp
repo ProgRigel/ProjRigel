@@ -1,7 +1,7 @@
-#include "rg_image_loader.h"
+#pragma once
+#include "rgcore.h"
 
 #pragma warning(disable:4996)
-#include <comdef.h>
 #include <../libpng/png.h>
 #pragma comment(lib,"libpng16.lib")
 #pragma comment(lib,"zlib.lib")

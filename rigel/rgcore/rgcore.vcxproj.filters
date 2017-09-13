@@ -90,6 +90,8 @@
     <ClCompile Include="rg_image_loader.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="rg_math.cpp" />
+    <ClCompile Include="rg_math.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

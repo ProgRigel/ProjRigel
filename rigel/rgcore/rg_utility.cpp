@@ -1,8 +1,7 @@
-#include "rg_utility.h"
-#include <wchar.h>
-#include <Windows.h>
-#include <iostream>
+#pragma once
+#include "rgcore.h"
 namespace rg {
+
 	const std::wstring GetWorkDirectory()
 	{
 		static bool pathgot = false;

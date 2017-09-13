@@ -1,6 +1,8 @@
-#include "rg_math.h"
+#pragma once
+#include "rgcore.h"
 
 namespace rg {
+
 }
 
 

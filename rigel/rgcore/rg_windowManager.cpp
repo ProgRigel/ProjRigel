@@ -1,4 +1,5 @@
-#include "rg_windowManager.h"
+#pragma once
+#include "rgcore.h"
 
 #ifdef  _MSC_VER
 #include "rg_windowWindows.h"

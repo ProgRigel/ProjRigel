@@ -1,14 +1,5 @@
 #pragma once
 
-#include <Windows.h>
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <vector>
-
-#include <memory>
-#include <algorithm>
-
 #ifdef _DEBUG
 #include <assert.h>
 #define RG_ASSERT(x) assert(x)
