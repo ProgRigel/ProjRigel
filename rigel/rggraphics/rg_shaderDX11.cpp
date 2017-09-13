@@ -1,3 +1,6 @@
+#include "rggraphics.h"
+#include <d3d11.h>
+#include "rg_shader.h"
 #include "rg_shaderDX11.h"
 
 namespace rg {

@@ -1,5 +1,10 @@
+#include "rggraphics.h"
 #include "rg_graphicscontext.h"
 #include "rg_render_context.h"
+#include "rg_shader.h"
+#include "rg_texture.h"
+#include "rg_buffer.h"
+#include "rg_material.h"
 
 namespace rg {
 	RgGraphicsContext::RgGraphicsContext()

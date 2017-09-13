@@ -5,6 +5,7 @@
 #include <rggraphics\rg_inputlayout.h>
 #include <rggui\rg_gui.h>
 #include <rggui\rg_gui_draw_buffer.h>
+
 using namespace rg;
 
 RigelAppGraphics::RigelAppGraphics()

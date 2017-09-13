@@ -3,6 +3,7 @@
 #include <d3d11.h>
 
 namespace rg {
+
 	class RgGraphicsContextDX11;
 	class RgShaderDX11 : public RgShader {
 

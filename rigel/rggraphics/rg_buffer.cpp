@@ -1,3 +1,4 @@
+#include "rggraphics.h"
 #include "rg_buffer.h"
 
 namespace rg {

@@ -1,13 +1,5 @@
 #pragma once
-#include <rgcore\rgcore.h>
-#include <Windows.h>
-#include <memory>
-#include <vector>
-
-#include "rg_shader.h"
-#include "rg_texture.h"
-#include "rg_material.h"
-#include "rg_buffer.h"
+#include "rggraphics_inc.h"
 
 namespace rg {
 
@@ -17,10 +9,6 @@ namespace rg {
 	class RgTexture;
 	class RgRenderContext;
 	class RgInputLayout;
-	struct RgInputLayoutElement;
-
-
-	struct RgBufferSettings;
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{

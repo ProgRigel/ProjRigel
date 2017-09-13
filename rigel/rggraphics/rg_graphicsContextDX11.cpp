@@ -1,9 +1,11 @@
+#include "rggraphics.h"
 #include "rg_graphicsContextDX11.h"
-#include <iostream>
 #include "rg_shaderDX11.h"
 #include "rg_bufferDX11.h"
 #include "rg_render_context_dx11.h"
 #include "rg_inputlayout.h"
+#include "rg_buffer.h"
+
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
 namespace rg {
@@ -16,7 +18,6 @@ namespace rg {
 	void RgGraphicsContextDX11::init(RG_GRAPHICS_INIT_SETTINGS *settings)
 	{
 		m_settings = *settings;
-
 		std::cout << "init dx11 api" << std::endl;
 		createDeviceAndContext();
 		createSwapChain();

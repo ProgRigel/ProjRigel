@@ -1,6 +1,7 @@
 #pragma once
+#include "rggraphics.h"
 #include "rg_graphicsAPI.h"
-#include <vector>
+
 namespace rg {
 	class RgShader;
 	class RgBuffer;

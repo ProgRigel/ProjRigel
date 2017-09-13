@@ -1,12 +1,15 @@
+#include "rggraphics.h"
 #include "rg_render_context_dx11.h"
 #include "rg_bufferDX11.h"
 #include "rg_shaderDX11.h"
 #include "rg_inputlayout.h"
 #include "rg_command_list_dx11.h"
 #include "rg_command_list.h"
+#include "rg_buffer.h"
+#include "rg_shader.h"
 
 namespace rg {
-	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, unsigned int tarstage)
+	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
 		unsigned int stride = buffer->GetSettings().Stride;
 		unsigned int offset = 0;
@@ -25,8 +28,8 @@ namespace rg {
 			RgLogW() << "set vertex buffer";
 			break;
 		case rg::RgBufferBind::ConstBuffer:
-			if ((tarstage & (unsigned int)RgGraphicsPipelineStage::Vertex) != 0)m_pDeviceContext->VSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
-			if ((tarstage & (unsigned int)RgGraphicsPipelineStage::Pixel) != 0)m_pDeviceContext->PSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
+			if (((unsigned int)tarstage & (unsigned int)RgGraphicsPipelineStage::Vertex) != 0)m_pDeviceContext->VSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
+			if (((unsigned int)tarstage & (unsigned int)RgGraphicsPipelineStage::Pixel) != 0)m_pDeviceContext->PSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
 		default:
 			break;
 		}

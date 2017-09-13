@@ -1,17 +1,9 @@
 #pragma once
+#include "rggraphics_inc.h"
 #include "rg_graphicscontext.h"
-
-#include <rgcore\rgcore.h>
 
 #include <d3d11.h>
 #include <dxgi.h>
-#include <DirectXMath.h>
-#include <d3dcompiler.h>
-
-#pragma comment(lib,"d3d11.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"dxguid.lib")
 
 
 namespace rg {

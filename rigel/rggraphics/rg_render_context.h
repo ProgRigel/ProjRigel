@@ -1,5 +1,6 @@
 #pragma once
-#include <memory>
+#include "rggraphics_inc.h"
+
 
 namespace rg {
 
@@ -21,7 +22,7 @@ namespace rg {
 
 
 	public:
-		virtual void InputSetBuffer(RgBuffer* buffer, unsigned int tarstage = 0);
+		virtual void InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage = (RgGraphicsPipelineStage)0);
 		virtual void InputSetMaterial(std::shared_ptr<RgMaterial> material);
 		virtual void InputSetShader(std::shared_ptr<RgShader> shader);
 		virtual void InputSetPrimitiveTopology();

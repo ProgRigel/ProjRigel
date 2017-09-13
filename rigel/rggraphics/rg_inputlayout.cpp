@@ -1,3 +1,4 @@
+#include "rggraphics.h"
 #include "rg_inputlayout.h"
 
 rg::RgInputLayout::RgInputLayout(const RgInputLayoutElement * elements, const unsigned size)

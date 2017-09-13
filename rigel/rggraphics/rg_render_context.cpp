@@ -1,3 +1,4 @@
+#include "rggraphics.h"
 #include "rg_render_context.h"
 
 
@@ -12,7 +13,7 @@ namespace rg {
 	}
 
 
-	void RgRenderContext::InputSetBuffer(RgBuffer* buffer, unsigned int tarstage)
+	void RgRenderContext::InputSetBuffer(RgBuffer* buffer,RgGraphicsPipelineStage tarstage)
 	{
 	}
 

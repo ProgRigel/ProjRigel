@@ -1,5 +1,4 @@
 #pragma once
-#include "rg_graphicsAPI.h"
 
 namespace rg {
 

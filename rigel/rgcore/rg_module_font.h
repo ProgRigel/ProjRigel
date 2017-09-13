@@ -1,6 +1,6 @@
 #pragma once
+#include "rg_pluginbase.h"
 namespace rg {
-	class RgPluginBase;
 	class RgModuleFont :public RgPluginBase {
 
 	public:

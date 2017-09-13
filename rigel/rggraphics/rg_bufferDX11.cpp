@@ -1,6 +1,8 @@
+#include "rggraphics.h"
 #include "rg_bufferDX11.h"
 #include "rg_render_context_dx11.h"
-
+#include "rg_graphicsContextDX11.h"
+#include "rg_buffer.h"
 namespace rg {
 
 	RgBufferDX11::RgBufferDX11(RgBufferSettings settings)

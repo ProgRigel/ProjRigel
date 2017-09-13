@@ -1,6 +1,7 @@
 #pragma once
 #include "rg_command_list.h"
 #include <d3d11.h>
+
 namespace rg {
 
 	class RgGraphicsContextDX11;

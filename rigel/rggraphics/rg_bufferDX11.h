@@ -1,6 +1,5 @@
 #pragma once
-#include "rg_graphicsContextDX11.h"
-
+#include "rg_buffer.h"
 namespace rg {
 	class RgGraphicsContextDX11;
 	class RgBuffer;
