@@ -1,5 +1,4 @@
 #pragma once
-#include <Windows.h>
 #include "rg_signal.hpp"
 
 namespace rg {

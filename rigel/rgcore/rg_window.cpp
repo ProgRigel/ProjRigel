@@ -1,7 +1,6 @@
 #pragma once
 #include "rgcore.h"
-#include "rg_window.h"
-#include "rg_windowManager.h"
+
 
 #include <iostream>
 

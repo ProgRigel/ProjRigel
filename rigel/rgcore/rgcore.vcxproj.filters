@@ -7,9 +7,6 @@
     <Filter Include="window">
       <UniqueIdentifier>{9474e3ea-8acd-4dc1-a4b4-e482d07217c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="graphics">
-      <UniqueIdentifier>{6e737795-9093-47da-b967-c84f5b6d3107}</UniqueIdentifier>
-    </Filter>
     <Filter Include="core">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>

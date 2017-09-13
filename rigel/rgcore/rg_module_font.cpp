@@ -1,7 +1,6 @@
 #pragma once
 #include "rgcore.h"
-#include "rg_module_font.h"
-#include <iostream>
+
 
 namespace rg {
 	RgModuleFont::RgModuleFont()
