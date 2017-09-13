@@ -1,4 +1,5 @@
 #include "app.h"
+#include <rggui\rg_gui_context.h>
 
 RigelApp::RigelApp()
 {

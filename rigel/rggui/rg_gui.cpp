@@ -1,4 +1,7 @@
+#include "rggui.h"
+
 #include "rg_gui.h"
+#include "rg_gui_context.h"
 
 namespace rg {
 

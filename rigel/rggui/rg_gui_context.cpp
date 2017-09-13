@@ -1,5 +1,6 @@
+#include "rggui.h"
+
 #include "rg_gui_context.h"
-#include <iostream>
 #include "rg_gui_draw_buffer.h"
 
 namespace rg {

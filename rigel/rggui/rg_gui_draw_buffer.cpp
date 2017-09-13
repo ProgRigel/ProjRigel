@@ -1,6 +1,6 @@
+#include "rggui.h"
 #include "rg_gui_draw_buffer.h"
-#include <memory>
-#include <rgcore\rg_log.h>
+
 namespace rg {
 	RgGUIDrawBuffer::RgGUIDrawBuffer()
 	{

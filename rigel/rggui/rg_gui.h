@@ -1,9 +1,9 @@
 #pragma once
-#include <rgcore\rgcore.h>
-#include "rg_gui_context.h"
-#include <vector>
+#include "rggui.h"
+
 
 namespace rg {
+	class RgGUIContext;
 
 	class RgGUI
 	{

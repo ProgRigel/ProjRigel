@@ -1,9 +1,8 @@
 #pragma once
-#include <rgcore\rgcore.h>
-#include "rg_gui_draw_buffer.h"
 namespace rg {
 
 	class RgGUI;
+	class RgGUIDrawBuffer;
 
 	class RgGUIContext {
 
