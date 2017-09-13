@@ -1,5 +1,6 @@
 #pragma once
 #include "rgcore.h"
+#include "rg_utility.h"
 namespace rg {
 
 	const std::wstring GetWorkDirectory()

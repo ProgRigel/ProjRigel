@@ -1,5 +1,7 @@
 #pragma once
 #include "rgcore.h"
+#include "rg_pluginmanager.h"
+#include "rg_pluginbase.h"
 
 namespace rg {
 	bool RgPluginManager::registerPlugin(RgPluginBase* plugin)

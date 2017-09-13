@@ -1,6 +1,7 @@
 #pragma once
 #include "rgcore.h"
-
+#include "rg_pluginbase.h"
+#include "rg_module_font.h"
 
 namespace rg {
 	RgModuleFont::RgModuleFont()

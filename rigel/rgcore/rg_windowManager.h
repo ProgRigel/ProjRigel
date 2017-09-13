@@ -1,6 +1,7 @@
 #pragma once
 #include "rg_inc.h"
 #include "rg_window.h"
+#include <vector>
 namespace rg {
 
 	class RgWindowManager

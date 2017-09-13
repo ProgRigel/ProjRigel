@@ -1,7 +1,6 @@
 #pragma once
 #include "rgcore.h"
 #include "rg_image.h"
-
 #include "rg_image_loader.h"
 
 namespace rg{

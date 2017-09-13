@@ -1,6 +1,6 @@
 #pragma once
 #include "rgcore.h"
-
+#include "rg_log.h"
 namespace rg
 {
 	RgLogger::RgLogger(const char * file, const char * function, int line) : m_line(line), m_file(file), m_func(function)

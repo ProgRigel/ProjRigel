@@ -1,8 +1,6 @@
 #pragma once
 #include "rgcore.h"
-
-
-#include <iostream>
+#include "rg_window.h"
 
 #ifdef _MSC_VER
 #include "rg_windowWindows.h"
