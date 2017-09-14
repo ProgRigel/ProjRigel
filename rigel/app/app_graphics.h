@@ -8,31 +8,36 @@
 #include <rggraphics\rg_command_list.h>
 using namespace rg;
 
-class RigelAppGraphics {
+namespace editor {
 
-public:
-	RigelAppGraphics();
-	~RigelAppGraphics();
+	class RigelAppGraphics {
 
-	void Release();
-	void Init(rg::RgWindow *window);
-	void Render();
+	public:
+		RigelAppGraphics();
+		~RigelAppGraphics();
 
-private:
+		void Release();
+		void Init(rg::RgWindow *window);
+		void Render();
 
-public:
-	rg::RgGraphicsContext * m_pRgGraphicsCtx = nullptr;
+	private:
 
-private:
-	std::shared_ptr<RgShader> m_pShaderUIvertex;
-	std::shared_ptr<RgShader> m_pShaderUIfragment;
+	public:
+		rg::RgGraphicsContext * m_pRgGraphicsCtx = nullptr;
 
-	RgBuffer* m_pBufferUIvertex = nullptr;
-	RgBuffer* m_pBufferUIindices = nullptr;
-	RgBuffer* m_pBufferUIconst = nullptr;
+	private:
+		std::shared_ptr<RgShader> m_pShaderUIvertex;
+		std::shared_ptr<RgShader> m_pShaderUIfragment;
 
-	RgInputLayout * m_pInputlayout = nullptr;
+		RgBuffer* m_pBufferUIvertex = nullptr;
+		RgBuffer* m_pBufferUIindices = nullptr;
+		RgBuffer* m_pBufferUIconst = nullptr;
+
+		RgInputLayout * m_pInputlayout = nullptr;
 
 
-	RgCommandList * m_pCommandList = nullptr;
-};
+		RgCommandList * m_pCommandList = nullptr;
+	};
+
+}
+

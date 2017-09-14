@@ -1,7 +1,8 @@
+#include "stdafx.h"
 #include "app.h"
 
 int main() {
-	RigelApp* app = new RigelApp();
+	editor::RigelApp* app = new editor::RigelApp();
 	app->Run();
 	delete app;
 

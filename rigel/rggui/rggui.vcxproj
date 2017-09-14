@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="rggui.h" />
     <ClInclude Include="rg_gui.h" />
+    <ClInclude Include="rg_gui_bind_graphics.h" />
     <ClInclude Include="rg_gui_context.h" />
     <ClInclude Include="rg_gui_draw_buffer.h" />
   </ItemGroup>

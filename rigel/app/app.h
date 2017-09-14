@@ -11,20 +11,27 @@
 
 using namespace rg;
 
-class RigelApp {
+namespace editor {
 
-private:
-	RgWindow *m_pWindow = nullptr;
-	RigelAppGraphics * m_pAppGraphics = nullptr;
-public:
-	RigelApp();
-	~RigelApp();
-public:
-	void Run();
-	void onRegisterWindow();
-	void onRender();
+	class EditorGUI;
 
-private:
+	class RigelApp {
+
+	private:
+		RgWindow *m_pWindow = nullptr;
+		RigelAppGraphics * m_pAppGraphics = nullptr;
+		EditorGUI * m_pEditorGUI = nullptr;
+	public:
+		RigelApp();
+		~RigelApp();
+	public:
+		void Run();
+		void onRegisterWindow();
+		void onRender();
+
+	private:
 
 
-};
+	};
+}
+

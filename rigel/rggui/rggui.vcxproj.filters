@@ -5,6 +5,7 @@
     <ClInclude Include="rg_gui_context.h" />
     <ClInclude Include="rg_gui_draw_buffer.h" />
     <ClInclude Include="rggui.h" />
+    <ClInclude Include="rg_gui_bind_graphics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_gui.cpp" />
