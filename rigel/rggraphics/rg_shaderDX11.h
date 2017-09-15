@@ -12,6 +12,8 @@ namespace rg {
 		~RgShaderDX11();
 		RgShaderDX11(RgShaderOptions options,ID3DBlob * shaderblob);
 
+		void Release();
+
 	public:
 		ID3D11VertexShader * m_pVertexShader = nullptr;
 		ID3D11PixelShader * m_pPixelShader = nullptr;

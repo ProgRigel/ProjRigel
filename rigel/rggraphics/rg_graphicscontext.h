@@ -1,6 +1,6 @@
 #pragma once
 #include "rggraphics_inc.h"
-
+#include <rggraphics\rggraphics.h>
 namespace rg {
 
 	class RgBuffer;

@@ -40,11 +40,6 @@ namespace editor {
 		m_pAppGraphics = new RigelAppGraphics();
 		m_pAppGraphics->Init(m_pWindow);
 
-		RgGUIContext *guictx = nullptr;
-		RgGUI::CreateRgGUIContext(&guictx);
-		guictx->Release();
-
-		RgGUI::Release();
 
 	}
 

@@ -11,6 +11,11 @@ namespace rg {
 	}
 	RgShader::~RgShader()
 	{
+		Release();
+	}
+	void RgShader::Release()
+	{
+
 	}
 	RG_SHADER_ENTRY RgShader::GetShaderEntry()
 	{
