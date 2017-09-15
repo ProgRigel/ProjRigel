@@ -29,9 +29,10 @@ namespace rg {
 	public:
 		std::vector<RgInputLayoutElement> Elements;
 		void * pLayout = nullptr;
+		virtual ~RgInputLayout();
 	protected:
 		RgInputLayout(const RgInputLayoutElement* elements, const unsigned size);
-		virtual ~RgInputLayout();
+		
 
 		RgInputLayout(const RgInputLayout&) = delete;
 		RgInputLayout& operator=(const RgInputLayout&) = delete;
