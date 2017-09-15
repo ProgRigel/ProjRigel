@@ -17,7 +17,7 @@ namespace editor {
 		windowmgr.registerWindow(m_pWindow);
 		m_pWindow->showWindow();
 
-		m_pEditorGUI = new EditorGUI();
+		
 	}
 
 	RigelApp::~RigelApp()
@@ -40,6 +40,8 @@ namespace editor {
 		m_pAppGraphics = new RigelAppGraphics();
 		m_pAppGraphics->Init(m_pWindow);
 
+		m_pEditorGUI = new EditorGUI();
+		m_pEditorGUI->BindGraphics(m_pAppGraphics->m_pRgGraphicsCtx);
 
 	}
 

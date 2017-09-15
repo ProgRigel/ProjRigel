@@ -11,6 +11,8 @@ namespace rg {
 	{
 		m_pGUICtx = gui;
 		m_pGraphics = graphics;
+
+		InitGraphicsObj();
 	}
 	RgGUIBindGraphics::~RgGUIBindGraphics()
 	{
@@ -67,6 +69,8 @@ namespace rg {
 			optionsVertex.ShaderTarget = "vs_4_0";
 			std::wstring fpath = GetWorkDirectory();
 			fpath = fpath.append(L"/Data/Res/vs.hlsl");
+
+			m_pShaderVertex = m_pGraphics->CompileShaderFromFile(fpath, optionsVertex);
 		}
 
 	}

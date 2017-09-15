@@ -2,6 +2,7 @@
 #include <rggraphics\rggraphics_inc.h>
 #include <rggraphics\rg_graphicscontext.h>
 #include <rggui\rg_gui_draw_buffer.h>
+#include <memory>
 
 namespace rg {
 
@@ -33,8 +34,8 @@ namespace rg {
 		RgBuffer * m_pBufferIndices = nullptr;
 		RgBuffer* m_pBufferConst = nullptr;
 
-		RgShader * m_pShaderVertex = nullptr;
-		RgShader * m_pShaderPixel = nullptr;
+		std::shared_ptr<RgShader> m_pShaderVertex = nullptr;
+		std::shared_ptr<RgShader> m_pShaderPixel = nullptr;
 
 	};
 }

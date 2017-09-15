@@ -28,6 +28,8 @@ namespace rg {
 		virtual void render();
 		virtual void prerender();
 
+		std::shared_ptr<RgShader> GetCachedShader(std::wstring shaderId);
+
 		virtual std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 		virtual std::shared_ptr<RgShader> CompileShaderFromSource(std::wstring source, RgShaderOptions& options);
 		virtual std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
@@ -52,6 +54,7 @@ namespace rg {
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
 		std::vector<RgBuffer*> m_vBuffers;
 		std::vector<RgRenderContext *> m_vRenderContexts;
+		std::unordered_map<std::wstring, std::shared_ptr<RgShader>> m_mShaderCaches;
 
 		RgRenderContext *m_pRenderContext = nullptr;
 

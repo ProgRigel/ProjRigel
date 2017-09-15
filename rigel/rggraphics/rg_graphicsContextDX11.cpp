@@ -296,6 +296,12 @@ namespace rg {
 	}
 	std::shared_ptr<RgShader> RgGraphicsContextDX11::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{
+		auto cached = this->GetCachedShader(filepath);
+		if (cached) {
+			RgLogW() << "use cached shader" << filepath;
+			return std::shared_ptr<RgShader>(cached);
+		}
+
 		const char* entrypoint = options.EntryPoint.c_str();
 		const char* shadertarget = options.ShaderTarget.c_str();
 
@@ -313,6 +319,7 @@ namespace rg {
 			return nullptr;
 		}
 
+		std::shared_ptr<RgShader> ret = nullptr;
 		
 		if (options.ShaderEntry == RG_SHADER_ENTRY::Vertex) {
 			ID3D11VertexShader * shader = nullptr;
@@ -326,7 +333,7 @@ namespace rg {
 			}
 			auto rgshader = std::make_shared<RgShaderDX11>(options, shaderBlob);
 			rgshader->m_pVertexShader = shader;
-			return rgshader;
+			ret = std::dynamic_pointer_cast<RgShader>(rgshader);
 		}
 		else if (options.ShaderEntry == RG_SHADER_ENTRY::Pixel) {
 			ID3D11PixelShader * shader = nullptr;
@@ -340,10 +347,13 @@ namespace rg {
 			}
 			auto rgshader = std::make_shared<RgShaderDX11>(options, shaderBlob);
 			rgshader->m_pPixelShader = shader;
-			return rgshader;
-		}
 
-		return nullptr;
+			ret = std::dynamic_pointer_cast<RgShader>(rgshader);
+		}
+		
+		m_mShaderCaches.insert(std::make_pair(filepath, std::shared_ptr<RgShader>(ret)));
+
+		return ret;
 	}
 	RgBuffer* RgGraphicsContextDX11::CreateBuffer(RgBufferSettings settings)
 	{

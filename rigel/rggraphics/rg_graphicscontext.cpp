@@ -19,6 +19,16 @@ namespace rg {
 	void RgGraphicsContext::prerender()
 	{
 	}
+	std::shared_ptr<RgShader> RgGraphicsContext::GetCachedShader(std::wstring shaderId)
+	{
+		std::unordered_map<std::wstring, std::shared_ptr<RgShader>>::iterator iter;
+		iter = m_mShaderCaches.find(shaderId);
+		if (iter != m_mShaderCaches.end()) {
+			return (*iter).second;
+		}
+
+		return nullptr;
+	}
 	std::shared_ptr<RgShader> RgGraphicsContext::CompileShaderFromFile(std::wstring filepath, RgShaderOptions & options)
 	{
 		return std::make_shared<RgShader>();
