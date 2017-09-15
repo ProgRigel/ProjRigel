@@ -28,11 +28,13 @@ namespace rg {
 
 
 		void ExtendBufferCheck();
+	public:
+		static const unsigned int BUFFER_SIZE_INIT = 1024;
+		static const unsigned int BUFFER_SIZE_SCALE = 4;
+		static const unsigned int BUFFER_SIZE_THRES = 32;
+		static const unsigned int VERTEX_SIZE = sizeof(RgGUIVertex);
+
 	private:
-		const unsigned int BUFFER_SIZE_INIT = 1024;
-		const unsigned int BUFFER_SIZE_SCALE = 4;
-		const unsigned int BUFFER_SIZE_THRES = 32;
-		const unsigned int VERTEX_SIZE = sizeof(RgGUIVertex);
 
 		RgGUIVertex * m_pData = nullptr;
 		RgGUIVertex * m_pPos = nullptr;
