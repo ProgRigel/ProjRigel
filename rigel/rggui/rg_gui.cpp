@@ -16,10 +16,9 @@ namespace rg {
 
 		return true;
 	}
-	void RgGUI::Release()
+	void RgGUI::ReleaseAll()
 	{
-		for each (auto pctx in m_vGuiContexts)
-		{
+		for (auto pctx : m_vGuiContexts) {
 			if (pctx != nullptr) {
 				pctx->Release();
 				delete pctx;
@@ -27,8 +26,20 @@ namespace rg {
 			pctx = nullptr;
 		}
 	}
+	void RgGUI::Release(RgGUIContext ** pguictx)
+	{
+		for (auto iter = m_vGuiContexts.begin(); iter != m_vGuiContexts.end(); iter++) {
+			if ((*iter) == nullptr) continue;
+			if ((*pguictx) == (*iter)) {
+				(*pguictx)->Release();
+				delete (*pguictx);
+				(*iter) = nullptr;
+			}
+		}
+	}
 	RgGUI::~RgGUI()
 	{
+		ReleaseAll();
 	}
 }
 

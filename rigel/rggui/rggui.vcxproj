@@ -33,6 +33,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="rg_gui.cpp" />
+    <ClCompile Include="rg_gui_bind_graphics.cpp" />
     <ClCompile Include="rg_gui_context.cpp" />
     <ClCompile Include="rg_gui_draw_buffer.cpp" />
   </ItemGroup>

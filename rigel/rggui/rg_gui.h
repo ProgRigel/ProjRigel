@@ -9,7 +9,8 @@ namespace rg {
 	{
 	public:
 		static bool CreateRgGUIContext(RgGUIContext** pguictx);
-		static void Release();
+		static void ReleaseAll();
+		static void Release(RgGUIContext ** pguictx);
 	private:
 		static std::vector<RgGUIContext*> m_vGuiContexts;
 

@@ -12,5 +12,6 @@
     <ClCompile Include="rg_gui_context.cpp" />
     <ClCompile Include="rg_gui_draw_buffer.cpp" />
     <ClCompile Include="rggui.cpp" />
+    <ClCompile Include="rg_gui_bind_graphics.cpp" />
   </ItemGroup>
 </Project>
