@@ -34,6 +34,7 @@ namespace rg {
 				win->closeWindow();
 				win->releaseWindow();
 				delete win;
+				win = nullptr;
 			}
 		}
 		std::vector<RgWindow*>().swap(m_vWindows);

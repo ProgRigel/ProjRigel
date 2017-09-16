@@ -30,6 +30,8 @@ namespace rg {
 	private:
 		HINSTANCE m_hInstance;
 		HWND m_hWnd;
+
+		LPCWSTR m_pWinClassName = nullptr;
 	};
 
 }

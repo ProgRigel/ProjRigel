@@ -58,6 +58,8 @@ namespace rg {
 		wndClass.lpszMenuName = nullptr;
 		wndClass.lpszClassName = settings->windowTitle;
 
+		m_pWinClassName = settings->windowTitle;
+
 		if (!RegisterClass(&wndClass)) {
 			RgLogE() << "register windows window error";
 			return;
@@ -72,12 +74,13 @@ namespace rg {
 			UnregisterClass(settings->windowTitle, m_hInstance);
 			return;
 		}
+		
 
 		RgLogD() << "winwindow init";
 	}
 	void RgWindowWindows::releaseWindow()
 	{
-
+		UnregisterClass(m_pWinClassName, m_hInstance);
 	}
 	void RgWindowWindows::showWindow()
 	{
