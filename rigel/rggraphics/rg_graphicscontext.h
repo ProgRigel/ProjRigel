@@ -10,6 +10,7 @@ namespace rg {
 	class RgTexture;
 	class RgRenderContext;
 	class RgInputLayout;
+	class RgRasterizerState;
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{
@@ -39,8 +40,10 @@ namespace rg {
 		virtual RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size,std::shared_ptr<RgShader> vertexShader) = 0;
 
 		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
+		virtual RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
 
 		RgRenderContext* GetRenderContext();
+		virtual const RgViewPort* GetViewPortDefault();
 		virtual RgRenderContext * CreateDeferredContext() = 0;
 		
 	protected:
@@ -55,7 +58,11 @@ namespace rg {
 		RG_GRAPHICS_INIT_SETTINGS m_settings;
 		std::vector<RgBuffer*> m_vBuffers;
 		std::vector<RgRenderContext *> m_vRenderContexts;
+		std::vector<RgRasterizerState*> m_vRasterState;
+
+
 		std::unordered_map<std::wstring, std::shared_ptr<RgShader>> m_mShaderCaches;
+
 
 		RgRenderContext *m_pRenderContext = nullptr;
 

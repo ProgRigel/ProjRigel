@@ -5,6 +5,7 @@
 #include "rg_texture.h"
 #include "rg_buffer.h"
 #include "rg_material.h"
+#include "rg_rasterizer_state.h"
 
 namespace rg {
 	RgGraphicsContext::RgGraphicsContext()
@@ -49,13 +50,28 @@ namespace rg {
 	{
 		return nullptr;
 	}
+	RgRasterizerState * RgGraphicsContext::CreateRasterizerState(const RgRasterizerSettings settings)
+	{
+		return nullptr;
+	}
 	RgRenderContext * RgGraphicsContext::GetRenderContext()
 	{
 		return m_pRenderContext;
 	}
+	const RgViewPort* RgGraphicsContext::GetViewPortDefault()
+	{
+		return nullptr;
+	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
-		//release buffers
+		for (auto rs : m_vRasterState) {
+			if (rs != nullptr) {
+				rs->Release();
+				delete rs;
+				rs = nullptr;
+			}
+		}
+
 		for each (auto buffer in m_vBuffers)
 		{
 			if (buffer) {

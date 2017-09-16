@@ -4,6 +4,7 @@
 #include <rggui\rg_gui_draw_buffer.h>
 #include <rggraphics\rg_inputlayout.h>
 #include <rggraphics\rg_command_list.h>
+#include <rggraphics\rg_rasterizer_state.h>
 #include <memory>
 
 namespace rg {
@@ -41,6 +42,8 @@ namespace rg {
 		RgGUIContext * m_pGUICtx = nullptr;
 		RgGraphicsContext * m_pGraphics = nullptr;
 		RgCommandList * m_pCommandList = nullptr;
+
+		RgRasterizerState * m_pRasterState = nullptr;
 		
 		RgBuffer * m_pBufferVertex = nullptr;
 		RgBuffer * m_pBufferIndices = nullptr;

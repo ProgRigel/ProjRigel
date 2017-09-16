@@ -5,6 +5,8 @@
 #include "rg_render_context_dx11.h"
 #include "rg_inputlayout.h"
 #include "rg_buffer.h"
+#include "rg_rasterizer_state.h"
+#include "rg_rasterizer_state_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -40,6 +42,13 @@ namespace rg {
 			if (inputlayout != nullptr) {
 				inputlayout->Release();
 				inputlayout = nullptr;
+			}
+		}
+
+		for (auto rs : m_vRasterState) {
+			if (rs != nullptr) {
+				rs->Release();
+				rs = nullptr;
 			}
 		}
 
@@ -233,22 +242,21 @@ namespace rg {
 
 		pBackBuffer->Release();
 
-		D3D11_RASTERIZER_DESC rasterDesc;
-		rasterDesc.AntialiasedLineEnable = false;
-		rasterDesc.CullMode = D3D11_CULL_NONE;
-		rasterDesc.DepthBias = 0;
-		rasterDesc.DepthBiasClamp = 0.0f;
-		rasterDesc.DepthClipEnable = true;
-		rasterDesc.FillMode = D3D11_FILL_SOLID;
-		rasterDesc.FrontCounterClockwise = false;
-		rasterDesc.MultisampleEnable = false;
-		rasterDesc.ScissorEnable = false;
-		rasterDesc.SlopeScaledDepthBias = 0.0f;
+		//{
+		//	RgRasterizerSettings rssettings;
 
-		hr = m_pD3D11Device->CreateRasterizerState(&rasterDesc, &m_pRasterizerState);
+		//	rssettings.AntialiasedLine = false;
+		//	rssettings.CullMode = RgRasterizerCullMode::CULL_BACK;
+		//	rssettings.DepthBias = 0;
+		//	rssettings.DepthBiasClamp = 0.0f;
+		//	rssettings.DepthClipEnable = true;
+		//	rssettings.FillMode = RgRasterizerFillMode::FILL_SOLID;
+		//	rssettings.MultisampleEnable = false;
+		//	rssettings.ScissorEnable = false;
+		//	rssettings.SlopeScaledDepthBias = 0.0f;
 
-
-		m_pD3D11DeviceContext->RSSetState(m_pRasterizerState);
+		//	m_pRasterizerState = CreateRasterizerState(rssettings);
+		//}
 
 		//VIEW PORT
 		D3D11_VIEWPORT viewport;
@@ -262,7 +270,6 @@ namespace rg {
 		m_sViewPort = viewport;
 		m_pD3D11DeviceContext->RSSetViewports(1, &viewport);
 
-		RgLogD() << "create render target done!";
 		return S_OK;
 	}
 	HRESULT RgGraphicsContextDX11::clearRenderTarget()
@@ -285,11 +292,7 @@ namespace rg {
 			m_pdepthStencilView->Release();
 			m_pdepthStencilView = nullptr;
 		}
-		if (m_pRasterizerState)
-		{
-			m_pRasterizerState->Release();
-			m_pRasterizerState = nullptr;
-		}
+
 		return S_OK;
 	}
 	void RgGraphicsContextDX11::DrawSetPrimitiveTopology()
@@ -428,6 +431,17 @@ namespace rg {
 		m_vRenderContexts.push_back(ctx);
 		return ctx;
 	}
+	RgRasterizerState * RgGraphicsContextDX11::CreateRasterizerState(const RgRasterizerSettings settings)
+	{
+		auto rs = new RgRasterizerStateDX11(settings);
+		D3D11_RASTERIZER_DESC desc;
+		ConvertRasterizerState(settings, desc);
+		ID3D11RasterizerState * dxrs = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateRasterizerState(&desc, &dxrs);
+		HR_CEHCK(hr);
+		rs->m_ptr = dxrs;
+		return rs;
+	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
 
@@ -436,8 +450,6 @@ namespace rg {
 		EventBeforeResize.emit();
 
 		clearRenderTarget();
-
-		RgLogD() << "resize buffer";
 		HRESULT hr = m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 		HR_CEHCK(hr);
 
@@ -468,17 +480,13 @@ namespace rg {
 	{
 		return m_pdepthStencilView;
 	}
-	ID3D11RasterizerState * RgGraphicsContextDX11::GetRasterizerState()
-	{
-		return m_pRasterizerState;
-	}
 	ID3D11DepthStencilState * RgGraphicsContextDX11::GetDepthStencilState()
 	{
 		return m_pdepthStencilState;
 	}
-	D3D11_VIEWPORT RgGraphicsContextDX11::GetViewPort()
+	const RgViewPort * RgGraphicsContextDX11::GetViewPortDefault()
 	{
-		return m_sViewPort;
+		return (RgViewPort*)&m_sViewPort;
 	}
 }
 

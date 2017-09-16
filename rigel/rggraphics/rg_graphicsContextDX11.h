@@ -1,6 +1,7 @@
 #pragma once
 #include "rggraphics_inc.h"
 #include "rg_graphicscontext.h"
+#include "rg_rasterizer_state.h"
 
 #include <d3d11.h>
 #include <dxgi.h>
@@ -31,6 +32,8 @@ namespace rg {
 
 		RgRenderContext * CreateDeferredContext();
 
+		RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
+
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
 		void prerender();
@@ -38,10 +41,10 @@ namespace rg {
 	public:
 		ID3D11RenderTargetView * GetRenderTargetView();
 		ID3D11DepthStencilView * GetDepthStencilView();
-		ID3D11RasterizerState * GetRasterizerState();
 		ID3D11DepthStencilState * GetDepthStencilState();
 
-		D3D11_VIEWPORT GetViewPort();
+		const RgViewPort* GetViewPortDefault();
+
 
 	private:
 		
@@ -54,7 +57,6 @@ namespace rg {
 		ID3D11DepthStencilState *m_pdepthStencilState = nullptr;
 		ID3D11DepthStencilView *m_pdepthStencilView = nullptr;
 		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
-		ID3D11RasterizerState* m_pRasterizerState = nullptr;
 
 		D3D11_VIEWPORT m_sViewPort;
 
@@ -73,4 +75,23 @@ namespace rg {
 		friend class RgGraphicsAPI;
 
 	};
+
+
+#pragma region Convert
+
+	inline void ConvertRasterizerState(const RgRasterizerSettings& settings, D3D11_RASTERIZER_DESC& desc) {
+		desc.AntialiasedLineEnable = settings.AntialiasedLine;
+		desc.CullMode = (D3D11_CULL_MODE)settings.CullMode;
+		desc.FillMode = (D3D11_FILL_MODE)settings.FillMode;
+		desc.DepthBias = settings.DepthBias;
+		desc.DepthBiasClamp = settings.DepthBiasClamp;
+		desc.DepthClipEnable = settings.DepthClipEnable;
+		desc.MultisampleEnable = settings.MultisampleEnable;
+		desc.ScissorEnable = settings.ScissorEnable;
+		desc.SlopeScaledDepthBias = settings.SlopeScaledDepthBias;
+		desc.FrontCounterClockwise = settings.FrontCounterClockwise;
+	}
+
+#pragma endregion
+
 }

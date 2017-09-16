@@ -16,10 +16,10 @@ namespace rg {
 
 
 		void SetRenderTarget();
-		void SetViewPortDefault();
+		void SetViewPort(const RgViewPort*);
+		void SetRasterizerState(RgRasterizerState*);
 		void SetRenderTargetDefault();
 		void SetDepthStencilStateDefault();
-		void SetRasterizerStateDefault();
 		void ClearRenderTarget(RgVec4 color);
 		void ClearDepthStencil();
 

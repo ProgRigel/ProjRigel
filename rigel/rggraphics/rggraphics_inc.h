@@ -14,10 +14,15 @@ namespace rg {
 	enum class RgGraphicsPipelineStage;
 	enum class RgInputSlotClass;
 
+	enum class RgRasterizerFillMode;
+	enum class RgRasterizerCullMode;
+
 	struct RG_GRAPHICS_INIT_SETTINGS;
 	struct RgBufferSettings;
 	struct RgInputLayoutElement;
 	struct RgShaderOptions;
 	struct RgTextureSettings;
+	struct RgViewPort;
+	struct RgRasterizerSettings;
 }
 

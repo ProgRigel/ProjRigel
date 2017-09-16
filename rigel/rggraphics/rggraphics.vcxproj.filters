@@ -41,6 +41,15 @@
     </ClInclude>
     <ClInclude Include="rggraphics.h" />
     <ClInclude Include="rggraphics_inc.h" />
+    <ClInclude Include="rg_viewport.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_rasterizer_state.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_rasterizer_state_dx11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />
@@ -79,6 +88,12 @@
       <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="rggraphics.cpp" />
+    <ClCompile Include="rg_rasterizer_state.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_rasterizer_state_dx11.cpp">
+      <Filter>dx11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dx11">

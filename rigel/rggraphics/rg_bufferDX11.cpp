@@ -57,8 +57,6 @@ namespace rg {
 			memcpy(dataptr, pdata, size);
 			ctx->m_pDeviceContext->Unmap(m_pbuffer, 0);
 		}
-
-		RgLogD() << "map buffer data succeed";
 	}
 
 	HRESULT RgBufferDX11::Create(ID3D11Device * device)

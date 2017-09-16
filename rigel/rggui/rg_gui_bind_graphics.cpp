@@ -47,8 +47,8 @@ namespace rg {
 		m_pRenderCtx->SetRenderTargetDefault();
 		m_pRenderCtx->SetDepthStencilStateDefault();
 
-		m_pRenderCtx->SetRasterizerStateDefault();
-		m_pRenderCtx->SetViewPortDefault();
+		m_pRenderCtx->SetRasterizerState(m_pRasterState);
+		m_pRenderCtx->SetViewPort(m_pGraphics->GetViewPortDefault());
 
 		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.2f, 0.6f, 1.0f));
 		m_pRenderCtx->ClearDepthStencil();
@@ -75,6 +75,24 @@ namespace rg {
 		////////////// RenderContext
 
 		m_pRenderCtx = m_pGraphics->CreateDeferredContext();
+		
+		//rasterstate
+
+		{
+			RgRasterizerSettings rssetings;
+			rssetings.AntialiasedLine = false;
+			rssetings.CullMode = RgRasterizerCullMode::CULL_BACK;
+			rssetings.FillMode = RgRasterizerFillMode::FILL_SOLID;
+			rssetings.DepthBias = 0;
+			rssetings.DepthBiasClamp = 0;
+			rssetings.DepthClipEnable = true;
+			rssetings.MultisampleEnable = false;
+			rssetings.ScissorEnable = false;
+			rssetings.SlopeScaledDepthBias = 0;
+			m_pRasterState = m_pGraphics->CreateRasterizerState(rssetings);
+
+			RG_ASSERT(m_pRasterState);
+		}
 		
 
 		///////////////////// Buffers
@@ -178,6 +196,11 @@ namespace rg {
 	}
 	void RgGUIBindGraphics::ReleaseGraphicsObj()
 	{
+		if (m_pRasterState != nullptr) {
+			m_pRasterState->Release();
+			m_pRasterState = nullptr;
+		}
+
 		if (m_pShaderPixel != nullptr) {
 			m_pShaderPixel->Release();
 			m_pShaderPixel = nullptr;
@@ -210,6 +233,24 @@ namespace rg {
 			m_pCommandList->Release();
 			delete m_pCommandList;
 			m_pCommandList = nullptr;
+		}
+
+		if (m_pRasterState != nullptr){
+			m_pRasterState->Release();
+
+			RgRasterizerSettings rssetings;
+			rssetings.AntialiasedLine = false;
+			rssetings.CullMode = RgRasterizerCullMode::CULL_BACK;
+			rssetings.FillMode = RgRasterizerFillMode::FILL_SOLID;
+			rssetings.DepthBias = 0;
+			rssetings.DepthBiasClamp = 0;
+			rssetings.DepthClipEnable = true;
+			rssetings.MultisampleEnable = false;
+			rssetings.ScissorEnable = false;
+			rssetings.SlopeScaledDepthBias = 0;
+			m_pRasterState = m_pGraphics->CreateRasterizerState(rssetings);
+
+			RG_ASSERT(m_pRasterState);
 		}
 	}
 	void RgGUIBindGraphics::AfterResize()

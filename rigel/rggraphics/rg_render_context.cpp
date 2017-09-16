@@ -53,11 +53,11 @@ namespace rg {
 	{
 	}
 
-	void RgRenderContext::SetViewPortDefault()
+	void RgRenderContext::SetViewPort(const RgViewPort *)
 	{
 	}
 
-	void RgRenderContext::SetRasterizerStateDefault()
+	void RgRenderContext::SetRasterizerState(RgRasterizerState *)
 	{
 	}
 

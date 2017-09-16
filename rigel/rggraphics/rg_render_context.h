@@ -10,6 +10,7 @@ namespace rg {
 	class RgMaterial;
 	class RgInputLayout;
 	class RgCommandList;
+	class RgRasterizerState;
 
 	class RgRenderContext {
 
@@ -34,8 +35,8 @@ namespace rg {
 		virtual void SetRenderTarget();
 		virtual void SetRenderTargetDefault();
 		virtual void SetDepthStencilStateDefault();
-		virtual void SetViewPortDefault();
-		virtual void SetRasterizerStateDefault();
+		virtual void SetViewPort(const RgViewPort*);
+		virtual void SetRasterizerState(RgRasterizerState*);
 		virtual void ClearRenderTarget(RgVec4 color);
 		virtual void ClearDepthStencil();
 
