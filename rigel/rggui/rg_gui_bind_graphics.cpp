@@ -26,11 +26,54 @@ namespace rg {
 		m_pGUICtx = nullptr;
 		m_pGraphics = nullptr;
 	}
+	void RgGUIBindGraphics::OnRender()
+	{
+		if (m_pCommandList != nullptr) {
+			m_pGraphics->GetRenderContext()->ExecuteCommandList(m_pCommandList, false);
+		}
+	}
+	void RgGUIBindGraphics::ReBuildCommandList()
+	{
+		if (m_pCommandList != nullptr) {
+			m_pCommandList->Release();
+			m_pCommandList = nullptr;
+		}
+
+
+		m_pRenderCtx->SetRenderTargetDefault();
+		m_pRenderCtx->SetDepthStencilStateDefault();
+
+		m_pRenderCtx->SetRasterizerStateDefault();
+		m_pRenderCtx->SetViewPortDefault();
+
+		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.2f, 0.6f, 1.0f));
+		m_pRenderCtx->ClearDepthStencil();
+
+		m_pRenderCtx->InputSetBuffer(m_pBufferVertex);
+		m_pRenderCtx->InputSetBuffer(m_pBufferIndices);
+		m_pRenderCtx->InputSetBuffer(m_pBufferConst, RgGraphicsPipelineStage::Pixel);
+
+		m_pRenderCtx->InputSetInputLayout(m_pInputLayout);
+		m_pRenderCtx->InputSetShader(m_pShaderVertex);
+		m_pRenderCtx->InputSetShader(m_pShaderPixel);
+
+		m_pRenderCtx->InputSetPrimitiveTopology();
+
+		m_pRenderCtx->DrawIndexed(6);
+
+		bool suc = m_pRenderCtx->FinishCommandList(false, &m_pCommandList);
+		if (!suc) {
+			RgLogE() << "create command list error";
+		}
+
+		RgLogW() << "rebuild command list";
+	}
 	void RgGUIBindGraphics::InitGraphicsObj()
 	{
 		////////////// RenderContext
 
 		m_pRenderCtx = m_pGraphics->CreateDeferredContext();
+		
 
 		///////////////////// Buffers
 
@@ -114,6 +157,21 @@ namespace rg {
 			m_pInputLayout = m_pGraphics->CreateInputLayout(layoute, 3, m_pShaderVertex);
 		}
 
+
+		m_pGUICtx->DrawRect(RgVec2(.0f, .0f), RgVec2(.5f, .3f));
+		
+		auto guibuf = m_pGUICtx->GetDrawBuffer();
+		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
+
+		unsigned int datai[6]{ 0,2,1,0,3,2 };
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, sizeof(datai));
+
+		float color[4] = {
+			1.0f,1.0f,0.2f,1.0f
+		};
+		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &color, sizeof(color));
+
+		ReBuildCommandList();
 
 	}
 	void RgGUIBindGraphics::ReleaseGraphicsObj()

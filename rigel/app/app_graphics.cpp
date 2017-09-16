@@ -79,7 +79,7 @@ namespace editor {
 			bufferIndicesDesc.Stride = sizeof(unsigned int);
 			m_pBufferUIindices = m_pRgGraphicsCtx->CreateBuffer(bufferIndicesDesc);
 
-			unsigned int datai[6]{ 0,1,2,0,2,3 };
+			unsigned int datai[6]{ 0,2,1,0,3,2 };
 			m_pBufferUIindices->SetData(m_pRgGraphicsCtx->GetRenderContext(), &datai, sizeof(datai));
 		}
 		//const buffer
@@ -156,11 +156,6 @@ namespace editor {
 
 	void RigelAppGraphics::Render()
 	{
-		m_pRgGraphicsCtx->prerender();
-
-		m_pRgGraphicsCtx->GetRenderContext()->DrawIndexed(6);
-
-		m_pRgGraphicsCtx->render();
 	}
 
 

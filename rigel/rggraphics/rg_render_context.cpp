@@ -41,6 +41,34 @@ namespace rg {
 	{
 	}
 
+	void RgRenderContext::SetRenderTarget()
+	{
+	}
+
+	void RgRenderContext::SetRenderTargetDefault()
+	{
+	}
+
+	void RgRenderContext::SetDepthStencilStateDefault()
+	{
+	}
+
+	void RgRenderContext::SetViewPortDefault()
+	{
+	}
+
+	void RgRenderContext::SetRasterizerStateDefault()
+	{
+	}
+
+	void RgRenderContext::ClearRenderTarget(RgVec4 color)
+	{
+	}
+
+	void RgRenderContext::ClearDepthStencil()
+	{
+	}
+
 	void RgRenderContext::ClearState()
 	{
 	}

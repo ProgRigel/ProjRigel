@@ -127,6 +127,7 @@ namespace rg {
 
 	struct RgVec4 {
 		RgFloat x, y, z, w;
+		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
 	};
 
 

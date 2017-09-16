@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "app.h"
+#include "app_graphics.h"
 #include <rggui\rg_gui_context.h>
+#include <rggraphics\rg_render_context.h>
 #include "editor_gui.h"
 
 namespace editor {
@@ -43,6 +45,7 @@ namespace editor {
 		m_pEditorGUI = new EditorGUI();
 		m_pEditorGUI->BindGraphics(m_pAppGraphics->m_pRgGraphicsCtx);
 
+		m_pWindow->EventOnGUI.connect<EditorGUI, &EditorGUI::OnWindowGUI>(m_pEditorGUI);
 	}
 
 	void RigelApp::Run()
@@ -52,7 +55,17 @@ namespace editor {
 
 	void RigelApp::onRender()
 	{
-		m_pAppGraphics->Render();
+		//m_pAppGraphics->Render();
+
+		auto ctx = m_pAppGraphics->m_pRgGraphicsCtx;
+
+		//ctx->prerender();
+
+		//ctx->GetRenderContext()->DrawIndexed(6);
+		m_pEditorGUI->OnRender();
+
+
+		ctx->render();
 	}
 
 }

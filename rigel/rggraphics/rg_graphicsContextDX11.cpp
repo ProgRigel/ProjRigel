@@ -26,12 +26,15 @@ namespace rg {
 		//set rendercontext
 		auto renderctx = new RgRenderContextDX11(true);
 		renderctx->m_pDeviceContext = m_pD3D11DeviceContext;
+		renderctx->m_pGraphicsCtx = this;
 		m_pRenderContext = renderctx;
 	}
 
 	void RgGraphicsContextDX11::release()
 	{
 		std::cout << "release dx11 api" << std::endl;
+
+		((RgRenderContextDX11*)m_pRenderContext)->m_pGraphicsCtx = nullptr;
 
 		for each(auto inputlayout in m_vInputLayouts) {
 			if (inputlayout != nullptr) {
@@ -236,13 +239,14 @@ namespace rg {
 		rasterDesc.DepthBias = 0;
 		rasterDesc.DepthBiasClamp = 0.0f;
 		rasterDesc.DepthClipEnable = true;
-		rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
+		rasterDesc.FillMode = D3D11_FILL_SOLID;
 		rasterDesc.FrontCounterClockwise = false;
 		rasterDesc.MultisampleEnable = false;
 		rasterDesc.ScissorEnable = false;
 		rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 		hr = m_pD3D11Device->CreateRasterizerState(&rasterDesc, &m_pRasterizerState);
+
 
 		m_pD3D11DeviceContext->RSSetState(m_pRasterizerState);
 
@@ -255,6 +259,7 @@ namespace rg {
 		viewport.MinDepth = 0.0f;
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
+		m_sViewPort = viewport;
 		m_pD3D11DeviceContext->RSSetViewports(1, &viewport);
 
 		RgLogD() << "create render target done!";
@@ -419,11 +424,14 @@ namespace rg {
 		}
 		RgRenderContextDX11 * ctx = new RgRenderContextDX11(false);
 		ctx->m_pDeviceContext = devicectx;
+		ctx->m_pGraphicsCtx = this;
 		m_vRenderContexts.push_back(ctx);
 		return ctx;
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
+		RgLogW() << "resize buffer";
+		return;
 
 		if (m_pD3D11Device == nullptr) return;
 
@@ -449,6 +457,26 @@ namespace rg {
 	{
 		m_pD3D11DeviceContext->ClearRenderTargetView(m_pRenderTargetView, color);
 		m_pD3D11DeviceContext->ClearDepthStencilView(m_pdepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	}
+	ID3D11RenderTargetView * RgGraphicsContextDX11::GetRenderTargetView()
+	{
+		return m_pRenderTargetView;
+	}
+	ID3D11DepthStencilView * RgGraphicsContextDX11::GetDepthStencilView()
+	{
+		return m_pdepthStencilView;
+	}
+	ID3D11RasterizerState * RgGraphicsContextDX11::GetRasterizerState()
+	{
+		return m_pRasterizerState;
+	}
+	ID3D11DepthStencilState * RgGraphicsContextDX11::GetDepthStencilState()
+	{
+		return m_pdepthStencilState;
+	}
+	D3D11_VIEWPORT RgGraphicsContextDX11::GetViewPort()
+	{
+		return m_sViewPort;
 	}
 }
 

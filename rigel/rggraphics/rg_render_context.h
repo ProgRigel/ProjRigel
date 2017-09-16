@@ -31,6 +31,14 @@ namespace rg {
 		virtual void DrawIndexed(unsigned int size);
 		virtual void Draw();
 
+		virtual void SetRenderTarget();
+		virtual void SetRenderTargetDefault();
+		virtual void SetDepthStencilStateDefault();
+		virtual void SetViewPortDefault();
+		virtual void SetRasterizerStateDefault();
+		virtual void ClearRenderTarget(RgVec4 color);
+		virtual void ClearDepthStencil();
+
 
 		virtual void ClearState();
 		virtual bool FinishCommandList(bool restorectx, RgCommandList ** pcommandlist);

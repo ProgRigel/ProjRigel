@@ -2,6 +2,7 @@
 #include <rggraphics\rg_graphicscontext.h>
 #include <rggui\rg_gui_bind_graphics.h>
 #include <rggui\rg_gui_context.h>
+#include <rgcore\rg_window.h>
 
 namespace editor {
 
@@ -14,6 +15,9 @@ namespace editor {
 		void Release();
 
 		void BindGraphics(rg::RgGraphicsContext * graphicsCtx);
+
+		void OnWindowGUI(const rg::RgWindowEvent e);
+		void OnRender();
 
 	private:
 		EditorGUI(const EditorGUI&) = delete;

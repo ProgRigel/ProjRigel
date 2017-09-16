@@ -9,5 +9,8 @@ namespace rg {
 	RgCommandList::~RgCommandList()
 	{
 	}
+	void RgCommandList::Release()
+	{
+	}
 }
 

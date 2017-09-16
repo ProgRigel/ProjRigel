@@ -7,7 +7,7 @@
 #include "rg_command_list.h"
 #include "rg_buffer.h"
 #include "rg_shader.h"
-
+#include "rg_graphicsContextDX11.h"
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -64,6 +64,42 @@ namespace rg {
 		ID3D11InputLayout * dx11layout = (ID3D11InputLayout*)layout->pLayout;
 		m_pDeviceContext->IASetInputLayout(dx11layout);
 	}
+	void RgRenderContextDX11::SetRenderTarget()
+	{
+		
+	}
+	void RgRenderContextDX11::SetViewPortDefault()
+	{
+		auto viewport = m_pGraphicsCtx->GetViewPort();
+		m_pDeviceContext->RSSetViewports(1, &viewport);
+	}
+	void RgRenderContextDX11::SetRenderTargetDefault()
+	{
+		auto rtv = m_pGraphicsCtx->GetRenderTargetView();
+		auto dsv = m_pGraphicsCtx->GetDepthStencilView();
+		m_pDeviceContext->OMSetRenderTargets(1, &rtv, dsv);
+	}
+	void RgRenderContextDX11::SetDepthStencilStateDefault()
+	{
+		auto dss = m_pGraphicsCtx->GetDepthStencilState();
+		m_pDeviceContext->OMSetDepthStencilState(dss, 1);
+	}
+	void RgRenderContextDX11::SetRasterizerStateDefault()
+	{
+		auto rs = m_pGraphicsCtx->GetRasterizerState();
+		m_pDeviceContext->RSSetState(rs);
+	}
+	void RgRenderContextDX11::ClearRenderTarget(RgVec4 color)
+	{
+		auto rtv = m_pGraphicsCtx->GetRenderTargetView();
+		const float c[4]{color.x,color.y,color.z,color.w};
+		m_pDeviceContext->ClearRenderTargetView(rtv, c);
+	}
+	void RgRenderContextDX11::ClearDepthStencil()
+	{
+		auto dsv = m_pGraphicsCtx->GetDepthStencilView();
+		m_pDeviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	}
 	void RgRenderContextDX11::DrawIndexed(unsigned int size)
 	{
 		m_pDeviceContext->DrawIndexed(size, 0, 0);
@@ -112,6 +148,7 @@ namespace rg {
 			m_pDeviceContext->Release();
 			RgLogD() << "release deferred context";
 		}
+		m_pGraphicsCtx = nullptr;
 		m_pDeviceContext = nullptr;
 	}
 

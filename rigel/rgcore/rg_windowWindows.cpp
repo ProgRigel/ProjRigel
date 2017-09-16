@@ -132,15 +132,19 @@ namespace rg {
 			m_height = (UINT)HIWORD(lParam);
 			m_resized = true;
 			EventOnResize.emit(m_width, m_height);
+			EventOnGUI.emit(RgWindowEvent{RgWindowEventType::Resize,&m_windowInput });
 			break;
 		case WM_ENTERSIZEMOVE:
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::ResizeEnter,&m_windowInput });
 			EventOnEnterSizeMove.emit();
 			break;
 		case WM_EXITSIZEMOVE:
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::ResizeExit,&m_windowInput });
 			EventOnExitSizeMove.emit();
 			m_resized = false;
 			break;
 		case WM_CLOSE:
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::Close,&m_windowInput });
 			EventOnClose.emit();
 			break;
 		case WM_DESTROY:

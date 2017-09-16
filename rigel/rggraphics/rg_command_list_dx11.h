@@ -9,6 +9,9 @@ namespace rg {
 
 	class RgCommandListDX11 : public RgCommandList {
 
+	public:
+		void Release();
+
 	protected:
 		RgCommandListDX11();
 		~RgCommandListDX11();

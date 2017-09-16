@@ -3,6 +3,7 @@
 #include <rggraphics\rg_graphicscontext.h>
 #include <rggui\rg_gui_draw_buffer.h>
 #include <rggraphics\rg_inputlayout.h>
+#include <rggraphics\rg_command_list.h>
 #include <memory>
 
 namespace rg {
@@ -16,11 +17,15 @@ namespace rg {
 		~RgGUIBindGraphics();
 
 		void Release();
+		void OnRender();
+
+		void ReBuildCommandList();
 
 
 	private:
 		void InitGraphicsObj();
 		void ReleaseGraphicsObj();
+
 
 
 	protected:
@@ -32,6 +37,7 @@ namespace rg {
 
 		RgGUIContext * m_pGUICtx = nullptr;
 		RgGraphicsContext * m_pGraphics = nullptr;
+		RgCommandList * m_pCommandList = nullptr;
 		
 		RgBuffer * m_pBufferVertex = nullptr;
 		RgBuffer * m_pBufferIndices = nullptr;

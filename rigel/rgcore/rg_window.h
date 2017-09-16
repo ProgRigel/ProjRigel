@@ -8,6 +8,40 @@ namespace rg {
 	typedef HRESULT(*RGWINDOW_CALLBACK_MSGPROC)(HWND hwnd, UINT uMsg, WPARAM wparam, LPARAM lparam);
 	typedef void(*RGWINDOW_CALLBACK_FRAME)(double fTime, float fElapsedTime);
 
+	enum class RgWindowEventType {
+		None,
+		Close,
+		Focus,
+		LostFocus,
+		MouseDown,
+		MouseUp,
+		KeyDown,
+		KeyUp,
+		BeginDrag,
+		EndDrag,
+		ResizeEnter,
+		ResizeExit,
+		Resize,
+	};
+
+	struct RgWindowInput {
+		bool LButton = false;
+		bool RButton = false;
+		bool MButton = false;
+		bool KeyCode[256];
+	};
+
+	class RgWindowEvent{
+
+	public:
+		RgWindowEventType Type = RgWindowEventType::None;
+		const RgWindowInput * Input = nullptr;
+	public:
+		RgWindowEvent(RgWindowEventType type, const RgWindowInput * input):Type(type),Input(input){}
+
+		RgWindowEvent& operator=(const RgWindowEvent&) = delete;
+	};
+
 	struct RgWindowSettings
 	{
 		const WCHAR* windowTitle = L"RgWindow";
@@ -17,6 +51,7 @@ namespace rg {
 		int y = CW_USEDEFAULT;
 	};
 
+
 	class RgWindow
 	{
 	protected:
@@ -24,11 +59,7 @@ namespace rg {
 		RgWindow(const RgWindow&) = delete;
 		RgWindow& operator=(const RgWindow&) = delete;
 
-		struct RgWindowInput {
-			bool LButton = false;
-			bool RButton = false;
-			bool MButton = false;
-		} m_windowInput;
+		RgWindowInput m_windowInput;
 
 	protected:
 		RgWindow();
@@ -44,6 +75,7 @@ namespace rg {
 		Signal<void()> EventOnDestroy;
 		Signal<void()> EventOnEnterSizeMove;
 		Signal<void()> EventOnExitSizeMove;
+		Signal<void(const RgWindowEvent)> EventOnGUI;
 		//width height
 		Signal<void(unsigned int,unsigned int)> EventOnResize;
 		//mousex mousey

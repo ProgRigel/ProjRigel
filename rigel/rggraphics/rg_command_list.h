@@ -6,5 +6,8 @@ namespace rg {
 	protected:
 		RgCommandList();
 		virtual ~RgCommandList();
+
+	public:
+		virtual void Release();
 	};
 }

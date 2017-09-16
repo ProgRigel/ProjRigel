@@ -35,7 +35,13 @@ namespace rg {
 		void render();
 		void prerender();
 
+	public:
+		ID3D11RenderTargetView * GetRenderTargetView();
+		ID3D11DepthStencilView * GetDepthStencilView();
+		ID3D11RasterizerState * GetRasterizerState();
+		ID3D11DepthStencilState * GetDepthStencilState();
 
+		D3D11_VIEWPORT GetViewPort();
 
 	private:
 		
@@ -49,6 +55,8 @@ namespace rg {
 		ID3D11DepthStencilView *m_pdepthStencilView = nullptr;
 		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
 		ID3D11RasterizerState* m_pRasterizerState = nullptr;
+
+		D3D11_VIEWPORT m_sViewPort;
 
 		HRESULT createDeviceAndContext();
 		void releaseDeviceAndContext();

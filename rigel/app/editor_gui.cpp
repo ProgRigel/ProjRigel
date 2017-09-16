@@ -29,6 +29,17 @@ namespace editor {
 		}
 		m_pBindGraphics = new RgGUIBindGraphics(m_pGUIContext, graphicsCtx);
 	}
+	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
+	{
+		if (e.Type == RgWindowEventType::Resize) {
+			RgLogW() << "resize";
+			m_pBindGraphics->ReBuildCommandList();
+		}
+	}
+	void EditorGUI::OnRender()
+	{
+		m_pBindGraphics->OnRender();
+	}
 }
 
 
