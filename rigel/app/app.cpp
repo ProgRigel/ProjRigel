@@ -55,13 +55,8 @@ namespace editor {
 
 	void RigelApp::onRender()
 	{
-		//m_pAppGraphics->Render();
 
 		auto ctx = m_pAppGraphics->m_pRgGraphicsCtx;
-
-		//ctx->prerender();
-
-		//ctx->GetRenderContext()->DrawIndexed(6);
 		m_pEditorGUI->OnRender();
 
 

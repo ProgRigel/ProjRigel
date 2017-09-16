@@ -21,6 +21,8 @@ namespace editor {
 		void Render();
 
 	private:
+		void OnEventResize(unsigned int width, unsigned int height);
+		void onEventExitResize();
 
 	public:
 		rg::RgGraphicsContext * m_pRgGraphicsCtx = nullptr;
@@ -34,9 +36,10 @@ namespace editor {
 		RgBuffer* m_pBufferUIconst = nullptr;
 
 		RgInputLayout * m_pInputlayout = nullptr;
-
-
 		RgCommandList * m_pCommandList = nullptr;
+
+		bool m_bNeedResize = false;
+		unsigned int m_uResizeWidth, m_uResizeHeight;
 	};
 
 }

@@ -31,10 +31,30 @@ namespace editor {
 	}
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
-		if (e.Type == RgWindowEventType::Resize) {
-			RgLogW() << "resize";
-			m_pBindGraphics->ReBuildCommandList();
+		static bool needResize = false;
+
+		switch (e.Type)
+		{
+		case RgWindowEventType::Resize:
+		{
+			needResize = true;
+
+			break;
 		}
+			
+		case RgWindowEventType::ResizeExit:
+		{
+			if (needResize) {
+				m_pBindGraphics->ReBuildCommandList();
+				needResize = false;
+			}
+			break;
+		}
+		default:
+			break;
+		}
+
+
 	}
 	void EditorGUI::OnRender()
 	{

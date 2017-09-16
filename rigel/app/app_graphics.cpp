@@ -39,7 +39,8 @@ namespace editor {
 		m_pRgGraphicsCtx = RgGraphicsAPI::InitAPI(RG_GRAPHICS_API::RG_GRAPHICS_APY_DX11, &settings);
 
 		//register callback
-		window->EventOnResize.connect<RgGraphicsContext, &RgGraphicsContext::resizeBuffer>(m_pRgGraphicsCtx);
+		window->EventOnResize.connect<RigelAppGraphics, &RigelAppGraphics::OnEventResize>(this);
+		window->EventOnExitSizeMove.connect<RigelAppGraphics, &RigelAppGraphics::onEventExitResize>(this);
 
 		RgGUIContext * guictx = nullptr;
 		RgGUI::CreateRgGUIContext(&guictx);
@@ -156,6 +157,21 @@ namespace editor {
 
 	void RigelAppGraphics::Render()
 	{
+	}
+
+	void RigelAppGraphics::OnEventResize(unsigned int width, unsigned int height)
+	{
+		m_bNeedResize = true;
+		m_uResizeWidth = width;
+		m_uResizeHeight = height;
+	}
+
+	void RigelAppGraphics::onEventExitResize()
+	{
+		if (m_bNeedResize) {
+			m_bNeedResize = false;
+			m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
+		}
 	}
 
 
