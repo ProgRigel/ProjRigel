@@ -430,10 +430,10 @@ namespace rg {
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
-		RgLogW() << "resize buffer";
-		return;
 
 		if (m_pD3D11Device == nullptr) return;
+
+		EventBeforeResize.emit();
 
 		clearRenderTarget();
 
@@ -445,6 +445,8 @@ namespace rg {
 		m_settings.BufferHeight = height;
 
 		createRenderTarget();
+
+		EventAfterResize.emit();
 	}
 
 	float color[4] = { 0.1f,0.4f,0.3f,1.0f };

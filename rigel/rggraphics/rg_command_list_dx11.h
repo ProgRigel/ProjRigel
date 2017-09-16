@@ -11,10 +11,10 @@ namespace rg {
 
 	public:
 		void Release();
-
+		~RgCommandListDX11();
 	protected:
 		RgCommandListDX11();
-		~RgCommandListDX11();
+		
 
 		RgCommandListDX11(const RgCommandListDX11&) = delete;
 		RgCommandListDX11& operator=(const RgCommandListDX11&) = delete;

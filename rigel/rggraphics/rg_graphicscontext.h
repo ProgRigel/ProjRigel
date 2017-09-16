@@ -1,6 +1,7 @@
 #pragma once
 #include "rggraphics_inc.h"
 #include <rggraphics\rggraphics.h>
+#include <rgcore\rg_signal.hpp>
 namespace rg {
 
 	class RgBuffer;
@@ -59,6 +60,10 @@ namespace rg {
 		RgRenderContext *m_pRenderContext = nullptr;
 
 	public:
+
+		Signal<void()> EventBeforeResize;
+		Signal<void()> EventAfterResize;
+
 		friend class RgGraphicsAPI;
 	};
 }

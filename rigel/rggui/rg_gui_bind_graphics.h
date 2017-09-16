@@ -26,6 +26,9 @@ namespace rg {
 		void InitGraphicsObj();
 		void ReleaseGraphicsObj();
 
+		void BeforeResize();
+		void AfterResize();
+
 
 
 	protected:

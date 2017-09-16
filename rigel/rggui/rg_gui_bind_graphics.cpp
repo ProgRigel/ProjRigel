@@ -13,6 +13,9 @@ namespace rg {
 		m_pGUICtx = gui;
 		m_pGraphics = graphics;
 
+		m_pGraphics->EventBeforeResize.connect<RgGUIBindGraphics, &RgGUIBindGraphics::BeforeResize>(this);
+		m_pGraphics->EventAfterResize.connect<RgGUIBindGraphics, &RgGUIBindGraphics::AfterResize>(this);
+
 		InitGraphicsObj();
 	}
 	RgGUIBindGraphics::~RgGUIBindGraphics()
@@ -36,6 +39,7 @@ namespace rg {
 	{
 		if (m_pCommandList != nullptr) {
 			m_pCommandList->Release();
+			delete m_pCommandList;
 			m_pCommandList = nullptr;
 		}
 
@@ -65,8 +69,6 @@ namespace rg {
 		if (!suc) {
 			RgLogE() << "create command list error";
 		}
-
-		RgLogW() << "rebuild command list";
 	}
 	void RgGUIBindGraphics::InitGraphicsObj()
 	{
@@ -201,6 +203,18 @@ namespace rg {
 			delete m_pInputLayout;
 			m_pBufferConst = nullptr;
 		}
+	}
+	void RgGUIBindGraphics::BeforeResize()
+	{
+		if (m_pCommandList != nullptr) {
+			m_pCommandList->Release();
+			delete m_pCommandList;
+			m_pCommandList = nullptr;
+		}
+	}
+	void RgGUIBindGraphics::AfterResize()
+	{
+		ReBuildCommandList();
 	}
 }
 

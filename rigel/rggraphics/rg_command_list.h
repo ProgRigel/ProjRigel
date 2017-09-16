@@ -5,6 +5,7 @@ namespace rg {
 	class RgCommandList {
 	protected:
 		RgCommandList();
+	public:
 		virtual ~RgCommandList();
 
 	public:

@@ -20,12 +20,9 @@ namespace rg {
 		{
 		case rg::RgBufferBind::IndexBuffer:
 			m_pDeviceContext->IASetIndexBuffer(bufferdx11->m_pbuffer, DXGI_FORMAT_R32_UINT, 0);
-
-			RgLogW() << "set index buffer";
 			break;
 		case rg::RgBufferBind::VertexBuffer:
 			m_pDeviceContext->IASetVertexBuffers(0, 1, &bufferdx11->m_pbuffer,&stride,&offset);
-			RgLogW() << "set vertex buffer";
 			break;
 		case rg::RgBufferBind::ConstBuffer:
 			if (((unsigned int)tarstage & (unsigned int)RgGraphicsPipelineStage::Vertex) != 0)m_pDeviceContext->VSSetConstantBuffers(0, 1, &bufferdx11->m_pbuffer);
@@ -33,8 +30,6 @@ namespace rg {
 		default:
 			break;
 		}
-
-		RgLogD() << "set buffer done!";
 	}
 	void RgRenderContextDX11::InputSetShader(std::shared_ptr<RgShader> shader)
 	{
@@ -45,11 +40,9 @@ namespace rg {
 		{
 		case RG_SHADER_ENTRY::Vertex:
 			m_pDeviceContext->VSSetShader(rgshaderdx11->m_pVertexShader, nullptr, 0);
-			RgLogW() << "set vertex shader";
 			break;
 		case RG_SHADER_ENTRY::Pixel:
 			m_pDeviceContext->PSSetShader(rgshaderdx11->m_pPixelShader, nullptr, 0);
-			RgLogW() << "set pixel shader";
 		default:
 			break;
 		}
@@ -124,7 +117,6 @@ namespace rg {
 		RgCommandListDX11 * rgcmdlist = new RgCommandListDX11();
 		rgcmdlist->m_pCommandList = pcmdlist;
 		(*pcommandlist) = rgcmdlist;
-		RgLogD() << "finish commandlist done!";
 		return true;
 	}
 	void RgRenderContextDX11::ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx)
