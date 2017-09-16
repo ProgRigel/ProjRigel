@@ -130,9 +130,6 @@ namespace rg {
 			RgLogE() << GetLastError();
 		}
 
-
-		RgLogD() << m_settings.BufferWidth << m_settings.BufferHeight;
-
 		DXGI_SWAP_CHAIN_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
 		desc.BufferCount = 2;
@@ -281,14 +278,11 @@ namespace rg {
 	{
 		auto cached = this->GetCachedShader(filepath);
 		if (cached) {
-			RgLogW() << "use cached shader" << filepath;
 			return std::shared_ptr<RgShader>(cached);
 		}
 
 		const char* entrypoint = options.EntryPoint.c_str();
 		const char* shadertarget = options.ShaderTarget.c_str();
-
-		RgLogD() << shadertarget;
 
 		ID3DBlob * shaderBlob = nullptr;
 		HRESULT result = D3DCompileFromFile(filepath.c_str(), nullptr, nullptr, entrypoint, shadertarget, D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &shaderBlob, nullptr);

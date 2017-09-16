@@ -37,10 +37,11 @@ namespace rg {
 		unsigned int m_uintVertexBufferSize = RgGUIDrawBuffer::BUFFER_SIZE_INIT;
 		unsigned int m_uintIndicesBufferSize = RgGUIDrawBuffer::BUFFER_SIZE_INIT * 2;
 
-		RgRenderContext * m_pRenderCtx = nullptr;
-
+		
 		RgGUIContext * m_pGUICtx = nullptr;
 		RgGraphicsContext * m_pGraphics = nullptr;
+
+		RgRenderContext * m_pRenderCtx = nullptr;
 		RgCommandList * m_pCommandList = nullptr;
 
 		RgRasterizerState * m_pRasterState = nullptr;

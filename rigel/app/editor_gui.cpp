@@ -16,11 +16,13 @@ namespace editor {
 	}
 	void EditorGUI::Release()
 	{
-		if(m_pBindGraphics != nullptr)
+		if (m_pBindGraphics != nullptr) {
 			m_pBindGraphics->Release();
+		}
 		m_pBindGraphics = nullptr;
 
 		RgGUI::Release(&m_pGUIContext);
+		m_pGUIContext = nullptr;
 	}
 	void EditorGUI::BindGraphics(rg::RgGraphicsContext * graphicsCtx)
 	{

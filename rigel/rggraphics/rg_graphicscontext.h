@@ -53,7 +53,7 @@ namespace rg {
 	protected:
 		virtual ~RgGraphicsContext();
 		virtual void init(RG_GRAPHICS_INIT_SETTINGS * settings) = 0;
-		virtual void release() = 0;
+		virtual void release();
 
 		RgGraphicsContext(const RgGraphicsContext&) = delete;
 		const RgGraphicsContext& operator=(const RgGraphicsContext&) = delete;
@@ -76,6 +76,7 @@ namespace rg {
 
 		Signal<void()> EventBeforeResize;
 		Signal<void()> EventAfterResize;
+		Signal<void()> EventRelease;
 
 		friend class RgGraphicsAPI;
 	};

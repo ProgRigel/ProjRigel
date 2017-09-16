@@ -36,7 +36,6 @@ namespace editor {
 	}
 
 
-
 	void RigelApp::onRegisterWindow()
 	{
 		m_pAppGraphics = new RigelAppGraphics();
@@ -58,7 +57,6 @@ namespace editor {
 
 		auto ctx = m_pAppGraphics->m_pRgGraphicsCtx;
 		m_pEditorGUI->OnRender();
-
 
 		ctx->render();
 	}

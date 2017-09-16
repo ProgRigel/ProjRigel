@@ -10,6 +10,9 @@ namespace rg {
 	class RgRenderContextDX11 : public RgRenderContext {
 
 	public:
+		~RgRenderContextDX11();
+		void Release();
+	public:
 		void InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage = (RgGraphicsPipelineStage)0);
 		void InputSetShader(std::shared_ptr<RgShader> shader);
 		void InputSetPrimitiveTopology();
@@ -35,7 +38,6 @@ namespace rg {
 
 	protected:
 		RgRenderContextDX11(bool immedctx);
-		~RgRenderContextDX11();
 
 		bool m_bIsImmediateContext = true;
 		ID3D11DeviceContext *m_pDeviceContext = nullptr;

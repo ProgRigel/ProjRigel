@@ -16,9 +16,12 @@ namespace rg {
 
 	class RgRenderContext {
 
+	public:
+		virtual ~RgRenderContext();
+		virtual void Release();
 	protected:
 		RgRenderContext();
-		virtual ~RgRenderContext();
+		
 
 		RgRenderContext(const RgRenderContext&) = delete;
 		RgRenderContext& operator=(const RgRenderContext&) = delete;

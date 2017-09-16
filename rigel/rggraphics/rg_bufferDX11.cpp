@@ -36,7 +36,6 @@ namespace rg {
 		if (m_pbuffer != nullptr) {
 			m_pbuffer->Release();
 			m_pbuffer = nullptr;
-			RgLogW() << "release buffer";
 		}
 		
 	}

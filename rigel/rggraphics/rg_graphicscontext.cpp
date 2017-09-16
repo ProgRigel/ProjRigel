@@ -72,6 +72,10 @@ namespace rg {
 	}
 	RgGraphicsContext::~RgGraphicsContext()
 	{
+		release();
+	}
+	void RgGraphicsContext::release()
+	{
 		for (auto rs : m_vRasterState) {
 			if (rs != nullptr) {
 				rs->Release();
@@ -90,12 +94,14 @@ namespace rg {
 
 		for each (auto ctx in m_vRenderContexts)
 		{
+			ctx->Release();
 			delete ctx;
 			ctx = nullptr;
 		}
 		std::vector<RgRenderContext*>().swap(m_vRenderContexts);
 
 		if (m_pRenderContext != nullptr) {
+			m_pRenderContext->Release();
 			delete m_pRenderContext;
 			m_pRenderContext = nullptr;
 		}

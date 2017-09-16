@@ -196,8 +196,19 @@ namespace rg {
 	}
 	void RgGUIBindGraphics::ReleaseGraphicsObj()
 	{
+		if (m_pRenderCtx != nullptr) {
+			m_pRenderCtx->Release();
+			m_pRenderCtx = nullptr;
+		}
+		if (m_pCommandList != nullptr) {
+			m_pCommandList->Release();
+			delete m_pCommandList;
+			m_pCommandList = nullptr;
+		}
+
 		if (m_pRasterState != nullptr) {
 			m_pRasterState->Release();
+			delete m_pRasterState;
 			m_pRasterState = nullptr;
 		}
 

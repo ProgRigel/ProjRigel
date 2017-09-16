@@ -155,11 +155,18 @@ namespace rg {
 
 	RgRenderContextDX11::~RgRenderContextDX11()
 	{
-		if (m_bIsImmediateContext == false) {
-			m_pDeviceContext->Release();
-			RgLogD() << "release deferred context";
+		Release();
+	}
+
+	void RgRenderContextDX11::Release()
+	{
+		if (m_pDeviceContext != nullptr) {
+			if (m_bIsImmediateContext == false) {
+				m_pDeviceContext->Release();
+			}
+			m_pDeviceContext = nullptr;
+			
 		}
-		m_pDeviceContext = nullptr;
 	}
 
 }

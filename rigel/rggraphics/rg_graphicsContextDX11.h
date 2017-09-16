@@ -46,10 +46,7 @@ namespace rg {
 
 		const RgViewPort* GetViewPortDefault();
 
-
 	private:
-		
-
 		ID3D11Device *m_pD3D11Device = nullptr;
 		ID3D11DeviceContext *m_pD3D11DeviceContext = nullptr;
 		IDXGISwapChain * m_pSwapChain = nullptr;

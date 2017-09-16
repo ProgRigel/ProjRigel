@@ -10,6 +10,11 @@ namespace rg {
 
 	RgRenderContext::~RgRenderContext()
 	{
+		Release();
+	}
+
+	void RgRenderContext::Release()
+	{
 	}
 
 

@@ -11,7 +11,7 @@ namespace rg {
 			WCHAR buf[512];
 			GetCurrentDirectory(512, buf);
 			workpath = std::wstring(buf);
-			std::wcout << "[workpath]" << workpath << std::endl;
+			//std::wcout << "[workpath]" << workpath << std::endl;
 			pathgot = true;
 		}
 
