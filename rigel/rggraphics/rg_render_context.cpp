@@ -41,13 +41,6 @@ namespace rg {
 	{
 	}
 
-	void RgRenderContext::SetRenderTarget()
-	{
-	}
-
-	void RgRenderContext::SetRenderTargetDefault()
-	{
-	}
 
 	void RgRenderContext::SetViewPort(const RgViewPort *)
 	{
@@ -58,14 +51,6 @@ namespace rg {
 	}
 
 	void RgRenderContext::SetDepthStencilState(RgDepthStencilState *)
-	{
-	}
-
-	void RgRenderContext::ClearRenderTarget(RgVec4 color)
-	{
-	}
-
-	void RgRenderContext::ClearDepthStencil()
 	{
 	}
 

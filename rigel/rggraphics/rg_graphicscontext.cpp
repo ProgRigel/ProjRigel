@@ -58,6 +58,10 @@ namespace rg {
 	{
 		return nullptr;
 	}
+	RgRenderTarget * RgGraphicsContext::GetRenderTarget()
+	{
+		return m_pRenderTarget;
+	}
 	RgRenderContext * RgGraphicsContext::GetRenderContext()
 	{
 		return m_pRenderContext;

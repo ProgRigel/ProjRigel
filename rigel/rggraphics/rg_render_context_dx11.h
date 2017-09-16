@@ -5,6 +5,7 @@
 namespace rg {
 	class RgGraphicsContextDX11;
 	class RgCommandList;
+	class RgRenderTarget;
 
 	class RgRenderContextDX11 : public RgRenderContext {
 
@@ -15,15 +16,15 @@ namespace rg {
 		void InputSetInputLayout(RgInputLayout * layout);
 
 
-		void SetRenderTarget();
+		void SetRenderTarget(RgRenderTarget * rtarget);
+		void ClearRenderTarget(RgVec4 color,RgRenderTarget * rtarget);
+		void ClearDepthStencil(RgRenderTarget * rtarget);
+
 		void SetViewPort(const RgViewPort*);
 
 		void SetRasterizerState(RgRasterizerState*);
 		void SetDepthStencilState(RgDepthStencilState *);
-
-		void SetRenderTargetDefault();
-		void ClearRenderTarget(RgVec4 color);
-		void ClearDepthStencil();
+		
 
 		void DrawIndexed(unsigned int size);
 		void Draw();
@@ -38,7 +39,6 @@ namespace rg {
 
 		bool m_bIsImmediateContext = true;
 		ID3D11DeviceContext *m_pDeviceContext = nullptr;
-		RgGraphicsContextDX11 *m_pGraphicsCtx = nullptr;
 	public:
 		friend class RgGraphicsContextDX11;
 		friend class RgBufferDX11;

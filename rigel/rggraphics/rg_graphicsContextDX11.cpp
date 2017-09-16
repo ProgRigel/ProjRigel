@@ -8,6 +8,7 @@
 #include "rg_rasterizer_state.h"
 #include "rg_rasterizer_state_dx11.h"
 #include "rg_depthstencil_state_dx11.h"
+#include "rg_render_target.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -29,15 +30,12 @@ namespace rg {
 		//set rendercontext
 		auto renderctx = new RgRenderContextDX11(true);
 		renderctx->m_pDeviceContext = m_pD3D11DeviceContext;
-		renderctx->m_pGraphicsCtx = this;
 		m_pRenderContext = renderctx;
 	}
 
 	void RgGraphicsContextDX11::release()
 	{
 		std::cout << "release dx11 api" << std::endl;
-
-		((RgRenderContextDX11*)m_pRenderContext)->m_pGraphicsCtx = nullptr;
 
 		for each(auto inputlayout in m_vInputLayouts) {
 			if (inputlayout != nullptr) {
@@ -193,6 +191,7 @@ namespace rg {
 		depthBufferDesc.CPUAccessFlags = 0;
 		depthBufferDesc.MiscFlags = 0;
 
+
 		hr = m_pD3D11Device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 		HR_CEHCK(hr);
 
@@ -204,6 +203,7 @@ namespace rg {
 		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		depthStencilViewDesc.Texture2D.MipSlice = 0;
 
+		ID3D11DepthStencilView *m_pdepthStencilView;
 		hr = m_pD3D11Device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_pdepthStencilView);
 		HR_CEHCK(hr);
 
@@ -218,12 +218,17 @@ namespace rg {
 		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 
 		hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+		ID3D11RenderTargetView *m_pRenderTargetView;
 		hr = m_pD3D11Device->CreateRenderTargetView(pBackBuffer, &rtvDesc, &m_pRenderTargetView);
 		HR_CEHCK(hr);
 
 		m_pD3D11DeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pdepthStencilView);
 
 		pBackBuffer->Release();
+
+		m_pRenderTarget = new RgRenderTarget();
+		m_pRenderTarget->SetColorBufferPtr(m_pRenderTargetView);
+		m_pRenderTarget->SetDepthBufferPtr(m_pdepthStencilView);
 
 
 		//VIEW PORT
@@ -242,19 +247,25 @@ namespace rg {
 	}
 	HRESULT RgGraphicsContextDX11::clearRenderTarget()
 	{
-		if (m_pRenderTargetView) {
-			m_pRenderTargetView->Release();
-			m_pRenderTargetView = nullptr;
+		if (m_pRenderTarget != nullptr) {
+			ID3D11RenderTargetView * rtv = (ID3D11RenderTargetView*)m_pRenderTarget->GetColorBufferPtr();
+			if (rtv != nullptr) {
+				rtv->Release();
+				m_pRenderTarget->SetColorBufferPtr(nullptr);
+			}
+			ID3D11DepthStencilView * dsv = (ID3D11DepthStencilView*)m_pRenderTarget->GetDepthBufferPtr();
+			if (dsv != nullptr) {
+				dsv->Release();
+				m_pRenderTarget->SetDepthBufferPtr(nullptr);
+			}
+			delete m_pRenderTarget;
+			m_pRenderTarget = nullptr;
 		}
+
 
 		if (m_depthStencilBuffer) {
 			m_depthStencilBuffer->Release();
 			m_depthStencilBuffer = nullptr;
-		}
-
-		if (m_pdepthStencilView) {
-			m_pdepthStencilView->Release();
-			m_pdepthStencilView = nullptr;
 		}
 
 		return S_OK;
@@ -395,7 +406,6 @@ namespace rg {
 		}
 		RgRenderContextDX11 * ctx = new RgRenderContextDX11(false);
 		ctx->m_pDeviceContext = devicectx;
-		ctx->m_pGraphicsCtx = this;
 		m_vRenderContexts.push_back(ctx);
 		return ctx;
 	}
@@ -450,16 +460,7 @@ namespace rg {
 	}
 	void RgGraphicsContextDX11::prerender()
 	{
-		m_pD3D11DeviceContext->ClearRenderTargetView(m_pRenderTargetView, color);
-		m_pD3D11DeviceContext->ClearDepthStencilView(m_pdepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-	}
-	ID3D11RenderTargetView * RgGraphicsContextDX11::GetRenderTargetView()
-	{
-		return m_pRenderTargetView;
-	}
-	ID3D11DepthStencilView * RgGraphicsContextDX11::GetDepthStencilView()
-	{
-		return m_pdepthStencilView;
+
 	}
 	const RgViewPort * RgGraphicsContextDX11::GetViewPortDefault()
 	{

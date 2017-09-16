@@ -12,6 +12,7 @@ namespace rg {
 	class RgInputLayout;
 	class RgRasterizerState;
 	class RgDepthStencilState;
+	class RgRenderTarget;
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{
@@ -44,6 +45,7 @@ namespace rg {
 		virtual RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
 		virtual RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
 
+		RgRenderTarget * GetRenderTarget();
 		RgRenderContext* GetRenderContext();
 		virtual const RgViewPort* GetViewPortDefault();
 		virtual RgRenderContext * CreateDeferredContext() = 0;
@@ -68,6 +70,7 @@ namespace rg {
 
 
 		RgRenderContext *m_pRenderContext = nullptr;
+		RgRenderTarget * m_pRenderTarget = nullptr;
 
 	public:
 

@@ -43,8 +43,6 @@ namespace rg {
 		void prerender();
 
 	public:
-		ID3D11RenderTargetView * GetRenderTargetView();
-		ID3D11DepthStencilView * GetDepthStencilView();
 
 		const RgViewPort* GetViewPortDefault();
 
@@ -58,8 +56,6 @@ namespace rg {
 		
 		ID3D11Texture2D * m_depthStencilBuffer = nullptr;
 		RgDepthStencilState * m_pDepthStencilState = nullptr;
-		ID3D11DepthStencilView *m_pdepthStencilView = nullptr;
-		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
 
 		D3D11_VIEWPORT m_sViewPort;
 

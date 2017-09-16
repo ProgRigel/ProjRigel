@@ -12,6 +12,7 @@ namespace rg {
 	class RgCommandList;
 	class RgRasterizerState;
 	class RgDepthStencilState;
+	class RgRenderTarget;
 
 	class RgRenderContext {
 
@@ -33,15 +34,15 @@ namespace rg {
 		virtual void DrawIndexed(unsigned int size);
 		virtual void Draw();
 
-		virtual void SetRenderTarget();
-		virtual void SetRenderTargetDefault();
-		virtual void SetViewPort(const RgViewPort*);
+		virtual void SetRenderTarget(RgRenderTarget * rtarget) = 0;
+		virtual void ClearRenderTarget(RgVec4 color, RgRenderTarget * rtarget) = 0;
+		virtual void ClearDepthStencil(RgRenderTarget * rtarget) = 0;
 
-		virtual void SetRasterizerState(RgRasterizerState*);
-		virtual void SetDepthStencilState(RgDepthStencilState *);
+		virtual void SetViewPort(const RgViewPort*) = 0;
 
-		virtual void ClearRenderTarget(RgVec4 color);
-		virtual void ClearDepthStencil();
+		virtual void SetRasterizerState(RgRasterizerState*) = 0;
+		virtual void SetDepthStencilState(RgDepthStencilState *) = 0;
+
 
 
 		virtual void ClearState();

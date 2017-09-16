@@ -44,13 +44,14 @@ namespace rg {
 		}
 
 
-		m_pRenderCtx->SetRenderTargetDefault();
+		auto rendertarget = m_pGraphics->GetRenderTarget();
+		m_pRenderCtx->SetRenderTarget(rendertarget);
 
 		m_pRenderCtx->SetRasterizerState(m_pRasterState);
 		m_pRenderCtx->SetViewPort(m_pGraphics->GetViewPortDefault());
 
-		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.2f, 0.6f, 1.0f));
-		m_pRenderCtx->ClearDepthStencil();
+		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.2f, 0.6f, 1.0f), rendertarget);
+		m_pRenderCtx->ClearDepthStencil(rendertarget);
 
 		m_pRenderCtx->InputSetBuffer(m_pBufferVertex);
 		m_pRenderCtx->InputSetBuffer(m_pBufferIndices);

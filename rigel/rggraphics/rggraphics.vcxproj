@@ -36,6 +36,7 @@
     <ClInclude Include="rg_rasterizer_state_dx11.h" />
     <ClInclude Include="rg_render_context.h" />
     <ClInclude Include="rg_render_context_dx11.h" />
+    <ClInclude Include="rg_render_target.h" />
     <ClInclude Include="rg_shader.h" />
     <ClInclude Include="rg_shaderDX11.h" />
     <ClInclude Include="rg_texture.h" />
@@ -63,6 +64,7 @@
     <ClCompile Include="rg_rasterizer_state_dx11.cpp" />
     <ClCompile Include="rg_render_context.cpp" />
     <ClCompile Include="rg_render_context_dx11.cpp" />
+    <ClCompile Include="rg_render_target.cpp" />
     <ClCompile Include="rg_shader.cpp" />
     <ClCompile Include="rg_shaderDX11.cpp" />
     <ClCompile Include="rg_texture.cpp" />

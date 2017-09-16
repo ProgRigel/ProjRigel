@@ -12,6 +12,7 @@
 #include "rg_rasterizer_state.h"
 #include "rg_rasterizer_state_dx11.h"
 #include "rg_depthstencil_state_dx11.h"
+#include "rg_render_target.h"
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -61,10 +62,6 @@ namespace rg {
 		ID3D11InputLayout * dx11layout = (ID3D11InputLayout*)layout->pLayout;
 		m_pDeviceContext->IASetInputLayout(dx11layout);
 	}
-	void RgRenderContextDX11::SetRenderTarget()
-	{
-		
-	}
 	void RgRenderContextDX11::SetViewPort(const RgViewPort* viewport)
 	{
 		const D3D11_VIEWPORT* vp = (const D3D11_VIEWPORT*)(viewport);
@@ -88,21 +85,31 @@ namespace rg {
 		}
 		m_pDeviceContext->OMSetDepthStencilState(dxdss->m_state, 0);
 	}
-	void RgRenderContextDX11::SetRenderTargetDefault()
+	void RgRenderContextDX11::SetRenderTarget(RgRenderTarget * rtarget)
 	{
-		auto rtv = m_pGraphicsCtx->GetRenderTargetView();
-		auto dsv = m_pGraphicsCtx->GetDepthStencilView();
+		ID3D11RenderTargetView * rtv =(ID3D11RenderTargetView*) rtarget->GetColorBufferPtr();
+		ID3D11DepthStencilView * dsv = (ID3D11DepthStencilView*)rtarget->GetDepthBufferPtr();
+
 		m_pDeviceContext->OMSetRenderTargets(1, &rtv, dsv);
+
 	}
-	void RgRenderContextDX11::ClearRenderTarget(RgVec4 color)
+	void RgRenderContextDX11::ClearRenderTarget(RgVec4 color,RgRenderTarget * rtarget)
 	{
-		auto rtv = m_pGraphicsCtx->GetRenderTargetView();
+		auto rtv =(ID3D11RenderTargetView*) rtarget->GetColorBufferPtr();
+		if (rtv == nullptr) {
+			RgLogE() << "render target rtv is null!";
+			return;
+		}
 		const float c[4]{color.x,color.y,color.z,color.w};
 		m_pDeviceContext->ClearRenderTargetView(rtv, c);
 	}
-	void RgRenderContextDX11::ClearDepthStencil()
+	void RgRenderContextDX11::ClearDepthStencil(RgRenderTarget * rtarget)
 	{
-		auto dsv = m_pGraphicsCtx->GetDepthStencilView();
+		auto dsv =(ID3D11DepthStencilView*) rtarget->GetDepthBufferPtr();
+		if (dsv == nullptr) {
+			RgLogE() << "render target dsv is null!";
+			return;
+		}
 		m_pDeviceContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);
 	}
 	void RgRenderContextDX11::DrawIndexed(unsigned int size)
@@ -152,7 +159,6 @@ namespace rg {
 			m_pDeviceContext->Release();
 			RgLogD() << "release deferred context";
 		}
-		m_pGraphicsCtx = nullptr;
 		m_pDeviceContext = nullptr;
 	}
 
