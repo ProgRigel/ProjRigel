@@ -45,7 +45,6 @@ namespace rg {
 
 
 		m_pRenderCtx->SetRenderTargetDefault();
-		m_pRenderCtx->SetDepthStencilStateDefault();
 
 		m_pRenderCtx->SetRasterizerState(m_pRasterState);
 		m_pRenderCtx->SetViewPort(m_pGraphics->GetViewPortDefault());

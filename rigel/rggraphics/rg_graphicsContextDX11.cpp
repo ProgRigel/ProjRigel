@@ -7,6 +7,7 @@
 #include "rg_buffer.h"
 #include "rg_rasterizer_state.h"
 #include "rg_rasterizer_state_dx11.h"
+#include "rg_depthstencil_state_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -49,6 +50,13 @@ namespace rg {
 			if (rs != nullptr) {
 				rs->Release();
 				rs = nullptr;
+			}
+		}
+
+		for (auto dss : m_vDepthStencilState) {
+			if (dss != nullptr) {
+				dss->Release();
+				dss = nullptr;
 			}
 		}
 
@@ -188,31 +196,6 @@ namespace rg {
 		hr = m_pD3D11Device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 		HR_CEHCK(hr);
 
-		//DEPTH STENCIL STATE
-		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-		depthStencilDesc.DepthEnable = true;
-		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-		depthStencilDesc.StencilEnable = true;
-		depthStencilDesc.StencilReadMask = 0xFF;
-		depthStencilDesc.StencilWriteMask = 0xFF;
-
-		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		hr = m_pD3D11Device->CreateDepthStencilState(&depthStencilDesc, &m_pdepthStencilState);
-		HR_CEHCK(hr);
-
-		m_pD3D11DeviceContext->OMSetDepthStencilState(m_pdepthStencilState, 1);
 
 		//DEPTH STENCIL VIEW
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -242,21 +225,6 @@ namespace rg {
 
 		pBackBuffer->Release();
 
-		//{
-		//	RgRasterizerSettings rssettings;
-
-		//	rssettings.AntialiasedLine = false;
-		//	rssettings.CullMode = RgRasterizerCullMode::CULL_BACK;
-		//	rssettings.DepthBias = 0;
-		//	rssettings.DepthBiasClamp = 0.0f;
-		//	rssettings.DepthClipEnable = true;
-		//	rssettings.FillMode = RgRasterizerFillMode::FILL_SOLID;
-		//	rssettings.MultisampleEnable = false;
-		//	rssettings.ScissorEnable = false;
-		//	rssettings.SlopeScaledDepthBias = 0.0f;
-
-		//	m_pRasterizerState = CreateRasterizerState(rssettings);
-		//}
 
 		//VIEW PORT
 		D3D11_VIEWPORT viewport;
@@ -268,7 +236,7 @@ namespace rg {
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 		m_sViewPort = viewport;
-		m_pD3D11DeviceContext->RSSetViewports(1, &viewport);
+		
 
 		return S_OK;
 	}
@@ -284,10 +252,6 @@ namespace rg {
 			m_depthStencilBuffer = nullptr;
 		}
 
-		if (m_pdepthStencilState) {
-			m_pdepthStencilState->Release();
-			m_pdepthStencilState = nullptr;
-		}
 		if (m_pdepthStencilView) {
 			m_pdepthStencilView->Release();
 			m_pdepthStencilView = nullptr;
@@ -442,6 +406,19 @@ namespace rg {
 		rs->m_ptr = dxrs;
 		return rs;
 	}
+	RgDepthStencilState * RgGraphicsContextDX11::CreateDepthStencilState(const RgDepthStencilSettings & settings)
+	{
+		auto dss = new RgDepthStencilStateDX11(settings);
+		D3D11_DEPTH_STENCIL_DESC desc;
+		ConvertDepthStencilState(settings, desc);
+		ID3D11DepthStencilState * dxdss = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateDepthStencilState(&desc, &dxdss);
+		HR_CEHCK(hr);
+		dss->m_state = dxdss;
+
+		m_vDepthStencilState.push_back(dss);
+		return dss;
+	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
 
@@ -479,10 +456,6 @@ namespace rg {
 	ID3D11DepthStencilView * RgGraphicsContextDX11::GetDepthStencilView()
 	{
 		return m_pdepthStencilView;
-	}
-	ID3D11DepthStencilState * RgGraphicsContextDX11::GetDepthStencilState()
-	{
-		return m_pdepthStencilState;
 	}
 	const RgViewPort * RgGraphicsContextDX11::GetViewPortDefault()
 	{

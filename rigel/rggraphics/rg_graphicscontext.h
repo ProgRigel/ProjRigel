@@ -11,6 +11,7 @@ namespace rg {
 	class RgRenderContext;
 	class RgInputLayout;
 	class RgRasterizerState;
+	class RgDepthStencilState;
 
 	struct RG_GRAPHICS_INIT_SETTINGS
 	{
@@ -41,6 +42,7 @@ namespace rg {
 
 		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
 		virtual RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
+		virtual RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
 
 		RgRenderContext* GetRenderContext();
 		virtual const RgViewPort* GetViewPortDefault();
@@ -59,6 +61,7 @@ namespace rg {
 		std::vector<RgBuffer*> m_vBuffers;
 		std::vector<RgRenderContext *> m_vRenderContexts;
 		std::vector<RgRasterizerState*> m_vRasterState;
+		std::vector<RgDepthStencilState*> m_vDepthStencilState;
 
 
 		std::unordered_map<std::wstring, std::shared_ptr<RgShader>> m_mShaderCaches;

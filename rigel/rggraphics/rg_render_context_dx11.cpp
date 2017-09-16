@@ -11,6 +11,7 @@
 #include "rg_viewport.h"
 #include "rg_rasterizer_state.h"
 #include "rg_rasterizer_state_dx11.h"
+#include "rg_depthstencil_state_dx11.h"
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -78,16 +79,20 @@ namespace rg {
 		}
 		m_pDeviceContext->RSSetState(dxrs->m_ptr);
 	}
+	void RgRenderContextDX11::SetDepthStencilState(RgDepthStencilState *dss)
+	{
+		RgDepthStencilStateDX11 *dxdss = dynamic_cast<RgDepthStencilStateDX11*>(dss);
+		if (dxdss != nullptr) {
+			RgLogE() << "dxdss is null";
+			return;
+		}
+		m_pDeviceContext->OMSetDepthStencilState(dxdss->m_state, 0);
+	}
 	void RgRenderContextDX11::SetRenderTargetDefault()
 	{
 		auto rtv = m_pGraphicsCtx->GetRenderTargetView();
 		auto dsv = m_pGraphicsCtx->GetDepthStencilView();
 		m_pDeviceContext->OMSetRenderTargets(1, &rtv, dsv);
-	}
-	void RgRenderContextDX11::SetDepthStencilStateDefault()
-	{
-		auto dss = m_pGraphicsCtx->GetDepthStencilState();
-		m_pDeviceContext->OMSetDepthStencilState(dss, 1);
 	}
 	void RgRenderContextDX11::ClearRenderTarget(RgVec4 color)
 	{

@@ -49,15 +49,15 @@ namespace rg {
 	{
 	}
 
-	void RgRenderContext::SetDepthStencilStateDefault()
-	{
-	}
-
 	void RgRenderContext::SetViewPort(const RgViewPort *)
 	{
 	}
 
 	void RgRenderContext::SetRasterizerState(RgRasterizerState *)
+	{
+	}
+
+	void RgRenderContext::SetDepthStencilState(RgDepthStencilState *)
 	{
 	}
 

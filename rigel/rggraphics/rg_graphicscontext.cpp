@@ -54,6 +54,10 @@ namespace rg {
 	{
 		return nullptr;
 	}
+	RgDepthStencilState * RgGraphicsContext::CreateDepthStencilState(const RgDepthStencilSettings &)
+	{
+		return nullptr;
+	}
 	RgRenderContext * RgGraphicsContext::GetRenderContext()
 	{
 		return m_pRenderContext;

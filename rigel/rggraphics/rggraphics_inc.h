@@ -13,6 +13,9 @@ namespace rg {
 	enum class RgBufferBind;
 	enum class RgGraphicsPipelineStage;
 	enum class RgInputSlotClass;
+	enum class RgDepthWriteMask;
+	enum class RgGraphicsComparisonFunc;
+	enum class RgDepthStencilOp;
 
 	enum class RgRasterizerFillMode;
 	enum class RgRasterizerCullMode;
@@ -24,5 +27,7 @@ namespace rg {
 	struct RgTextureSettings;
 	struct RgViewPort;
 	struct RgRasterizerSettings;
+	struct RgDepthStencilSettings;
+	struct RgDepthStencilOperation;
 }
 

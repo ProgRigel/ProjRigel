@@ -2,6 +2,7 @@
 #include "rggraphics_inc.h"
 #include "rg_graphicscontext.h"
 #include "rg_rasterizer_state.h"
+#include "rg_depthstencil_state.h"
 
 #include <d3d11.h>
 #include <dxgi.h>
@@ -33,6 +34,7 @@ namespace rg {
 		RgRenderContext * CreateDeferredContext();
 
 		RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
+		RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
@@ -41,7 +43,6 @@ namespace rg {
 	public:
 		ID3D11RenderTargetView * GetRenderTargetView();
 		ID3D11DepthStencilView * GetDepthStencilView();
-		ID3D11DepthStencilState * GetDepthStencilState();
 
 		const RgViewPort* GetViewPortDefault();
 
@@ -54,7 +55,7 @@ namespace rg {
 		IDXGISwapChain * m_pSwapChain = nullptr;
 		
 		ID3D11Texture2D * m_depthStencilBuffer = nullptr;
-		ID3D11DepthStencilState *m_pdepthStencilState = nullptr;
+		RgDepthStencilState * m_pDepthStencilState = nullptr;
 		ID3D11DepthStencilView *m_pdepthStencilView = nullptr;
 		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
 
@@ -73,7 +74,6 @@ namespace rg {
 
 	public:
 		friend class RgGraphicsAPI;
-
 	};
 
 
@@ -90,6 +90,27 @@ namespace rg {
 		desc.ScissorEnable = settings.ScissorEnable;
 		desc.SlopeScaledDepthBias = settings.SlopeScaledDepthBias;
 		desc.FrontCounterClockwise = settings.FrontCounterClockwise;
+	}
+
+	inline void ConvertDepthStencilState(const RgDepthStencilSettings& settings, D3D11_DEPTH_STENCIL_DESC& desc) {
+		desc.DepthEnable = settings.DepthEnable;
+		desc.DepthWriteMask = (D3D11_DEPTH_WRITE_MASK)settings.DepthWriteMask;
+		desc.DepthFunc = (D3D11_COMPARISON_FUNC)settings.DepthFunc;
+
+		desc.StencilEnable = settings.StencilEnable;
+		desc.StencilReadMask = settings.StencilReadMask;
+		desc.StencilWriteMask = settings.StencilWriteMask;
+
+		desc.FrontFace.StencilFailOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilFailOp;
+		desc.FrontFace.StencilDepthFailOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilDepthFailOp;
+		desc.FrontFace.StencilPassOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilPassOp;
+		desc.FrontFace.StencilFunc = (D3D11_COMPARISON_FUNC)settings.FrontFace.StencilFunc;
+
+		desc.BackFace.StencilFailOp = (D3D11_STENCIL_OP)settings.BackFace.StencilFailOp;
+		desc.BackFace.StencilDepthFailOp = (D3D11_STENCIL_OP)settings.BackFace.StencilDepthFailOp;
+		desc.BackFace.StencilPassOp = (D3D11_STENCIL_OP)settings.BackFace.StencilPassOp;
+		desc.BackFace.StencilFunc = (D3D11_COMPARISON_FUNC)settings.BackFace.StencilFunc;
+
 	}
 
 #pragma endregion

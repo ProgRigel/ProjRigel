@@ -50,6 +50,12 @@
     <ClInclude Include="rg_rasterizer_state_dx11.h">
       <Filter>dx11</Filter>
     </ClInclude>
+    <ClInclude Include="rg_depthstencil_state.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_depthstencil_state_dx11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicscontext.cpp" />
@@ -92,6 +98,12 @@
       <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="rg_rasterizer_state_dx11.cpp">
+      <Filter>dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_depthstencil_state.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_depthstencil_state_dx11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
   </ItemGroup>
