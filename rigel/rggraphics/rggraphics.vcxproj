@@ -39,6 +39,7 @@
     <ClInclude Include="rg_shader.h" />
     <ClInclude Include="rg_shaderDX11.h" />
     <ClInclude Include="rg_texture.h" />
+    <ClInclude Include="rg_texture_dx11.h" />
     <ClInclude Include="rg_viewport.h" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +66,7 @@
     <ClCompile Include="rg_shader.cpp" />
     <ClCompile Include="rg_shaderDX11.cpp" />
     <ClCompile Include="rg_texture.cpp" />
+    <ClCompile Include="rg_texture_dx11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\rgcore\rgcore.vcxproj">

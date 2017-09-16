@@ -8,7 +8,7 @@ namespace rg {
 	enum class RG_SHADER_ENTRY;
 	enum class RgGraphicsFormat;
 	enum class RG_TEXTURE_FORMAT;
-	enum class RG_TEXTURE_USAGE;
+	enum class RgGraphicsUsage;
 	enum class RgBufferUsage;
 	enum class RgBufferBind;
 	enum class RgGraphicsPipelineStage;

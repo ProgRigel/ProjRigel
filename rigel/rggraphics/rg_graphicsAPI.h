@@ -17,6 +17,21 @@ namespace rg {
 		R32G32_FLOAT = 1,
 		R32G32B32_FLOAT = 2,
 		R32G32B32A32_FLOAT = 3,
+		R8G8B8A8_UNORM = 4,
+		D23_UNORM_S8_UINT = 5,
+	};
+
+	enum class RgGraphicsBindFlag {
+		VertexBuffer,
+		IndexBuffer,
+		ConstantBuffer,
+		ShaderResource,
+		StreamOutput,
+		RenderTarget,
+		DepthStencil,
+		UnorderedAccess,
+		Decoder,
+		VideoEncoder,
 	};
 
 	enum class RgGraphicsPipelineStage {

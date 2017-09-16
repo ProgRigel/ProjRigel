@@ -28,7 +28,9 @@ namespace rg {
 
 	public:
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
-		virtual RgBuffer* CreateBuffer(RgBufferSettings settings);
+		RgBuffer* CreateBuffer(RgBufferSettings settings);
+		std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
+
 		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements,const unsigned int size, std::shared_ptr<RgShader> vertexShader);
 
 		RgRenderContext * CreateDeferredContext();

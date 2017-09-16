@@ -339,6 +339,10 @@ namespace rg {
 		}
 		return buffer;
 	}
+	std::shared_ptr<RgTexture> RgGraphicsContextDX11::CreateTexture(RgTextureSettings & settings)
+	{
+		return std::shared_ptr<RgTexture>();
+	}
 	void ConvertInputLayout(D3D11_INPUT_ELEMENT_DESC& desc,const RgInputLayoutElement element) {
 		desc.SemanticName = element.SemanticName;
 		desc.SemanticIndex = element.SemanticIndex;
