@@ -134,6 +134,8 @@ namespace rg {
 			m_width = (UINT)LOWORD(lParam);
 			m_height = (UINT)HIWORD(lParam);
 			m_resized = true;
+			m_windowInput.WindowRect.z = static_cast<float>(m_width);
+			m_windowInput.WindowRect.w = static_cast<float>(m_height);
 			EventOnResize.emit(m_width, m_height);
 			EventOnGUI.emit(RgWindowEvent{RgWindowEventType::Resize,&m_windowInput });
 			break;

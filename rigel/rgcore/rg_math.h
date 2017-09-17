@@ -128,6 +128,9 @@ namespace rg {
 	struct RgVec4 {
 		RgFloat x, y, z, w;
 		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
+		RgVec4():x(0),y(0),z(0),w(0){}
+
+		std::string toStr() const;
 	};
 
 
@@ -154,5 +157,11 @@ namespace rg {
 	inline const RgFloat operator*(const RgVec4& v1, const RgVec4& v2) {
 		return v1.w*v2.w + v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
 	}
+
+	struct RgMatrix3x3 {
+		RgVec3 m1;
+		RgVec3 m2;
+		RgVec3 m3;
+	};
 
 }

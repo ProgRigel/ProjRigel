@@ -56,6 +56,7 @@ namespace rg {
 		m_pRenderCtx->InputSetBuffer(m_pBufferVertex);
 		m_pRenderCtx->InputSetBuffer(m_pBufferIndices);
 		m_pRenderCtx->InputSetBuffer(m_pBufferConst, RgGraphicsPipelineStage::Pixel);
+		m_pRenderCtx->InputSetBuffer(m_pBufferConst, RgGraphicsPipelineStage::Vertex);
 
 		m_pRenderCtx->InputSetInputLayout(m_pInputLayout);
 		m_pRenderCtx->InputSetShader(m_pShaderVertex);
@@ -63,7 +64,7 @@ namespace rg {
 
 		m_pRenderCtx->InputSetPrimitiveTopology();
 
-		m_pRenderCtx->DrawIndexed(6);
+		m_pRenderCtx->DrawIndexed(18);
 
 		bool suc = m_pRenderCtx->FinishCommandList(false, &m_pCommandList);
 		if (!suc) {
@@ -81,7 +82,7 @@ namespace rg {
 		{
 			RgRasterizerSettings rssetings;
 			rssetings.AntialiasedLine = false;
-			rssetings.CullMode = RgRasterizerCullMode::CULL_BACK;
+			rssetings.CullMode = RgRasterizerCullMode::CULL_NONE;
 			rssetings.FillMode = RgRasterizerFillMode::FILL_SOLID;
 			rssetings.DepthBias = 0;
 			rssetings.DepthBiasClamp = 0;
@@ -120,10 +121,10 @@ namespace rg {
 		//ConstBuffer
 		{
 			RgBufferSettings bufferconstDesc;
-			bufferconstDesc.ByteWidth = sizeof(float) * 32;
+			bufferconstDesc.ByteWidth = sizeof(float) * 16;
 			bufferconstDesc.BindFlag = RgBufferBind::ConstBuffer;
 			bufferconstDesc.Usage = RgBufferUsage::Dynamic;
-			bufferconstDesc.Stride = sizeof(float) * 4;
+			bufferconstDesc.Stride = 0;
 			m_pBufferConst = m_pGraphics->CreateBuffer(bufferconstDesc);
 		}
 
@@ -178,18 +179,32 @@ namespace rg {
 		}
 
 
-		m_pGUICtx->DrawRect(RgVec2(.0f, .0f), RgVec2(.5f, .3f));
+		m_pGUICtx->DrawRect(RgVec2(0.0f, .0f), RgVec2(70, 30.0f));
+		m_pGUICtx->DrawRect(RgVec2(30.f, 100.f), RgVec2(200, 60.0f));
+		m_pGUICtx->DrawRect(RgVec2(70.0f, 200.0f), RgVec2(50, 50.0f));
 		
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
-		unsigned int datai[6]{ 0,2,1,0,3,2 };
+		unsigned int datai[18]{ 0,1,2,0,2,3 };
+		for (int i = 0; i < 3; i++) {
+			datai[i * 6] = i * 4;
+			datai[i * 6 + 1] = i * 4 + 1;
+			datai[i * 6 + 2] = i * 4 + 2;
+			datai[i * 6 + 3] = i * 4;
+			datai[i * 6 + 4] = i * 4 + 2;
+			datai[i * 6 + 5] = i * 4 + 3;
+		}
+		
 		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, sizeof(datai));
 
-		float color[4] = {
-			1.0f,1.0f,0.2f,1.0f
-		};
-		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &color, sizeof(color));
+
+		RgGUIConstantData constantData;
+		constantData.color = RgVec4(1.0f, 0.3f, 0.5f, 1.0f);
+		constantData.mtx.m1 = RgVec3(2.0f / 800.0f, 0, 0);
+		constantData.mtx.m2 = RgVec3(0,-2.0f/600.0f, 0);
+		constantData.mtx.m3 = RgVec3(-1.0f,1.0f, 1.0f);
+		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();
 

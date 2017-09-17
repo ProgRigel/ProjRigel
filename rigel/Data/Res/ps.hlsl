@@ -1,6 +1,7 @@
 cbuffer ConstBuffer:register(b0)
 {
-	float4 Ccolor;
+	float4 Color;
+	float3x3 Mtx;
 };
 
 struct PixelInput
@@ -10,6 +11,6 @@ struct PixelInput
 
 float4 main(PixelInput i):SV_TARGET
 {
-	float4 col = Ccolor;
+	float4 col = Color;
 	return col;
 }

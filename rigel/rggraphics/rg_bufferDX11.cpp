@@ -1,4 +1,5 @@
 #include "rggraphics.h"
+#include "rggraphics_inc.h"
 #include "rg_bufferDX11.h"
 #include "rg_render_context_dx11.h"
 #include "rg_graphicsContextDX11.h"
@@ -45,6 +46,8 @@ namespace rg {
 		auto ctx = dynamic_cast<RgRenderContextDX11*>(renderctx);
 		if (ctx == nullptr) return;
 
+		assert(m_pbuffer);
+
 		D3D11_MAPPED_SUBRESOURCE bufferres;
 		{
 			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferres);
@@ -62,7 +65,10 @@ namespace rg {
 	{
 		assert(device);
 		auto hr = device->CreateBuffer(&m_bufferdesc, nullptr, &m_pbuffer);
-
+		if (hr != S_OK) {
+			RgLogE() << "create buffer error:" << hr;
+			m_pbuffer = nullptr;
+		}
 		return hr;
 	}
 

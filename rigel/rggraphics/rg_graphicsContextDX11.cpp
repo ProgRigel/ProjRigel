@@ -341,8 +341,14 @@ namespace rg {
 
 		if (buffer != nullptr) {
 			m_vBuffers.push_back(buffer);
+			return buffer;
 		}
-		return buffer;
+		else
+		{
+			delete buffer;
+			return nullptr;
+		}
+		
 	}
 	std::shared_ptr<RgTexture> RgGraphicsContextDX11::CreateTexture(RgTextureSettings & settings)
 	{

@@ -29,6 +29,7 @@ namespace rg {
 		bool RButton = false;
 		bool MButton = false;
 		bool KeyCode[256];
+		RgVec4 WindowRect;
 	};
 
 	class RgWindowEvent{

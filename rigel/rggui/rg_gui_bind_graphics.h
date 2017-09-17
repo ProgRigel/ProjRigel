@@ -9,6 +9,11 @@
 
 namespace rg {
 
+	struct RgGUIConstantData {
+		RgVec4 color;
+		RgMatrix3x3 mtx;
+	};
+
 	class RgGUIContext;
 
 	class RgGUIBindGraphics {

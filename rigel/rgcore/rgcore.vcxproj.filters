@@ -48,7 +48,6 @@
     <ClCompile Include="rg_image.cpp" />
     <ClCompile Include="rg_image_loader.cpp" />
     <ClCompile Include="rg_log.cpp" />
-    <ClCompile Include="rg_math.cpp" />
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
     <ClCompile Include="rg_pluginmanager.cpp" />
@@ -57,6 +56,9 @@
     <ClCompile Include="rg_windowManager.cpp" />
     <ClCompile Include="rg_windowWindows.cpp" />
     <ClCompile Include="rgcore.cpp" />
+    <ClCompile Include="rg_math.cpp">
+      <Filter>header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="header">
