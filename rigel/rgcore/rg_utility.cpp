@@ -17,6 +17,21 @@ namespace rg {
 
 		return workpath;
 	}
+	const std::string HrToMessage(HRESULT hr)
+	{
+		LPVOID lpMsgBuf;
+		::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+			NULL,
+			hr,
+			MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
+			(LPTSTR)&lpMsgBuf,
+			0,
+			NULL);
+		std::string meow;
+		meow.append((char*)lpMsgBuf);
+		::LocalFree(lpMsgBuf);
+		return meow;
+	}
 }
 
 

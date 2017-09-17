@@ -47,7 +47,6 @@ namespace rg {
 		if (ctx == nullptr) return;
 
 		assert(m_pbuffer);
-
 		D3D11_MAPPED_SUBRESOURCE bufferres;
 		{
 			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferres);
