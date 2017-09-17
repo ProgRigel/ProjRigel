@@ -226,7 +226,8 @@ namespace rg {
 		m_pRenderTarget = new RgRenderTarget();
 		m_pRenderTarget->SetColorBufferPtr(m_pRenderTargetView);
 		m_pRenderTarget->SetDepthBufferPtr(m_pdepthStencilView);
-
+		m_pRenderTarget->BufferWidth = m_settings.BufferWidth;
+		m_pRenderTarget->BufferHeight = m_settings.BufferHeight;
 
 		//VIEW PORT
 		D3D11_VIEWPORT viewport;
@@ -447,9 +448,12 @@ namespace rg {
 		m_settings.BufferWidth = width;
 		m_settings.BufferHeight = height;
 
-		createRenderTarget();
 
-		EventAfterResize.emit();
+		createRenderTarget();
+		m_pRenderTarget->BufferWidth = width;
+		m_pRenderTarget->BufferHeight = height;
+
+		EventAfterResize.emit(width,height);
 	}
 
 	float color[4] = { 0.1f,0.4f,0.3f,1.0f };

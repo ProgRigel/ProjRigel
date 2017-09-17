@@ -163,5 +163,12 @@ namespace rg {
 		RgVec3 m2;
 		RgVec3 m3;
 	};
+	
+	struct RgMatrix4x4 {
+		RgVec4 m1;
+		RgVec4 m2;
+		RgVec4 m3;
+		RgVec4 m4;
+	};
 
 }

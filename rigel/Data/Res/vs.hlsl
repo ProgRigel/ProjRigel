@@ -1,7 +1,7 @@
 cbuffer ConstBuffer:register(b0)
 {
 	float4 Color;
-	float3x3 Mtx;
+	float4x4 Mtx;
 };
 
 
@@ -21,14 +21,10 @@ struct PixelInput
 PixelInput main(VertexInput v)
 {
 	PixelInput o;
-	float3 vpos = v.position.xyz;
-	vpos.z = 1.0;
-	float3x3 mtx = float3x3(0.0025,0,0,
-		0,-0.003333,0,
-		-1,1.0,1
-		);
-	float3 pos = vpos;
-	pos = mul(pos, mtx);
-	o.position = float4(pos.xy, 0, 1.0);
+	float4 vpos = float4(v.position.xyz,1.0);
+	vpos = mul(vpos, Mtx);
+	vpos.x -= 1.0;
+	vpos.y += 1.0;
+	o.position = float4(vpos.xy, 0, 1.0);
 	return o;
 }

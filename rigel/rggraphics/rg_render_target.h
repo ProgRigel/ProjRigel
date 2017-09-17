@@ -1,5 +1,5 @@
 #pragma once
-
+#include <rgcore\rg_math.h>
 
 namespace rg {
 	class RgRenderTarget {
@@ -15,6 +15,9 @@ namespace rg {
 		void SetDepthBufferPtr(void* ptr);
 
 		void Release();
+
+		unsigned int BufferWidth;
+		unsigned int BufferHeight;
 
 	private:
 		RgRenderTarget(const RgRenderTarget&) = delete;

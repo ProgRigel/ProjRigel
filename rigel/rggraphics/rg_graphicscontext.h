@@ -75,7 +75,7 @@ namespace rg {
 	public:
 
 		Signal<void()> EventBeforeResize;
-		Signal<void()> EventAfterResize;
+		Signal<void(unsigned int,unsigned int)> EventAfterResize;
 		Signal<void()> EventRelease;
 
 		friend class RgGraphicsAPI;

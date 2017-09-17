@@ -11,7 +11,7 @@ namespace rg {
 
 	struct RgGUIConstantData {
 		RgVec4 color;
-		RgMatrix3x3 mtx;
+		RgMatrix4x4 mtx;
 	};
 
 	class RgGUIContext;
@@ -33,7 +33,7 @@ namespace rg {
 		void ReleaseGraphicsObj();
 
 		void BeforeResize();
-		void AfterResize();
+		void AfterResize(unsigned int width, unsigned int height);
 
 
 
@@ -59,6 +59,8 @@ namespace rg {
 
 		std::shared_ptr<RgShader> m_pShaderVertex = nullptr;
 		std::shared_ptr<RgShader> m_pShaderPixel = nullptr;
+
+		RgGUIConstantData constantData;
 
 	};
 }

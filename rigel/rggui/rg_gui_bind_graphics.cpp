@@ -5,7 +5,7 @@
 #include <rggraphics\rg_shader.h>
 #include <rggraphics\rg_buffer.h>
 #include <rggraphics\rg_render_context.h>
-
+#include <rggraphics\rg_render_target.h>
 namespace rg {
 
 	RgGUIBindGraphics::RgGUIBindGraphics(RgGUIContext * gui, RgGraphicsContext * graphics)
@@ -121,7 +121,7 @@ namespace rg {
 		//ConstBuffer
 		{
 			RgBufferSettings bufferconstDesc;
-			bufferconstDesc.ByteWidth = sizeof(float) * 16;
+			bufferconstDesc.ByteWidth = sizeof(RgGUIConstantData);
 			bufferconstDesc.BindFlag = RgBufferBind::ConstBuffer;
 			bufferconstDesc.Usage = RgBufferUsage::Dynamic;
 			bufferconstDesc.Stride = 0;
@@ -199,11 +199,12 @@ namespace rg {
 		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, sizeof(datai));
 
 
-		RgGUIConstantData constantData;
+		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;
+		float bheight = -2.0f / m_pGraphics->GetRenderTarget()->BufferHeight;
 		constantData.color = RgVec4(1.0f, 0.3f, 0.5f, 1.0f);
-		constantData.mtx.m1 = RgVec3(2.0f / 800.0f, 0, 0);
-		constantData.mtx.m2 = RgVec3(0,-2.0f/600.0f, 0);
-		constantData.mtx.m3 = RgVec3(-1.0f,1.0f, 1.0f);
+		constantData.mtx.m1 = RgVec4(bwidth, 0, 0,0);
+		constantData.mtx.m2 = RgVec4(0, bheight, 0,0);
+		constantData.mtx.m3 = RgVec4(-1.0f,1.0f, 1.0f,0);
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();
@@ -279,8 +280,17 @@ namespace rg {
 			RG_ASSERT(m_pRasterState);
 		}
 	}
-	void RgGUIBindGraphics::AfterResize()
+	void RgGUIBindGraphics::AfterResize(unsigned int width,unsigned int height)
 	{
+		float bwidth = 2.0f / width;
+		float bheight = -2.0f / height;
+
+		constantData.mtx.m1 = RgVec4(bwidth, 0, 0, 0);
+		constantData.mtx.m2 = RgVec4(0, bheight, 0, 0);
+		constantData.mtx.m3 = RgVec4(0, 0, 1.0f, 0);
+		constantData.mtx.m4 = RgVec4(-2.0f, 1.0f, 0, 1.0f);
+		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
+
 		ReBuildCommandList();
 	}
 }
