@@ -18,6 +18,14 @@ namespace rg {
 		ConstBuffer,
 	};
 
+	enum class RgGraphicsBufferMap {
+		Read = 1,
+		Write = 2,
+		ReadWrite = 3,
+		WriteDiscard = 4,
+		WriteNoOverride = 5
+	};
+
 	struct RgBufferSettings {
 		RgBufferUsage Usage = RgBufferUsage::Default;
 		unsigned int ByteWidth = 0;
@@ -35,7 +43,7 @@ namespace rg {
 		RgBuffer(RgBufferSettings setting);
 
 		virtual void Release() = 0;
-		virtual void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size) = 0;
+		virtual void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size, RgGraphicsBufferMap maptype = RgGraphicsBufferMap::WriteDiscard) = 0;
 
 		RgBufferSettings& GetSettings();
 

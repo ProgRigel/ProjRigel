@@ -41,18 +41,26 @@ namespace rg {
 		
 	}
 
-	void RgBufferDX11::SetData(RgRenderContext * renderctx, void * pdata, unsigned int size)
+	void RgBufferDX11::SetData(RgRenderContext * renderctx, void * pdata, unsigned int size, RgGraphicsBufferMap maptype)
 	{
 		auto ctx = dynamic_cast<RgRenderContextDX11*>(renderctx);
 		if (ctx == nullptr) return;
 
 		assert(m_pbuffer);
 
+		D3D11_MAP dxmap = D3D11_MAP_WRITE;
+		if (maptype == RgGraphicsBufferMap::WriteDiscard)
+			dxmap = D3D11_MAP_WRITE_DISCARD;
+		else if (maptype == RgGraphicsBufferMap::WriteNoOverride) {
+			dxmap = D3D11_MAP_WRITE_NO_OVERWRITE;
+		}
+
 		D3D11_MAPPED_SUBRESOURCE bufferres;
 		{
-			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferres);
+
+			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, dxmap, 0, &bufferres);
 			if (hr != S_OK) {
-				RgLogE() << "map buffer data error";
+				RgLogE() << "map buffer data error "<< hr;
 				return;
 			}
 			auto dataptr = bufferres.pData;

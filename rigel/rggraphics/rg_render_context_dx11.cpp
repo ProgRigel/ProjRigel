@@ -144,7 +144,7 @@ namespace rg {
 			RgLogW() << "skip exec command list";
 		}
 		RgCommandListDX11 *pcmdlistdx11 = dynamic_cast<RgCommandListDX11*>(pcommandlist);
-
+		RG_ASSERT(pcmdlistdx11 &&pcmdlistdx11->m_pCommandList);
 		m_pDeviceContext->ExecuteCommandList(pcmdlistdx11->m_pCommandList, restorectx);
 
 	}

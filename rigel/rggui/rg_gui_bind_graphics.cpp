@@ -115,6 +115,7 @@ namespace rg {
 			bufferIndicesDesc.BindFlag = RgBufferBind::IndexBuffer;
 			bufferIndicesDesc.Usage = RgBufferUsage::Dynamic;
 			bufferIndicesDesc.Stride = sizeof(unsigned int);
+			bufferIndicesDesc.DX_AccessFlag = D3D11_CPU_ACCESS_WRITE;
 			m_pBufferIndices = m_pGraphics->CreateBuffer(bufferIndicesDesc);
 		}
 
@@ -186,7 +187,7 @@ namespace rg {
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
-		unsigned int datai[18]{ 0,1,2,0,2,3 };
+		datai = new unsigned int[18];
 		for (int i = 0; i < 3; i++) {
 			datai[i * 6] = i * 4;
 			datai[i * 6 + 1] = i * 4 + 1;
@@ -195,8 +196,10 @@ namespace rg {
 			datai[i * 6 + 4] = i * 4 + 2;
 			datai[i * 6 + 5] = i * 4 + 3;
 		}
+
+		auto indptr = guibuf->GetIndicesPtr();
 		
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, sizeof(datai));
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, guibuf->GetIndicesSize() * sizeof(unsigned int),RgGraphicsBufferMap::Write);
 
 
 		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;

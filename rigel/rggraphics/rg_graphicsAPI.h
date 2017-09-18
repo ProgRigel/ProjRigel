@@ -45,6 +45,8 @@ namespace rg {
 		Pixel = 1 << 7,
 	};
 
+	
+
 	class RgGraphicsAPI
 	{
 	public:

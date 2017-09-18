@@ -62,5 +62,7 @@ namespace rg {
 
 		RgGUIConstantData constantData;
 
+		unsigned int * datai;
+
 	};
 }

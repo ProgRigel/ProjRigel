@@ -12,7 +12,7 @@ namespace rg {
 		~RgBufferDX11();
 
 		void Release();
-		void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size);
+		void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size, RgGraphicsBufferMap maptype);
 	protected:
 		HRESULT Create(ID3D11Device * device);
 

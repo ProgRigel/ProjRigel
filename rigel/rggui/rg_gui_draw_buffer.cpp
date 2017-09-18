@@ -6,6 +6,8 @@ namespace rg {
 	{
 		m_pData = new RgGUIVertex[BUFFER_SIZE_INIT];
 		m_pPos = m_pData;
+
+		ExtendIndicesBuffer(0, INDICES_QUAD_INIT);
 	}
 
 	RgGUIDrawBuffer::~RgGUIDrawBuffer()
@@ -13,6 +15,42 @@ namespace rg {
 		delete[] m_pData;
 		m_pData = nullptr;
 		m_pPos = nullptr;
+
+		if (m_pIndicesBufferData != nullptr) {
+			delete[] m_pIndicesBufferData;
+			m_pIndicesBufferData = nullptr;
+			m_pIndicesBufferQuadSize = 0;
+		}
+	}
+
+
+	void RgGUIDrawBuffer::ExtendIndicesBuffer(unsigned int lastQuad, unsigned int newQuad)
+	{
+		auto temp = m_pIndicesBufferData;
+		m_pIndicesBufferData = new unsigned int[newQuad * 6];
+		if (lastQuad != 0) {
+			memcpy(m_pIndicesBufferData, temp, lastQuad * 6* sizeof(unsigned int));
+		}
+
+		auto diff = newQuad - lastQuad;
+
+		unsigned int tm = lastQuad * 6;
+		unsigned int tn = lastQuad * 4;
+		for (size_t i = 0; i < diff; i++)
+		{
+			m_pIndicesBufferData[tm] = tn;
+			m_pIndicesBufferData[tm+1] = tn+1;
+			m_pIndicesBufferData[tm+2] = tn+2;
+			m_pIndicesBufferData[tm+3] = tn;
+			m_pIndicesBufferData[tm+4] = tn+2;
+			m_pIndicesBufferData[tm+5] = tn+3;
+			tm += 6;
+			tn += 4;
+		}
+
+		RgLogW() << "resize indices" << newQuad;
+
+		m_pIndicesBufferQuadSize = newQuad;
 	}
 
 	void RgGUIDrawBuffer::ExtendBufferCheck()
@@ -51,6 +89,24 @@ namespace rg {
 	{
 		return m_pData;
 	}
+
+	unsigned int * RgGUIDrawBuffer::GetIndicesPtr()
+	{
+		unsigned int quadcount = (m_pPos - m_pData)/4;
+		if (quadcount > m_pIndicesBufferQuadSize) {
+			auto scale = quadcount / m_pIndicesBufferQuadSize + 1;
+			ExtendIndicesBuffer(m_pIndicesBufferQuadSize, m_pIndicesBufferQuadSize*scale);
+		}
+		m_pIndicesQuadCount = quadcount;
+
+		return m_pIndicesBufferData;
+	}
+
+	unsigned int RgGUIDrawBuffer::GetIndicesSize()
+	{
+		return m_pIndicesQuadCount *6;
+	}
+
 
 }
 

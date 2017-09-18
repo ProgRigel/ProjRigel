@@ -16,6 +16,7 @@ namespace rg {
 	enum class RgDepthWriteMask;
 	enum class RgGraphicsComparisonFunc;
 	enum class RgDepthStencilOp;
+	enum class RgGraphicsBufferMap;
 
 	enum class RgRasterizerFillMode;
 	enum class RgRasterizerCullMode;
