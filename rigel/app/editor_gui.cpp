@@ -34,20 +34,6 @@ namespace editor {
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
 
-		switch (e.Type)
-		{
-		case RgWindowEventType::Resize:
-		{
-			break;
-		}
-			
-		case RgWindowEventType::ResizeExit:
-		{
-			break;
-		}
-		default:
-			break;
-		}
 
 
 	}

@@ -13,10 +13,9 @@ namespace rg {
 		Close,
 		Focus,
 		LostFocus,
-		MouseDown,
-		MouseUp,
-		KeyDown,
-		KeyUp,
+		MouseEvent,
+		MouseWheelEvent,
+		KeyEvent,
 		BeginDrag,
 		EndDrag,
 		ResizeEnter,
@@ -29,6 +28,7 @@ namespace rg {
 		bool RButton = false;
 		bool MButton = false;
 		bool KeyCode[256];
+		bool AltDown = false;
 		RgVec4 WindowRect;
 	};
 

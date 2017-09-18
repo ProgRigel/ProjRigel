@@ -96,7 +96,12 @@ namespace rg {
 	LRESULT RgWindowWindows::memberWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP || uMsg == WM_SYSKEYDOWN || uMsg == WM_SYSKEYUP) {
-			
+
+			bool iskeydown = (uMsg == WM_KEYDOWN || WM_SYSKEYDOWN);
+			m_windowInput.AltDown = ((lParam & (1 << 29)) != 0);
+			m_windowInput.KeyCode[(byte)(wParam & 0xFF)] = iskeydown;
+
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::KeyEvent,&m_windowInput });
 		}
 		else if (uMsg == WM_LBUTTONDOWN ||
 			uMsg == WM_LBUTTONUP ||
@@ -118,10 +123,13 @@ namespace rg {
 			m_windowInput.MButton = ((mouseButtonState & MK_MBUTTON) != 0);
 
 			EventOnMouseButton.emit();
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::MouseEvent,&m_windowInput });
+
 		}
 		else if (uMsg == WM_MOUSEWHEEL)
 		{
 			EventOnMouseWheel.emit(GET_WHEEL_DELTA_WPARAM(wParam));
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::MouseWheelEvent,&m_windowInput });
 		}
 		else if (uMsg == WM_MOUSEMOVE) {
 			EventOnMouseMove.emit(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));

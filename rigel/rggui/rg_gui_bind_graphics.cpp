@@ -63,7 +63,7 @@ namespace rg {
 
 		m_pRenderCtx->InputSetPrimitiveTopology();
 
-		m_pRenderCtx->DrawIndexed(18);
+		m_pRenderCtx->DrawIndexed(m_pGUICtx->GetDrawBuffer()->GetIndicesSize());
 
 		bool suc = m_pRenderCtx->FinishCommandList(false, &m_pCommandList);
 		if (!suc) {
