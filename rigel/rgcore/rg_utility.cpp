@@ -1,6 +1,7 @@
 #pragma once
 #include "rgcore.h"
 #include "rg_utility.h"
+#include <locale>
 namespace rg {
 
 	const std::wstring GetWorkDirectory()
@@ -23,7 +24,8 @@ namespace rg {
 		::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM| FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL,
 			hr,
-			MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
+			//MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),
+			MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
 			(LPTSTR)&lpMsgBuf,
 			0,
 			NULL);
