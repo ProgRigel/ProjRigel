@@ -59,7 +59,7 @@ namespace rg {
 		{
 			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, dxmap, 0, &bufferres);
 			if (hr != S_OK) {
-				RgLogE() << "map buffer data error "<< hr;
+				RgLogE() << "map buffer data error "<< HR_CODE(hr);
 				return;
 			}
 			auto dataptr = bufferres.pData;

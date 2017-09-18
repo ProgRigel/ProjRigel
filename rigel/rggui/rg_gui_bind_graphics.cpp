@@ -43,7 +43,6 @@ namespace rg {
 			m_pCommandList = nullptr;
 		}
 
-
 		auto rendertarget = m_pGraphics->GetRenderTarget();
 		m_pRenderCtx->SetRenderTarget(rendertarget);
 
@@ -187,19 +186,10 @@ namespace rg {
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
-		datai = new unsigned int[18];
-		for (int i = 0; i < 3; i++) {
-			datai[i * 6] = i * 4;
-			datai[i * 6 + 1] = i * 4 + 1;
-			datai[i * 6 + 2] = i * 4 + 2;
-			datai[i * 6 + 3] = i * 4;
-			datai[i * 6 + 4] = i * 4 + 2;
-			datai[i * 6 + 5] = i * 4 + 3;
-		}
-
 		auto indptr = guibuf->GetIndicesPtr();
 		
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), &datai, guibuf->GetIndicesSize() * sizeof(unsigned int),RgGraphicsBufferMap::Write);
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), guibuf->GetIndicesPtr(), guibuf->GetIndicesSize() * sizeof(unsigned int));
+
 
 
 		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;
