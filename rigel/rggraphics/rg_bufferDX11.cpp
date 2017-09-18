@@ -57,7 +57,6 @@ namespace rg {
 
 		D3D11_MAPPED_SUBRESOURCE bufferres;
 		{
-
 			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, dxmap, 0, &bufferres);
 			if (hr != S_OK) {
 				RgLogE() << "map buffer data error "<< hr;

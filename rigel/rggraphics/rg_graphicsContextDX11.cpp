@@ -92,6 +92,7 @@ namespace rg {
 			RgLogD() << "create dx11 device fail";
 			return E_FAIL;
 		}
+		//test::cnm
 		return S_OK;
 	}
 	void RgGraphicsContextDX11::releaseDeviceAndContext()
