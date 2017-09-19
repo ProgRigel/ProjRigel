@@ -33,7 +33,14 @@ namespace editor {
 	}
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
+		m_pGUIContext->BeginGUI();
 
+		if (e.Input->RButton) {
+			m_pGUIContext->DrawRect(RgVec2(20.0f, 20.0f), RgVec2(100.0f, 20.0f));
+			m_pGUIContext->SetDirty(true);
+		}
+
+		m_pGUIContext->EndGUI();
 
 
 	}

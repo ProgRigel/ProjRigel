@@ -92,7 +92,7 @@ namespace rg {
 
 	unsigned int * RgGUIDrawBuffer::GetIndicesPtr()
 	{
-		unsigned int quadcount = (m_pPos - m_pData)/4;
+		unsigned int quadcount =(unsigned int)(m_pPos - m_pData)/4;
 		if (quadcount > m_pIndicesBufferQuadSize) {
 			auto scale = quadcount / m_pIndicesBufferQuadSize + 1;
 			ExtendIndicesBuffer(m_pIndicesBufferQuadSize, m_pIndicesBufferQuadSize*scale);

@@ -15,6 +15,21 @@ namespace rg {
 	{
 		m_pDrawBuffer->ResetBuffer();
 	}
+	void RgGUIContext::SetDirty(bool dirty)
+	{
+		m_bDirty = dirty;
+	}
+	bool RgGUIContext::IsDirty()
+	{
+		return m_bDirty;
+	}
+	void RgGUIContext::BeginGUI()
+	{
+		m_pDrawBuffer->ResetBuffer();
+	}
+	void RgGUIContext::EndGUI()
+	{
+	}
 	void RgGUIContext::DrawLine()
 	{
 	}
