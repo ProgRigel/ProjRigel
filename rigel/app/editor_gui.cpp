@@ -33,12 +33,13 @@ namespace editor {
 	}
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
-		m_pGUIContext->BeginGUI();
+		m_pGUIContext->BeginGUI(e);
 
-		if (e.Input->RButton) {
-			m_pGUIContext->DrawRect(RgVec2(20.0f, 20.0f), RgVec2(100.0f, 20.0f));
-			m_pGUIContext->SetDirty(true);
+		if (m_pGUIContext->GUIButton(RgVec2(20.0f, 20.0f), RgVec2(100.0f, 20.0f))) {
+			RgLogD() << "click";
+			
 		}
+		
 
 		m_pGUIContext->EndGUI();
 

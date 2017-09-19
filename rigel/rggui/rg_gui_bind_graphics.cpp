@@ -190,9 +190,9 @@ namespace rg {
 		}
 
 
-		m_pGUICtx->DrawRect(RgVec2(0.0f, .0f), RgVec2(70, 30.0f));
-		m_pGUICtx->DrawRect(RgVec2(30.f, 100.f), RgVec2(200, 60.0f));
-		m_pGUICtx->DrawRect(RgVec2(70.0f, 200.0f), RgVec2(50, 50.0f));
+		//m_pGUICtx->DrawRect(RgVec2(0.0f, .0f), RgVec2(70, 30.0f));
+		//m_pGUICtx->DrawRect(RgVec2(30.f, 100.f), RgVec2(200, 60.0f));
+		//m_pGUICtx->DrawRect(RgVec2(70.0f, 200.0f), RgVec2(50, 50.0f));
 		
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));

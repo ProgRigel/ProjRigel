@@ -132,7 +132,11 @@ namespace rg {
 			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::MouseWheelEvent,&m_windowInput });
 		}
 		else if (uMsg == WM_MOUSEMOVE) {
-			EventOnMouseMove.emit(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			int mousex = GET_X_LPARAM(lParam);
+			int mousey = GET_Y_LPARAM(lParam);
+			EventOnMouseMove.emit(mousex,mousey );
+			m_windowInput.MousePos = RgVec2((float)mousex, (float)mousey);
+
 		}
 
 		switch (uMsg) {

@@ -10,6 +10,8 @@ namespace rg {
 			delete m_pDrawBuffer;
 			m_pDrawBuffer = nullptr;
 		}
+
+		m_pWindowInput = nullptr;
 	}
 	void RgGUIContext::Reset()
 	{
@@ -23,12 +25,14 @@ namespace rg {
 	{
 		return m_bDirty;
 	}
-	void RgGUIContext::BeginGUI()
+	void RgGUIContext::BeginGUI(const RgWindowEvent& e)
 	{
+		m_pWindowInput = e.Input;
 		m_pDrawBuffer->ResetBuffer();
 	}
 	void RgGUIContext::EndGUI()
 	{
+		SetDirty(true);
 	}
 	void RgGUIContext::DrawLine()
 	{
@@ -45,6 +49,26 @@ namespace rg {
 		m_pDrawBuffer->m_pPos++;
 
 		m_pDrawBuffer->ExtendBufferCheck();
+	}
+
+	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & size) const
+	{
+		DrawRect(lp, size);
+		if (m_pWindowInput->LButton && CheckMousePos(lp, size)) {
+			return true;
+		}
+		return false;
+	}
+
+	bool RgGUIContext::CheckMousePos(const RgVec2 & lp, const RgVec2 & size) const
+	{
+		if (m_pWindowInput == nullptr) return false;
+		
+		const RgVec2& mousepos = m_pWindowInput->MousePos;
+		if (lp.x < mousepos.x && mousepos.x < size.x + lp.x && lp.y < mousepos.y && mousepos.y < lp.y + size.y) {
+			return true;
+		}
+		return false;
 	}
 
 	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()

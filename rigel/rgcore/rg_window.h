@@ -30,6 +30,7 @@ namespace rg {
 		bool KeyCode[256];
 		bool AltDown = false;
 		RgVec4 WindowRect;
+		RgVec2 MousePos;
 	};
 
 	class RgWindowEvent{
