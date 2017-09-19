@@ -210,9 +210,9 @@ namespace rg {
 		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;
 		float bheight = -2.0f / m_pGraphics->GetRenderTarget()->BufferHeight;
 		constantData.color = RgVec4(1.0f, 0.3f, 0.5f, 1.0f);
-		constantData.mtx.m1 = RgVec4(bwidth, 0, 0,0);
-		constantData.mtx.m2 = RgVec4(0, bheight, 0,0);
-		constantData.mtx.m3 = RgVec4(-1.0f,1.0f, 1.0f,0);
+		constantData.mtx.m1 = RgVec4(bwidth, .0, .0,.0);
+		constantData.mtx.m2 = RgVec4(.0f, bheight, .0f,.0f);
+		constantData.mtx.m3 = RgVec4(-1,1, 1,0);
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();
@@ -293,10 +293,10 @@ namespace rg {
 		float bwidth = 2.0f / width;
 		float bheight = -2.0f / height;
 
-		constantData.mtx.m1 = RgVec4(bwidth, 0, 0, 0);
-		constantData.mtx.m2 = RgVec4(0, bheight, 0, 0);
-		constantData.mtx.m3 = RgVec4(0, 0, 1.0f, 0);
-		constantData.mtx.m4 = RgVec4(-2.0f, 1.0f, 0, 1.0f);
+		constantData.mtx.m1 = RgVec4(bwidth, .0, .0, .0);
+		constantData.mtx.m2 = RgVec4(.0, bheight, .0, .0);
+		constantData.mtx.m3 = RgVec4(0, 0, 1, 0);
+		constantData.mtx.m4 = RgVec4(-2, 1, 0, 1);
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();

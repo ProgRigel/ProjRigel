@@ -10,6 +10,7 @@ namespace rg {
 	typedef float RgFloat;
 	struct RgVec2{
 		RgFloat x, y;
+		RgVec2(int _x, int _y) :x((float)_x), y((float)_y){}
 		RgVec2(RgFloat _x,RgFloat _y):x(_x),y(_y){}
 		RgVec2():x(0),y(0){}
 		RgVec2(const RgVec2& v) :x(v.x), y(v.y) {}
@@ -120,6 +121,7 @@ namespace rg {
 		RgFloat x = 0;
 		RgFloat y = 0;
 		RgFloat z = 0;
+		RgVec3(int _x, int _y, int _z) :x((float)_x), y((float)_y), z((float)_z) {}
 		RgVec3() :x(0), y(0), z(0) {}
 		RgVec3(RgFloat _x, RgFloat _y, RgFloat _z) :x(_x), y(_y), z(_z){}
 		inline RgVec3(const RgVec2& v) : x(v.x), y(v.y), z(0){}
@@ -127,12 +129,12 @@ namespace rg {
 
 	struct RgVec4 {
 		RgFloat x, y, z, w;
+		RgVec4(int _x,int _y,int _z,int _w):x((float)_x),y((float)_y),z((float)_z),w((float)_w){}
 		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
 		RgVec4():x(0),y(0),z(0),w(0){}
 
 		std::string toStr() const;
 	};
-
 
 
 	inline const RgVec3 operator+(const RgVec3& v1, const RgVec3& v2) {
@@ -157,6 +159,7 @@ namespace rg {
 	inline const RgFloat operator*(const RgVec4& v1, const RgVec4& v2) {
 		return v1.w*v2.w + v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
 	}
+
 
 	struct RgMatrix3x3 {
 		RgVec3 m1;

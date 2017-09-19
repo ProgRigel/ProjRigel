@@ -6,6 +6,10 @@ namespace rg {
 	class RgGUI;
 	class RgGUIDrawBuffer;
 
+	struct RgGUIState {
+		RgVec4 Color;
+	};
+
 	class RgGUIContext {
 
 	public:
