@@ -40,7 +40,12 @@ namespace rg {
 
 			auto indptr = guibuf->GetIndicesPtr();//???
 			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
+
+			if (guibuf->IsIndicesChanged()) {
+				ReBuildCommandList();
+			}
 		}
+
 
 		if (m_pCommandList != nullptr) {
 			m_pGraphics->GetRenderContext()->ExecuteCommandList(m_pCommandList, false);

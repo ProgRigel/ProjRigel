@@ -25,6 +25,8 @@ namespace rg {
 		unsigned int * GetIndicesPtr();
 		unsigned int GetIndicesSize();
 
+		bool IsIndicesChanged();
+
 	private:
 		RgGUIDrawBuffer(const RgGUIDrawBuffer&) = delete;
 		RgGUIDrawBuffer& operator=(const RgGUIDrawBuffer&) = delete;
@@ -50,6 +52,8 @@ namespace rg {
 		unsigned int * m_pIndicesBufferData = nullptr;
 		unsigned int m_pIndicesBufferQuadSize = INDICES_QUAD_INIT;
 		unsigned int m_pIndicesQuadCount = 0;
+
+		unsigned int m_pLastIndicesQuadSize = 0;
 
 
 		friend class RgGUIContext;

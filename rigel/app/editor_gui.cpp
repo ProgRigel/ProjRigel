@@ -35,9 +35,14 @@ namespace editor {
 	{
 		m_pGUIContext->BeginGUI(e);
 
+		static bool showrect = false;
+
 		if (m_pGUIContext->GUIButton(RgVec2(20.0f, 20.0f), RgVec2(100.0f, 20.0f))) {
 			RgLogD() << "click";
-			
+			showrect = !showrect;
+		}
+		if (showrect) {
+			m_pGUIContext->DrawRect(RgVec2(20.0f, 50.0f), RgVec2(100.0f, 20.0f));
 		}
 		
 

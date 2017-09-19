@@ -71,6 +71,7 @@ namespace rg {
 
 	void RgGUIDrawBuffer::ResetBuffer()
 	{
+		m_pLastIndicesQuadSize = m_pIndicesQuadCount;
 		m_pPos = m_pData;
 		ZeroMemory(m_pData, m_sBufferSize * VERTEX_SIZE);
 	}
@@ -105,6 +106,11 @@ namespace rg {
 	unsigned int RgGUIDrawBuffer::GetIndicesSize()
 	{
 		return m_pIndicesQuadCount *6;
+	}
+
+	bool RgGUIDrawBuffer::IsIndicesChanged()
+	{
+		return m_pIndicesQuadCount != m_pLastIndicesQuadSize;
 	}
 
 
