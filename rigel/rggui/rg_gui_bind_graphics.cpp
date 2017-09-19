@@ -65,7 +65,7 @@ namespace rg {
 		m_pRenderCtx->SetRasterizerState(m_pRasterState);
 		m_pRenderCtx->SetViewPort(m_pGraphics->GetViewPortDefault());
 
-		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.2f, 0.6f, 1.0f), rendertarget);
+		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.1f, 0.1f, 1.0f), rendertarget);
 		m_pRenderCtx->ClearDepthStencil(rendertarget);
 
 		m_pRenderCtx->InputSetBuffer(m_pBufferVertex);
@@ -172,24 +172,24 @@ namespace rg {
 			RgInputLayoutElement layoute[3];
 			layoute[0].SemanticName = "POSITION";
 			layoute[0].SemanticIndex = 0;
-			layoute[0].Format = RgGraphicsFormat::R32G32B32_FLOAT;
+			layoute[0].Format = RgGraphicsFormat::R32G32B32A32_FLOAT;
 			layoute[0].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
 			layoute[0].InputSlot = 0;
 			layoute[0].AlignedByteOffset = 0;
 
 			layoute[1].SemanticName = "COLOR";
 			layoute[1].SemanticIndex = 0;
-			layoute[1].Format = RgGraphicsFormat::R32G32B32_FLOAT;
+			layoute[1].Format = RgGraphicsFormat::R32G32B32A32_FLOAT;
 			layoute[1].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
 			layoute[1].InputSlot = 0;
-			layoute[0].AlignedByteOffset = 0xffffffff;
+			layoute[1].AlignedByteOffset = 0xffffffff;
 
 			layoute[2].SemanticName = "TEXCOORD";
 			layoute[2].SemanticIndex = 0;
 			layoute[2].Format = RgGraphicsFormat::R32G32_FLOAT;
 			layoute[2].InputSlotClass = RgInputSlotClass::PER_VERTEX_DATA;
 			layoute[2].InputSlot = 0;
-			layoute[0].AlignedByteOffset = 0xffffffff;
+			layoute[2].AlignedByteOffset = 0xffffffff;
 
 			m_pInputLayout = m_pGraphics->CreateInputLayout(layoute, 3, m_pShaderVertex);
 		}

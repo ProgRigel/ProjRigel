@@ -7,14 +7,15 @@ cbuffer ConstBuffer:register(b0)
 
 struct VertexInput
 {
-	float3 position:POSITION;
-	float3 color:COLOR;
+	float4 position:POSITION;
+	float4 color:COLOR;
 	float2 uv:TEXCOORD;
 };
 
 struct PixelInput
 {
 	float4 position:SV_POSITION;
+	float4 color : COLOR0;
 };
 
 
@@ -26,5 +27,6 @@ PixelInput main(VertexInput v)
 	vpos.x -= 1.0;
 	vpos.y += 1.0;
 	o.position = float4(vpos.xy, 0, 1.0);
+	o.color = v.color;
 	return o;
 }

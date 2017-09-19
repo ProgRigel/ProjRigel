@@ -1,12 +1,14 @@
 #pragma once
 #include <rgcore\rg_window.h>
-
+#include "rg_gui_style.h"
 namespace rg {
 
 	class RgGUI;
 	class RgGUIDrawBuffer;
 
 	struct RgGUIState {
+		RgVec4 ColorBg;
+		RgVec4 ColorFont;
 		RgVec4 Color;
 	};
 
@@ -20,14 +22,22 @@ namespace rg {
 		bool IsDirty();
 	public:
 
+		//logic
 		void BeginGUI(const RgWindowEvent&);
 		void EndGUI();
+		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
 
+		//draw
 		void DrawLine();
 		void DrawRect(const RgVec2& lp,const RgVec2& size) const;
+
+		//controller
 		bool GUIButton(const RgVec2& lp, const RgVec2& size) const;
 
-		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
+		//state
+		void SetColor(RgVec4 color);
+
+		
 
 		RgGUIDrawBuffer * GetDrawBuffer();
 
@@ -39,8 +49,8 @@ namespace rg {
 		RgGUIContext& operator=(const RgGUIContext&) = delete;
 
 		bool m_bDirty = false;
+		RgGUIState m_sState;
 		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
-
 		const RgWindowInput * m_pWindowInput = nullptr;
 
 	public:

@@ -365,6 +365,9 @@ namespace rg {
 		{
 			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		}
+		else if (element.Format == RgGraphicsFormat::R32G32B32A32_FLOAT) {
+			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		}
 		desc.InputSlot = element.InputSlot;
 		desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		desc.AlignedByteOffset = element.AlignedByteOffset;

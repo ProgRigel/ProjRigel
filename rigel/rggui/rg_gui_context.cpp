@@ -39,13 +39,19 @@ namespace rg {
 	}
 	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& size) const
 	{
-		m_pDrawBuffer->m_pPos->pos = lp;
+		
+		auto color = m_sState.Color;
+		m_pDrawBuffer->m_pPos->pos = RgVec4(lp.x,lp.y,0.0f,0.0f);
+		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec2(lp.x + size.x, lp.y);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(lp.x + size.x, lp.y,0.0f,0.0f);
+		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
 		m_pDrawBuffer->m_pPos->pos = lp + size;
+		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
 		m_pDrawBuffer->m_pPos->pos = RgVec2(lp.x, lp.y + size.y);
+		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
 
 		m_pDrawBuffer->ExtendBufferCheck();
@@ -58,6 +64,11 @@ namespace rg {
 			return true;
 		}
 		return false;
+	}
+
+	void RgGUIContext::SetColor(RgVec4 color)
+	{
+		m_sState.Color = color;
 	}
 
 	bool RgGUIContext::CheckMousePos(const RgVec2 & lp, const RgVec2 & size) const

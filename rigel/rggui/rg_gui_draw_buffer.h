@@ -5,8 +5,8 @@ namespace rg {
 
 	struct RgGUIVertex
 	{
-		RgVec3 pos;
-		RgVec3 color;
+		RgVec4 pos;
+		RgVec4 color;
 		RgVec2 uv;
 
 	};

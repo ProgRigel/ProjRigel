@@ -134,6 +134,18 @@ namespace rg {
 		RgVec4():x(0),y(0),z(0),w(0){}
 
 		std::string toStr() const;
+
+		inline const RgVec3 xyz() const{
+			return RgVec3(x, y, z);
+		}
+
+		RgVec4& operator=(const RgVec2& v) {
+			this->x = v.x;
+			this->y = v.y;
+			this->z = 0;
+			this->w = 0;
+			return *this;
+		}
 	};
 
 

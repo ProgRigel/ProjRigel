@@ -7,11 +7,10 @@ cbuffer ConstBuffer:register(b0)
 struct PixelInput
 {
 	float4 position:SV_POSITION;
-	float c : TEXCOORD0;
+	float4 color : COLOR0;
 };
 
 float4 main(PixelInput i):SV_TARGET
 {
-	float4 col = Color;
-	return col;
+	return float4(i.color.xyz,1.0);
 }

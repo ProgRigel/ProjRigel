@@ -37,6 +37,7 @@
     <ClCompile Include="rg_gui_bind_graphics.cpp" />
     <ClCompile Include="rg_gui_context.cpp" />
     <ClCompile Include="rg_gui_draw_buffer.cpp" />
+    <ClCompile Include="rg_gui_style.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{15D95F53-D75B-48BA-91FC-C02600A7E59E}</ProjectGuid>
