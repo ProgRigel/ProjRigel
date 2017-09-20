@@ -29,28 +29,58 @@ namespace rg {
 	{
 		m_pWindowInput = e.Input;
 		m_pDrawBuffer->ResetBuffer();
+		m_sState.Reset();
 	}
 	void RgGUIContext::EndGUI()
 	{
 		SetDirty(true);
 	}
+
+	void RgGUIContext::BeginGroup(RG_PARAM_RECT)
+	{
+		auto& stack = m_sState.GroupRectStack;
+		if (stack.empty()) {
+			stack.push(RgVec4(lp, lp + size));
+		}
+		else
+		{
+			RgVec4 rect = stack.top();
+			rect.x += lp.x;
+			rect.y += lp.y;
+			rect.z = size.x > rect.z ? rect.z : size.x;
+			rect.w = size.y > rect.y ? rect.y : size.y;
+			stack.push(rect);
+		}
+	}
+
+	void RgGUIContext::EndGroup()
+	{
+		auto& stack = m_sState.GroupRectStack;
+		if (!stack.empty()) stack.pop();
+	}
+
 	void RgGUIContext::DrawLine()
 	{
+
 	}
-	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& size) const
+	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& sz) const
 	{
-		
+		RgVec2 point = lp;
+		RgVec2 size = sz;
+
+		bool d = _GroupClip(point, size);
+
 		auto color = m_sState.Color;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(lp.x,lp.y,0.0f,0.0f);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y,1.0f,0.0f);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(lp.x + size.x, lp.y,0.0f,0.0f);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x + size.x, point.y,1.0f,0.0f);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = lp + size;
+		m_pDrawBuffer->m_pPos->pos =RgVec4(point + size,1.0,0.0f);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec2(lp.x, lp.y + size.y);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y + size.y,1.0,0.0);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
 
@@ -82,6 +112,30 @@ namespace rg {
 		return false;
 	}
 
+	bool RgGUIContext::Clip(const RgVec4 & rect, RgVec2 & pos, RgVec2 & sz) const
+	{
+		RgVec2 rb(rect.x + rect.z, rect.y + rect.w);
+		if (pos.x > rb.x || pos.y > rb.y) return false;
+
+		RgVec2 lb = pos + sz + RgVec2(rect.x,rect.y);
+		if (lb.x < rect.x || lb.y < rect.y) return false;
+
+		pos.x = pos.x < rect.x ? rect.x : pos.x;
+		pos.y = pos.y < rect.y ? rect.y : pos.y;
+
+		sz = lb - pos;
+
+		return true;
+	}
+
+	bool RgGUIContext::_GroupClip(RgVec2 & pos, RgVec2 & sz) const
+	{
+		if (m_sState.GroupRectStack.empty()) return true;
+		
+		return Clip(m_sState.GroupRectStack.top(),pos,sz);
+
+	}
+
 	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()
 	{
 		return m_pDrawBuffer;
@@ -96,6 +150,11 @@ namespace rg {
 	RgGUIContext::~RgGUIContext()
 	{
 		Release();
+	}
+
+	void RgGUIState::Reset()
+	{
+		std::stack<RgVec4>().swap(GroupRectStack);
 	}
 
 }

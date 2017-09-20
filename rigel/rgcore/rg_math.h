@@ -65,6 +65,8 @@ namespace rg {
 		RgFloat length(){
 			return sqrt(this->dot(*this));
 		}
+
+		std::string toStr() const;
 	};
 	inline const RgFloat abs(RgFloat s) {
 		return abs((float)s);
@@ -125,6 +127,8 @@ namespace rg {
 		RgVec3() :x(0), y(0), z(0) {}
 		RgVec3(RgFloat _x, RgFloat _y, RgFloat _z) :x(_x), y(_y), z(_z){}
 		inline RgVec3(const RgVec2& v) : x(v.x), y(v.y), z(0){}
+
+		std::string toStr() const;
 	};
 
 	struct RgVec4 {
@@ -132,7 +136,8 @@ namespace rg {
 		RgVec4(int _x,int _y,int _z,int _w):x((float)_x),y((float)_y),z((float)_z),w((float)_w){}
 		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
 		RgVec4():x(0),y(0),z(0),w(0){}
-
+		RgVec4(const RgVec2& v1,const RgVec2& v2):x(v1.x),y(v1.y),z(v2.x),w(v2.y){}
+		RgVec4(const RgVec2& v1, float _z,float _w) :x(v1.x), y(v1.y), z(_z), w(_w) {}
 		std::string toStr() const;
 
 		inline const RgVec3 xyz() const{

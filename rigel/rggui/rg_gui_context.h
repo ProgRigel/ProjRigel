@@ -1,7 +1,10 @@
 #pragma once
 #include <rgcore\rg_window.h>
 #include "rg_gui_style.h"
+#include <stack>
 namespace rg {
+
+#define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
 
 	class RgGUI;
 	class RgGUIDrawBuffer;
@@ -10,6 +13,10 @@ namespace rg {
 		RgVec4 ColorBg;
 		RgVec4 ColorFont;
 		RgVec4 Color;
+		
+		std::stack<RgVec4> GroupRectStack;
+
+		void Reset();
 	};
 
 	class RgGUIContext {
@@ -25,7 +32,14 @@ namespace rg {
 		//logic
 		void BeginGUI(const RgWindowEvent&);
 		void EndGUI();
+
+		void BeginGroup(RG_PARAM_RECT);
+		void EndGroup();
+
 		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
+
+		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
+		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 
 		//draw
 		void DrawLine();

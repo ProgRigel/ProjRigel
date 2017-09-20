@@ -9,6 +9,18 @@ namespace rg {
 		ss << "(" << x << "," << y << "," << z << "," << w << ")";
 		return ss.str();
 	}
+	std::string RgVec3::toStr() const
+	{
+		std::stringstream ss;
+		ss << "(" << x << "," << y << "," << z << ")";
+		return ss.str();
+	}
+	std::string RgVec2::toStr() const
+	{
+		std::stringstream ss;
+		ss << "(" << x << "," << y << ")";
+		return ss.str();
+	}
 }
 
 

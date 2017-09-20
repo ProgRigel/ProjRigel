@@ -33,19 +33,22 @@ namespace editor {
 	}
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
+
+		//if (e.Type == RgWindowEventType::Resize) return;
+
 		m_pGUIContext->BeginGUI(e);
 
-		static bool showrect = false;
-		m_pGUIContext->SetColor(RgGUIColors::BelizeHole);
-		if (m_pGUIContext->GUIButton(RgVec2(20.0f, 20.0f), RgVec2(100.0f, 20.0f))) {
-			RgLogD() << "click";
-			showrect = !showrect;
-		}
-		if (showrect) {
-			m_pGUIContext->SetColor(RgGUIColors::Nephritis);
-			m_pGUIContext->DrawRect(RgVec2(20.0f, 50.0f), RgVec2(100.0f, 20.0f));
-		}
+		m_pGUIContext->SetColor(RgGUIColors::Pumpkin);
+		m_pGUIContext->DrawRect(RgVec2(10, 30), RgVec2(50, 50));
 		
+		m_pGUIContext->BeginGroup(RgVec2(10, 30), RgVec2(50, 50));
+
+		m_pGUIContext->SetColor(RgGUIColors::Clouds);
+		m_pGUIContext->DrawRect(RgVec2(-10,0), RgVec2(30, 30));
+
+		m_pGUIContext->EndGroup();
+
+		m_pGUIContext->DrawRect(RgVec2(100, 20), RgVec2(50, 50));
 
 		m_pGUIContext->EndGUI();
 
