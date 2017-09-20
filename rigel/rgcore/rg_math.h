@@ -8,29 +8,30 @@
 #include <math.h>
 namespace rg {
 	typedef float RgFloat;
+	template<typename T>
 	struct RgVec2{
-		RgFloat x, y;
+		T x, y;
 		RgVec2(int _x, int _y) :x((float)_x), y((float)_y){}
-		RgVec2(RgFloat _x,RgFloat _y):x(_x),y(_y){}
+		RgVec2(T _x,T _y):x(_x),y(_y){}
 		RgVec2():x(0),y(0){}
 		RgVec2(const RgVec2& v) :x(v.x), y(v.y) {}
 
-		RgVec2& operator +=(RgFloat s) {
+		RgVec2& operator +=(T s) {
 			x += s;
 			y += s;
 			return *this;
 		}
-		RgVec2& operator -=(RgFloat s) {
+		RgVec2& operator -=(T s) {
 			x -= s;
 			y -= s;
 			return *this;
 		}
-		RgVec2& operator *=(RgFloat s) {
+		RgVec2& operator *=(T s) {
 			x *= s;
 			y *= s;
 			return *this;
 		}
-		RgVec2& operator /=(RgFloat s) {
+		RgVec2& operator /=(T s) {
 			if (s != 0) {
 				x /= s;
 				y /= s;
@@ -71,7 +72,8 @@ namespace rg {
 	inline const RgFloat abs(RgFloat s) {
 		return abs((float)s);
 	}
-	inline const RgVec2 operator+(const RgVec2& v1, const RgFloat& s) {
+	template<typename T>
+	inline const RgVec2<T> operator+(const RgVec2<T>& v1, const RgFloat& s) {
 		return{ v1.x + s,v1.y + s };
 	}
 	inline const RgVec2 operator-(const RgVec2& v1, const RgFloat& s) {
