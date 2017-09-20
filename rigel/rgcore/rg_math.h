@@ -127,10 +127,66 @@ namespace rg {
 		RgVec3() :x(0), y(0), z(0) {}
 		RgVec3(RgFloat _x, RgFloat _y, RgFloat _z) :x(_x), y(_y), z(_z){}
 		inline RgVec3(const RgVec2& v) : x(v.x), y(v.y), z(0){}
-
 		std::string toStr() const;
+		RgVec3& operator +=(RgFloat s) {
+			x += s;
+			y += s;
+			z += s;
+			return *this;
+		}
+		RgVec3& operator -=(RgFloat s) {
+			x -= s;
+			y -= s;
+			z -= s;
+			return *this;
+		}
+		RgVec3& operator *=(RgFloat s) {
+			x *= s;
+			y *= s;
+			z *= s;
+			return *this;
+		}
+		RgVec3& operator /=(RgFloat s) {
+			if (s != 0)
+			{
+				x /= s;
+				y /= s;
+				z /= s;
+				return *this;
+			}
+			return *this;
+		}
+		RgVec3& operator +=(RgVec3 v) {
+			x += v.x;
+			y += v.y;
+			z += v.z;
+			return *this;
+		}
+		RgVec3& operator -=(RgVec3 v) {
+			x -= v.x;
+			y -= v.y;
+			z -= v.z;
+			return *this;
+		}
+		RgVec3& operator *=(RgVec3 v) {
+			x *= v.x;
+			y *= v.y;
+			z *= v.z;
+			return *this;
+		}
+		RgVec3& operator /=(RgVec3 v) {
+			x /= v.x;
+			y /= v.y;
+			z /= v.z;
+			return *this;
+		}
+		RgFloat dot(const RgVec3& v) {
+			return x*v.x + y*v.y + z*v.z;
+		}
+		RgFloat length() {
+			return sqrt(this->dot(*this));
+		}
 	};
-
 	struct RgVec4 {
 		RgFloat x, y, z, w;
 		RgVec4(int _x,int _y,int _z,int _w):x((float)_x),y((float)_y),z((float)_z),w((float)_w){}
