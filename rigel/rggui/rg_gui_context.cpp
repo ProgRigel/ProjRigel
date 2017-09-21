@@ -38,18 +38,32 @@ namespace rg {
 
 	void RgGUIContext::BeginGroup(RG_PARAM_RECT)
 	{
+		BeginGroup(lp, size, m_style.ColorBg);
+	}
+
+	void RgGUIContext::BeginGroup(RG_PARAM_RECT, RgVec4 color)
+	{
 		auto& stack = m_sState.GroupRectStack;
 		if (stack.empty()) {
 			stack.push(RgVec4(lp, lp + size));
+
+			RestoreColor(color);
+			DrawRect(RgVec2(),size);
+			DropColor();
 		}
 		else
 		{
+			
 			RgVec4 rect = stack.top();
 			rect.x += lp.x;
 			rect.y += lp.y;
 			rect.z = size.x > rect.z ? rect.z : size.x;
 			rect.w = size.y > rect.y ? rect.y : size.y;
 			stack.push(rect);
+
+			RestoreColor(color);
+			DrawRect(RgVec2(),rect.zw());
+			DropColor();
 		}
 	}
 
@@ -98,6 +112,34 @@ namespace rg {
 		return false;
 	}
 
+	void RgGUIContext::GUIMenuBarBegin(bool horizontal)
+	{
+		m_sState.guiMenuBar = true;
+		m_sState.guiMenuBarHorizontal = horizontal;
+	}
+
+	void RgGUIContext::GUIMenuBarEnd()
+	{
+		m_sState.guiMenuBar = false;
+	}
+
+	bool RgGUIContext::GUIMenuItem()
+	{
+		return false;
+	}
+
+	void RgGUIContext::GUIMenuItemList()
+	{
+	}
+
+	void RgGUIContext::GUIMenuItemListBegin()
+	{
+	}
+
+	void RgGUIContext::GUIMenuItemListEnd()
+	{
+	}
+
 	void RgGUIContext::SetColor(RgVec4 color)
 	{
 		m_sState.Color = color;
@@ -128,6 +170,22 @@ namespace rg {
 		sz = lb - pos;
 
 		return true;
+	}
+
+	void RgGUIContext::RestoreColor()
+	{
+		m_sState.ColorRestored = m_sState.Color;
+	}
+
+	void RgGUIContext::RestoreColor(const RgVec4 & tempcolor)
+	{
+		RestoreColor();
+		m_sState.Color = tempcolor;
+	}
+
+	void RgGUIContext::DropColor()
+	{
+		m_sState.Color = m_sState.ColorRestored;
 	}
 
 	bool RgGUIContext::_GroupClip(RgVec2 & pos, RgVec2 & sz) const

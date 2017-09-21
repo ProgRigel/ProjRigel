@@ -207,6 +207,13 @@ namespace rg {
 			this->w = 0;
 			return *this;
 		}
+
+		inline const RgVec2 xy() const {
+			return RgVec2(x, y);
+		}
+		inline const RgVec2 zw() const {
+			return RgVec2(z, w);
+		}
 	};
 
 

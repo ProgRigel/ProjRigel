@@ -34,23 +34,20 @@ namespace editor {
 	void EditorGUI::OnWindowGUI(const rg::RgWindowEvent e)
 	{
 
+		auto ctx = m_pGUIContext;
 		//if (e.Type == RgWindowEventType::Resize) return;
 
-		m_pGUIContext->BeginGUI(e);
+		ctx->BeginGUI(e);
 
-		m_pGUIContext->SetColor(RgGUIColors::Pumpkin);
-		m_pGUIContext->DrawRect(RgVec2(10, 30), RgVec2(50, 50));
-		
-		m_pGUIContext->BeginGroup(RgVec2(10, 30), RgVec2(50, 50));
+		ctx->BeginGroup(RgVec2(10, 30), RgVec2(400, 300));
 
-		m_pGUIContext->SetColor(RgGUIColors::Clouds);
-		m_pGUIContext->DrawRect(RgVec2(-10,0), RgVec2(30, 30));
+		ctx->GUIMenuBarBegin(true);
 
-		m_pGUIContext->EndGroup();
+		ctx->GUIMenuBarEnd();
 
-		m_pGUIContext->DrawRect(RgVec2(50, 70), RgVec2(50, 50));
+		ctx->EndGroup();
 
-		m_pGUIContext->EndGUI();
+		ctx->EndGUI();
 
 
 	}

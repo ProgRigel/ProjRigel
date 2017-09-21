@@ -31,8 +31,12 @@ namespace rg {
 	}
 	void RgGUIBindGraphics::OnRender()
 	{
+		//RgLogD() << "render";
+
 		if (m_pGUICtx->IsDirty()) {
 			m_pGUICtx->SetDirty(false);
+
+			RgLogD() << "dirty";
 
 			//mapdata
 			auto guibuf = m_pGUICtx->GetDrawBuffer();
@@ -42,6 +46,9 @@ namespace rg {
 			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
 
 			if (guibuf->IsIndicesChanged()) {
+
+				RgLogD() << "rebuild";
+
 				ReBuildCommandList();
 			}
 		}
