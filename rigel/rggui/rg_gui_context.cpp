@@ -84,6 +84,10 @@ namespace rg {
 
 		bool d = _GroupClip(point, size);
 
+		//RgLogW()<< lp.toStr() << size.toStr();
+
+		if (d == false) return;
+
 		auto color = m_sState.Color;
 		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y,m_sState.RectZ,1.0);
 		m_pDrawBuffer->m_pPos->color = color;
@@ -156,18 +160,18 @@ namespace rg {
 		return false;
 	}
 
+	//pos sz in related to group root
 	bool RgGUIContext::Clip(const RgVec4 & rect, RgVec2 & pos, RgVec2 & sz) const
 	{
-		RgVec2 rb(rect.x + rect.z, rect.y + rect.w);
-		if (pos.x > rb.x || pos.y > rb.y) return false;
+		RgVec2 rroot = max(RgVec2(), pos);
+		RgVec2 rtail = pos + sz;
+		rtail = min(rtail, rect.zw());
 
-		RgVec2 lb = pos + sz + RgVec2(rect.x,rect.y);
-		if (lb.x < rect.x || lb.y < rect.y) return false;
+		if (rtail.x < rroot.x || rtail.y < rroot.y) return false;
 
-		pos.x = pos.x < rect.x ? rect.x : pos.x;
-		pos.y = pos.y < rect.y ? rect.y : pos.y;
-
-		sz = lb - pos;
+		sz = rtail - rroot;
+		pos = rroot + rect.xy();
+		
 
 		return true;
 	}

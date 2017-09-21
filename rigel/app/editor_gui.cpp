@@ -41,11 +41,12 @@ namespace editor {
 
 		ctx->BeginGroup(RgVec2(10, 30), RgVec2(400, 300));
 
-		ctx->GUIMenuBarBegin(true);
-
-		ctx->GUIMenuBarEnd();
+		ctx->SetColor(RgGUIColors::Turquoise);
+		ctx->DrawRect(RgVec2(-20, 30), RgVec2(100, 20));
 
 		ctx->EndGroup();
+
+		ctx->DrawRect(RgVec2(-20, 20), RgVec2(100, 20));
 
 		ctx->EndGUI();
 

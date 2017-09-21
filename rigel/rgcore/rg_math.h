@@ -10,8 +10,8 @@ namespace rg {
 	typedef float RgFloat;
 	struct RgVec2{
 		RgFloat x, y;
-		RgVec2(int _x, int _y) :x((float)_x), y((float)_y){}
-		RgVec2(RgFloat _x,RgFloat _y):x(_x),y(_y){}
+		RgVec2(const int _x,const int _y) :x((float)_x), y((float)_y) {}
+		RgVec2(const RgFloat _x,const RgFloat _y):x(_x),y(_y){}
 		RgVec2():x(0),y(0){}
 		RgVec2(const RgVec2& v) :x(v.x), y(v.y) {}
 
@@ -111,10 +111,10 @@ namespace rg {
 		return sqrt(dot(v, v));
 	}
 	inline const RgVec2 min(RgVec2 const& v1, RgVec2 const& v2) {
-		return length(v1) < length(v2) ? v1 : v2;
+		return RgVec2(v1.x < v2.x ? v1.x : v2.x, v1.y < v2.y ? v1.y : v2.y);
 	}
 	inline const RgVec2 max(RgVec2 const& v1, RgVec2 const& v2) {
-		return length(v1) > length(v2) ? v1 : v2;
+		return RgVec2(v1.x > v2.x ? v1.x : v2.x, v1.y > v2.y ? v1.y : v2.y);
 	}
 	inline const RgVec2 abs(RgVec2 const& v){
 		return { abs(v.x),abs(v.y) };
