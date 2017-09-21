@@ -63,6 +63,7 @@ namespace rg {
 		m_pRenderCtx->SetRenderTarget(rendertarget);
 
 		m_pRenderCtx->SetRasterizerState(m_pRasterState);
+		m_pRenderCtx->SetDepthStencilState(m_pDepthStencilState);
 		m_pRenderCtx->SetViewPort(m_pGraphics->GetViewPortDefault());
 
 		m_pRenderCtx->ClearRenderTarget(RgVec4(0.1f, 0.1f, 0.1f, 1.0f), rendertarget);
@@ -194,6 +195,16 @@ namespace rg {
 			m_pInputLayout = m_pGraphics->CreateInputLayout(layoute, 3, m_pShaderVertex);
 		}
 
+		//depth stencil sstate
+		{
+			RgDepthStencilSettings dssettings;
+			dssettings.DepthEnable = true;
+			dssettings.DepthFunc = RgGraphicsComparisonFunc::ALWAYS;
+			dssettings.DepthWriteMask = RgDepthWriteMask::MASK_ALL;
+			dssettings.StencilEnable = false;
+			m_pDepthStencilState = m_pGraphics->CreateDepthStencilState(dssettings);
+			RG_ASSERT(m_pDepthStencilState);
+		}
 
 		//m_pGUICtx->DrawRect(RgVec2(0.0f, .0f), RgVec2(70, 30.0f));
 		//m_pGUICtx->DrawRect(RgVec2(30.f, 100.f), RgVec2(200, 60.0f));
@@ -260,6 +271,11 @@ namespace rg {
 		if (m_pInputLayout != nullptr) {
 			delete m_pInputLayout;
 			m_pBufferConst = nullptr;
+		}
+
+		if (m_pDepthStencilState != nullptr) {
+			m_pDepthStencilState->Release();
+			m_pDepthStencilState = nullptr;
 		}
 	}
 	void RgGUIBindGraphics::BeforeResize()

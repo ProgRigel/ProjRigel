@@ -79,7 +79,8 @@ namespace rg {
 	void RgRenderContextDX11::SetDepthStencilState(RgDepthStencilState *dss)
 	{
 		RgDepthStencilStateDX11 *dxdss = dynamic_cast<RgDepthStencilStateDX11*>(dss);
-		if (dxdss != nullptr) {
+		RG_ASSERT(dxdss);
+		if (dxdss == nullptr) {
 			RgLogE() << "dxdss is null";
 			return;
 		}

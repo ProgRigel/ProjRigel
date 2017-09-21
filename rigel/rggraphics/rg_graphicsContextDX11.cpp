@@ -433,6 +433,10 @@ namespace rg {
 		ID3D11DepthStencilState * dxdss = nullptr;
 		HRESULT hr = m_pD3D11Device->CreateDepthStencilState(&desc, &dxdss);
 		HR_CEHCK(hr);
+		if (hr != S_OK) {
+			RgLogE() << "create depth stencil state dx error:" << HrToError(hr);
+		}
+		RG_ASSERT(dxdss);
 		dss->m_state = dxdss;
 
 		m_vDepthStencilState.push_back(dss);
