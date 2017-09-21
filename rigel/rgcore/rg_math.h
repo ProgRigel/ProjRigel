@@ -207,7 +207,7 @@ namespace rg {
 	struct RgVec4 {
 		T x, y, z, w;
 		RgVec4(int _x,int _y,int _z,int _w):x((float)_x),y((float)_y),z((float)_z),w((float)_w){}
-		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
+		RgVec4(T _x, T _y, T _z,T _w) :x(_x), y(_y), z(_z),w(_w) {}
 		RgVec4():x(0),y(0),z(0),w(0){}
 		RgVec4(const RgVec2<T>& v1,const RgVec2<T>& v2):x(v1.x),y(v1.y),z(v2.x),w(v2.y){}
 		RgVec4(const RgVec2<T>& v1, T _z,T _w) :x(v1.x), y(v1.y), z(_z), w(_w) {}
@@ -224,21 +224,29 @@ namespace rg {
 			this->w = 0;
 			return *this;
 		}
+		RgVec4& operator=(const RgVec3& v) {
+			this->x = v.x;
+			this->y = v.y;
+			this->z = v.z;
+			this->w = 0;
+			return *this;
+		}
 	};
 
-
-	inline const RgVec3 operator+(const RgVec3& v1, const RgVec3& v2) {
+	template<typename T>
+	inline const RgVec3<T> operator+(const RgVec3<T>& v1, const RgVec3<T>& v2) {
 		return { v1.x + v2.x,v1.y + v2.y,v1.z + v2.z };
 	}
-
+	template<typename T>
 	inline const RgVec4 operator+(const RgVec4& v1, const RgVec4& v2) {
 		return{ v1.x + v2.x,v1.y + v2.y,v1.z + v2.z,v1.z+v2.z};
 	}
 
-	
+	template<typename T>
 	inline const RgVec3 operator-(const RgVec3& v1, const RgVec3& v2) {
 		return{ v1.x - v2.x,v1.y - v2.y,v1.z - v2.z };
 	}
+	template<typename T>
 	inline const RgVec4 operator-(const RgVec4& v1, const RgVec4& v2) {
 		return{ v1.x - v2.x,v1.y - v2.y,v1.z - v2.z,v1.z - v2.z };
 	}
