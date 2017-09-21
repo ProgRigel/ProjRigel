@@ -295,7 +295,7 @@ namespace rg {
 
 		constantData.mtx.m1 = RgVec4(bwidth, .0, .0, .0);
 		constantData.mtx.m2 = RgVec4(.0, bheight, .0, .0);
-		constantData.mtx.m3 = RgVec4(0, 0, 1, 0);
+		constantData.mtx.m3 = RgVec4(0.f, 0.f, 1.0f/65535.0f, 0.f);
 		constantData.mtx.m4 = RgVec4(-2, 1, 0, 1);
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 

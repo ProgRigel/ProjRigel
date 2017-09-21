@@ -26,7 +26,7 @@ PixelInput main(VertexInput v)
 	vpos = mul(vpos, Mtx);
 	vpos.x -= 1.0;
 	vpos.y += 1.0;
-	o.position = float4(vpos.xy,0.5, 1.0);
+	o.position = float4(vpos.xyz, 1.0);
 	o.color = v.color;
 	return o;
 }

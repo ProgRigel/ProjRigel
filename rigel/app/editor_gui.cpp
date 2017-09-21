@@ -48,7 +48,7 @@ namespace editor {
 
 		m_pGUIContext->EndGroup();
 
-		m_pGUIContext->DrawRect(RgVec2(100, 20), RgVec2(50, 50));
+		m_pGUIContext->DrawRect(RgVec2(50, 70), RgVec2(50, 50));
 
 		m_pGUIContext->EndGUI();
 

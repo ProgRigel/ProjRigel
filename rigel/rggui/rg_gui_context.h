@@ -15,8 +15,10 @@ namespace rg {
 		RgVec4 Color;
 		
 		std::stack<RgVec4> GroupRectStack;
+		RgFloat RectZ = 1.0f;
 
 		void Reset();
+		void RectZInc();
 	};
 
 	class RgGUIContext {
@@ -39,21 +41,22 @@ namespace rg {
 		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
-		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
+		
 
 		//draw
 		void DrawLine();
-		void DrawRect(const RgVec2& lp,const RgVec2& size) const;
+		void DrawRect(const RgVec2& lp,const RgVec2& size);
 
 		//controller
-		bool GUIButton(const RgVec2& lp, const RgVec2& size) const;
+		bool GUIButton(const RgVec2& lp, const RgVec2& size);
 
 		//state
 		void SetColor(RgVec4 color);
 
-		
-
 		RgGUIDrawBuffer * GetDrawBuffer();
+
+	private:
+		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 
 	private:
 		RgGUIContext();

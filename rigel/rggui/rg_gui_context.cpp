@@ -63,7 +63,7 @@ namespace rg {
 	{
 
 	}
-	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& sz) const
+	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& sz)
 	{
 		RgVec2 point = lp;
 		RgVec2 size = sz;
@@ -71,23 +71,25 @@ namespace rg {
 		bool d = _GroupClip(point, size);
 
 		auto color = m_sState.Color;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y,1.0f,0.0f);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y,m_sState.RectZ,1.0);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x + size.x, point.y,1.0f,0.0f);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x + size.x, point.y, m_sState.RectZ,1.0);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos =RgVec4(point + size,1.0,0.0f);
+		m_pDrawBuffer->m_pPos->pos =RgVec4(point + size, m_sState.RectZ,1.0);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y + size.y,1.0,0.0);
+		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y + size.y, m_sState.RectZ,1.0);
 		m_pDrawBuffer->m_pPos->color = color;
 		m_pDrawBuffer->m_pPos++;
 
 		m_pDrawBuffer->ExtendBufferCheck();
+
+		m_sState.RectZInc();
 	}
 
-	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & size) const
+	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & size)
 	{
 		DrawRect(lp, size);
 		if (m_pWindowInput->LButton && CheckMousePos(lp, size)) {
@@ -155,6 +157,12 @@ namespace rg {
 	void RgGUIState::Reset()
 	{
 		std::stack<RgVec4>().swap(GroupRectStack);
+		RectZ = 1.0f;
+	}
+
+	void RgGUIState::RectZInc()
+	{
+		RectZ += 1.0f;
 	}
 
 }
