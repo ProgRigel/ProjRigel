@@ -230,7 +230,8 @@ namespace rg {
 		constantData.color = RgVec4(1.0f, 0.3f, 0.5f, 1.0f);
 		constantData.mtx.m1 = RgVec4(bwidth, .0, .0,.0);
 		constantData.mtx.m2 = RgVec4(.0f, bheight, .0f,.0f);
-		constantData.mtx.m3 = RgVec4(-1,1, 1,0);
+		constantData.mtx.m3 = RgVec4(0.0f,0.0f,1.0f/65535.0f,0.0f);
+		constantData.mtx.m4 = RgVec4(-1.0f, 1.0f, .0f, 1.0f);
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();
