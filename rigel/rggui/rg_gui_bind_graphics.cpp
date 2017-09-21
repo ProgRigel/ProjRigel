@@ -199,7 +199,7 @@ namespace rg {
 		{
 			RgDepthStencilSettings dssettings;
 			dssettings.DepthEnable = true;
-			dssettings.DepthFunc = RgGraphicsComparisonFunc::ALWAYS;
+			dssettings.DepthFunc = RgGraphicsComparisonFunc::LESS_EQUAL;
 			dssettings.DepthWriteMask = RgDepthWriteMask::MASK_ALL;
 			dssettings.StencilEnable = false;
 			m_pDepthStencilState = m_pGraphics->CreateDepthStencilState(dssettings);
