@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <wchar.h>
 
 #ifdef _DEBUG
 #include <assert.h>
@@ -13,6 +15,8 @@ typedef unsigned char RgByte;
 typedef char RgChar;
 typedef unsigned short RgWord;
 typedef short RgShort;
+
+typedef std::wstring RgStr;
 
 
 #define RG_RELEASE(x) if(x!= nullptr){delete x;x = 0;}

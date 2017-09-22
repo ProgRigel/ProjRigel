@@ -161,6 +161,14 @@ namespace rg {
 		return clicked;
 	}
 
+	void RgGUIContext::GUIMenuListBegin(RgStr label)
+	{
+	}
+
+	void RgGUIContext::GUIMenuListEnd()
+	{
+	}
+
 	bool RgGUIContext::UtilIsInGroup() const
 	{
 		return !m_sState.GroupRectStack.empty();
@@ -201,6 +209,22 @@ namespace rg {
 			return true;
 		}
 		return false;
+	}
+
+	const RgVec4 RgGUIContext::UtilGetOriginRect(const RgVec4 & rect) const
+	{
+		if (!UtilIsInGroup()) return rect;
+
+		RgVec4 grect = rect;
+		grect.setxy(rect.xy() + m_sState.GroupRectStack.top().xy());
+		UtilClipRect(grect, m_sState.GroupRectStack.top());
+
+		return grect;
+	}
+
+	const RgVec2 RgGUIContext::UtilGetOriginPos(const RgVec2 & lp) const
+	{
+		return lp + m_sState.GroupRectStack.top().xy();
 	}
 
 	//pos sz in related to group root

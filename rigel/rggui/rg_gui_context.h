@@ -78,11 +78,15 @@ namespace rg {
 		void GUIMenuBarBegin(const RgVec4& rect);
 		void GUIMenuBarEnd();
 		bool GUIMenuItem(RgFloat width);
+		void GUIMenuListBegin(RgStr label);
+		void GUIMenuListEnd();
 
 		/////////////////////
 		bool UtilIsInGroup() const;
 		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
 		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true) const;
+		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
+		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
 		//////////////////
 		
 
