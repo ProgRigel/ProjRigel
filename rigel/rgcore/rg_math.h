@@ -124,11 +124,11 @@ namespace rg {
 	}
 	template<typename T>
 	inline const RgVec2<T> min(RgVec2<T> const& v1, RgVec2<T> const& v2) {
-		return length(v1) < length(v2) ? v1 : v2;
+		return { v1.x < v2.x ? v1.x : v2.x,v1.y < v2.y ? v1.y : v2.y };
 	}
 	template<typename T>
 	inline const RgVec2<T> max(RgVec2<T> const& v1, RgVec2<T> const& v2) {
-		return length(v1) > length(v2) ? v1 : v2;
+		return { v1.x > v2.x ? v1.x : v2.x,v1.y > v2.y ? v1.y : v2.y };
 	}
 	template<typename T>
 	inline const RgVec2<T> abs(RgVec2<T> const& v){
@@ -340,6 +340,14 @@ namespace rg {
 	template<typename T>
 	inline const RgVec4<T> operator/(const RgVec4<T>& v1, const RgVec4<T>& v2) {
 		return { v1.x / v2.x , v1.y / v2.y , v1.z / v2.z ,v1.w / v2.w };
+	}
+	template<typename T>
+	inline const RgVec4<T> min(const RgVec4<T>& v1, const RgVec4<T>& v2) {
+		return { v1.x < v2.x ? v1.x : v2.x, v1.y < v2.y ? v1.y : v2.y, v1.z < v2.z ? v1.z : v2.z,v1.w < v2.w ? v1.w : v2.w };
+	}
+	template<typename T>
+	inline const RgVec4<T> max(const RgVec4<T>& v1, const RgVec4<T>& v2) {
+		return { v1.x > v2.x ? v1.x : v2.x, v1.y > v2.y ? v1.y : v2.y, v1.z > v2.z ? v1.z : v2.z,v1.w > v2.w ? v1.w : v2.w };
 	}
 
 	template<typename T>
