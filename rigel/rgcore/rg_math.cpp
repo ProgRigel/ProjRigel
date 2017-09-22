@@ -21,6 +21,8 @@ namespace rg {
 		ss << "(" << x << "," << y << ")";
 		return ss.str();
 	}
+
+	const RgVec4 RgVec4::Zero = RgVec4();
 }
 
 

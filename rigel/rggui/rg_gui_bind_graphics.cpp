@@ -36,7 +36,7 @@ namespace rg {
 		if (m_pGUICtx->IsDirty()) {
 			m_pGUICtx->SetDirty(false);
 
-			RgLogD() << "dirty";
+			//RgLogD() << "dirty";
 
 			//mapdata
 			auto guibuf = m_pGUICtx->GetDrawBuffer();

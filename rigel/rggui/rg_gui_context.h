@@ -17,9 +17,12 @@ namespace rg {
 		
 		std::stack<RgVec4> GroupRectStack;
 		RgFloat RectZ = 1.0f;
+		RgFloat GroupWidthMax;
+		RgVec4 WindowGroupRect = RgVec4::Zero;
 
 		bool guiMenuBar = false;
 		bool guiMenuBarHorizontal = false;
+		RgFloat guiMenuBarOffset = 0;
 
 		void Reset();
 		void RectZInc();
@@ -74,6 +77,8 @@ namespace rg {
 
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
+		const RgVec2 _GetWindowSize() const;
+		const RgVec4 _GetGroupRect() const;
 
 	private:
 		RgGUIContext();

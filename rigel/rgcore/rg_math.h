@@ -214,6 +214,8 @@ namespace rg {
 		inline const RgVec2 zw() const {
 			return RgVec2(z, w);
 		}
+
+		const static RgVec4 Zero;
 	};
 
 

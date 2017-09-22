@@ -30,6 +30,9 @@ namespace rg {
 		m_pWindowInput = e.Input;
 		m_pDrawBuffer->ResetBuffer();
 		m_sState.Reset();
+		m_sState.WindowGroupRect.z = m_pWindowInput->WindowRect.z;
+		m_sState.WindowGroupRect.w = m_pWindowInput->WindowRect.w;
+
 	}
 	void RgGUIContext::EndGUI()
 	{
@@ -120,6 +123,13 @@ namespace rg {
 	{
 		m_sState.guiMenuBar = true;
 		m_sState.guiMenuBarHorizontal = horizontal;
+		m_sState.guiMenuBarOffset = 0;
+
+		RestoreColor(m_style.MenuBarBackgroudColor);
+
+		auto groupr = _GetGroupRect();
+		DrawRect(RgVec2(), RgVec2(groupr.z - groupr.x, m_style.MenuBarHeight));
+		DropColor();
 	}
 
 	void RgGUIContext::GUIMenuBarEnd()
@@ -129,7 +139,9 @@ namespace rg {
 
 	bool RgGUIContext::GUIMenuItem()
 	{
-		return false;
+		RgFloat offset = m_sState.guiMenuBarOffset;
+		m_sState.guiMenuBarOffset += m_style.MenuBarItemWdith;
+		return GUIButton(RgVec2(offset, 0.0f), RgVec2(m_style.MenuBarItemWdith, m_style.MenuBarHeight));
 	}
 
 	void RgGUIContext::GUIMenuItemList()
@@ -198,6 +210,18 @@ namespace rg {
 		
 		return Clip(m_sState.GroupRectStack.top(),pos,sz);
 
+	}
+
+	const RgVec2 RgGUIContext::_GetWindowSize() const
+	{
+		return m_pWindowInput->WindowRect.zw();
+	}
+
+	const RgVec4 RgGUIContext::_GetGroupRect() const
+	{
+		if (m_sState.GroupRectStack.empty()) return m_sState.WindowGroupRect;
+
+		return m_sState.GroupRectStack.top();
 	}
 
 	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()
