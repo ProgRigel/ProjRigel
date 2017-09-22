@@ -110,10 +110,13 @@ namespace rg {
 		m_sState.RectZInc();
 	}
 
-	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & size)
+	bool RgGUIContext::DrawButton(const RgVec2 & lp, const RgVec2 & size)
 	{
 		DrawRect(lp, size);
-		if (m_pWindowInput->LButton && CheckMousePos(lp, size)) {
+
+		RgVec2 cliplp, clipsz;
+		_GroupClip(cliplp, clipsz);
+		if (m_pWindowInput->LButton && CheckMousePos(cliplp, clipsz)) {
 			return true;
 		}
 		return false;
@@ -141,7 +144,7 @@ namespace rg {
 	{
 		RgFloat offset = m_sState.guiMenuBarOffset;
 		m_sState.guiMenuBarOffset += m_style.MenuBarItemWdith;
-		return GUIButton(RgVec2(offset, 0.0f), RgVec2(m_style.MenuBarItemWdith, m_style.MenuBarHeight));
+		return DrawButton(RgVec2(offset, 0.0f), RgVec2(m_style.MenuBarItemWdith, m_style.MenuBarHeight));
 	}
 
 	void RgGUIContext::GUIMenuItemList()
@@ -154,6 +157,106 @@ namespace rg {
 
 	void RgGUIContext::GUIMenuItemListEnd()
 	{
+	}
+
+
+	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz)
+	{
+		GUIRect(lp, sz);
+		return (m_pWindowInput->LButton && CheckMousePos(lp, sz));
+	}
+
+	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz)
+	{
+
+		RgVec4 rect(lp, sz);
+		if (UtilIsInGroup()) {
+			if (!UtilClipRect(rect, m_sState.GroupRectStack.top())) {
+				return;
+			}
+		}
+
+		auto& color = m_sState.Color;
+		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
+		m_pDrawBuffer->m_pPos->color = color;
+		m_pDrawBuffer->m_pPos++;
+		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
+		m_pDrawBuffer->m_pPos->color = color;
+		m_pDrawBuffer->m_pPos++;
+		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(),m_sState.RectZ, 1.0);
+		m_pDrawBuffer->m_pPos->color = color;
+		m_pDrawBuffer->m_pPos++;
+		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
+		m_pDrawBuffer->m_pPos->color = color;
+		m_pDrawBuffer->m_pPos++;
+
+		m_pDrawBuffer->ExtendBufferCheck();
+		m_sState.RectZInc();
+	}
+
+	void RgGUIContext::GUIRect(const RgVec4 & rect)
+	{
+		GUIRect(rect.xy(), rect.zw());
+	}
+
+	void RgGUIContext::GUIRect(const RgVec4 & rect, const RgVec4 & color)
+	{
+		RestoreColor(color);
+		GUIRect(rect);
+		DropColor();
+	}
+
+	void RgGUIContext::GUIGroupBegin(const RgVec2 & lp, const RgVec2 & sz)
+	{
+		auto&stack = m_sState.GroupRectStack;
+		if (stack.empty()) {
+			stack.push(RgVec4(lp, sz));
+		}
+		else {
+			RgVec4 rect = stack.top();
+			rect.setxy(rect.xy() + lp);
+			rect.setzw(min(lp + sz, rect.zw()) - lp);
+
+			stack.push(rect);
+		}
+	}
+
+	void RgGUIContext::GUIGroupBegin(const RgVec4 & rect, const RgVec4 & color)
+	{
+		GUIGroupBegin(rect.xy(), rect.zw(), color);
+	}
+
+	void RgGUIContext::GUIGroupBegin(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color)
+	{
+		GUIGroupBegin(lp,sz);
+		RestoreColor(color);
+		GUIRect(m_sState.GroupRectStack.top());
+		DropColor();
+	}
+
+	void RgGUIContext::GUIGroupEnd()
+	{
+		if (!m_sState.GroupRectStack.empty()) m_sState.GroupRectStack.pop();
+	}
+
+	bool RgGUIContext::UtilIsInGroup()
+	{
+		return !m_sState.GroupRectStack.empty();
+	}
+
+	bool RgGUIContext::UtilClipRect(RgVec4 & content, const RgVec4 & rect)
+	{
+		auto cxy = content.xy();
+		auto rxy = rect.xy();
+
+		RgVec2 lt = max(cxy, rxy);
+		RgVec2 rb = min(cxy + content.zw(), rxy + rect.zw());
+
+		if (lt.x > rb.x || lt.y > rb.y) return false;
+
+		content.setxy(lt);
+		content.setzw(rb - lt);
+		return true;
 	}
 
 	void RgGUIContext::SetColor(RgVec4 color)

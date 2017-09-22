@@ -215,6 +215,15 @@ namespace rg {
 			return RgVec2(z, w);
 		}
 
+		inline void setxy(const RgVec2& xy) {
+			x = xy.x;
+			y = xy.y;
+		}
+		inline void setzw(const RgVec2& zw) {
+			z = zw.x;
+			w = zw.y;
+		}
+
 		const static RgVec4 Zero;
 	};
 

@@ -15,6 +15,7 @@ namespace rg {
 		RgVec4 Color;
 		RgVec4 ColorRestored;
 		
+		//group lp,sz
 		std::stack<RgVec4> GroupRectStack;
 		RgFloat RectZ = 1.0f;
 		RgFloat GroupWidthMax;
@@ -60,7 +61,7 @@ namespace rg {
 		void DrawRect(const RgVec2& lp,const RgVec2& size);
 
 		//controller
-		bool GUIButton(const RgVec2& lp, const RgVec2& size);
+		bool DrawButton(const RgVec2& lp, const RgVec2& size);
 		void GUIMenuBarBegin(bool horizontal = true);
 		void GUIMenuBarEnd();
 
@@ -68,6 +69,21 @@ namespace rg {
 		void GUIMenuItemList();
 		void GUIMenuItemListBegin();
 		void GUIMenuItemListEnd();
+
+		////////////////////////
+		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
+		void GUIRect(const RgVec2& lp, const RgVec2& sz);
+		void GUIRect(const RgVec4& rect);
+		void GUIRect(const RgVec4& rect, const RgVec4& color);
+		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz);
+		void GUIGroupBegin(const RgVec4& rect,const RgVec4& color);
+		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz,const RgVec4& color);
+		void GUIGroupEnd();
+
+		/////////////////////
+		bool UtilIsInGroup();
+		bool UtilClipRect(RgVec4& content, const RgVec4& rect);		//return false is no need to draw
+		//////////////////
 		
 
 		//state

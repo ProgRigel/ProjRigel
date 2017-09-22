@@ -42,38 +42,46 @@ namespace editor {
 			return;
 		}
 
-		//if (e.Type == RgWindowEventType::Resize) return;
 
 		ctx->BeginGUI(e);
 
-		ctx->BeginGroup(RgVec2(10, 30), RgVec2(400, 300));
-
-
-		//menu
-		ctx->GUIMenuBarBegin(true);
-
-		ctx->SetColor(RgGUIColors::Wetasphalt);
-		if (ctx->GUIMenuItem()) {
-			RgLogD() << "menuitem 1";
-		}
-		ctx->SetColor(RgGUIColors::Asbestos);
-		if (ctx->GUIMenuItem()) {
-			RgLogD() << "menuitem 2";
-		}
-		ctx->SetColor(RgGUIColors::SunFlower);
-		if (ctx->GUIMenuItem()) {
-			RgLogD() << "menuitem 3";
+		//GUIRect
+		{
+			ctx->SetColor(RgGUIColors::Concrete);
+			ctx->GUIRect(RgVec2(0, 0), RgVec2(40, 30));
 		}
 
-		if (ctx->GUIButton(RgVec2(30, 20), RgVec2(50, 50))){
-			RgLogD() << "button 1";
+		//GUIButton
+		{
+			ctx->SetColor(RgGUIColors::PeterRiver);
+			if (ctx->GUIButton(RgVec2(50, 0), RgVec2(40, 30))) {
+				RgLogD() << "GUIButton";
+			}
 		}
+		
+		//group
+		{
+			ctx->GUIGroupBegin(RgVec4(5, 35, 100, 100), RgGUIColors::Orange);
+			ctx->GUIGroupBegin(RgVec4(10, 10, 80, 40), RgGUIColors::BelizeHole);
+			ctx->GUIGroupEnd();
 
-		ctx->GUIMenuBarEnd();
+			ctx->GUIGroupBegin(RgVec4(40, 70, 80, 40), RgGUIColors::Pumpkin);
+			ctx->GUIGroupEnd();
 
-
-		ctx->EndGroup();
-
+			ctx->GUIGroupEnd();
+		}
+		
+		//clip
+		{
+			RgVec4 r1(5, 150, 30, 30);
+			RgVec4 r2(25, 170, 30, 30);
+			ctx->GUIRect(r1, RgGUIColors::Emerald);
+			ctx->GUIRect(r2, RgGUIColors::GreenSea);
+			if (ctx->UtilClipRect(r1, r2)) {
+				ctx->GUIRect(r1, RgGUIColors::Amethyst);
+			}
+		}
+		
 
 		ctx->EndGUI();
 
