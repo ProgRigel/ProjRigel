@@ -39,28 +39,28 @@ namespace rg {
 			}
 			return *this;
 		}
-		RgVec2& operator +=(const RgVec2& v){
+		RgVec2& operator +=(const RgVec2<T>& v){
 			x += v.x;
 			y += v.y;
 			return *this;
 		}
-		RgVec2& operator -=(const RgVec2& v) {
+		RgVec2& operator -=(const RgVec2<T>& v) {
 			x -= v.x;
 			y -= v.y;
 			return *this;
 		}
-		RgVec2& operator *=(const RgVec2& v) {
+		RgVec2& operator *=(const RgVec2<T>& v) {
 			x *= v.x;
 			y *= v.y;
 			return *this;
 		}
 		//等等等等，一脸懵逼
-		RgVec2& operator /=(const RgVec2& v) {
+		RgVec2& operator /=(const RgVec2<T>& v) {
 			x /= v.x;
 			y /= v.y;
 			return *this;
 		}
-		RgFloat dot(const RgVec2& v) {
+		RgFloat dot(const RgVec2<T>& v) {
 			return x*v.x + y*v.y;
 		}
 		RgFloat length(){
@@ -146,7 +146,7 @@ namespace rg {
 		inline RgVec3(const RgVec2<T>& v) : x(v.x), y(v.y), z(0){}
 		std::string toStr() const;
 		
-		RgVec3& operator =(RgVec2 const&v) {
+		RgVec3& operator =(RgVec2<T> const&v) {
 			x = v.x;
 			y = v.y;
 			z = 0;
@@ -246,18 +246,18 @@ namespace rg {
 		RgVec4(const RgVec2<T>& v1, T _z,T _w) :x(v1.x), y(v1.y), z(_z), w(_w) {}
 		std::string toStr() const;
 
-		inline const RgVec3 xyz() const{
-			return RgVec3(x, y, z);
+		inline const RgVec3<T> xyz() const{
+			return RgVec3<T>(x, y, z);
 		}
 
-		RgVec4& operator=(const RgVec2& v) {
+		RgVec4& operator=(const RgVec2<T>& v) {
 			this->x = v.x;
 			this->y = v.y;
 			this->z = 0;
 			this->w = 0;
 			return *this;
 		}
-		RgVec4& operator=(const RgVec3& v) {
+		RgVec4& operator=(const RgVec3<T>& v) {
 			this->x = v.x;
 			this->y = v.y;
 			this->z = v.z;

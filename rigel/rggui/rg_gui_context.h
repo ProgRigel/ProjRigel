@@ -4,17 +4,17 @@
 #include <stack>
 namespace rg {
 
-#define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
+#define RG_PARAM_RECT const RgVec2<RgFloat>&lp,const RgVec2<RgFloat>& size
 
 	class RgGUI;
 	class RgGUIDrawBuffer;
 
 	struct RgGUIState {
-		RgVec4 ColorBg;
-		RgVec4 ColorFont;
-		RgVec4 Color;
+		RgVec4<RgFloat> ColorBg;
+		RgVec4<RgFloat> ColorFont;
+		RgVec4<RgFloat> Color;
 		
-		std::stack<RgVec4> GroupRectStack;
+		std::stack<RgVec4<RgFloat>> GroupRectStack;
 
 		void Reset();
 	};
@@ -36,20 +36,20 @@ namespace rg {
 		void BeginGroup(RG_PARAM_RECT);
 		void EndGroup();
 
-		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
+		bool CheckMousePos(const RgVec2<RgFloat>& lp, const RgVec2<RgFloat>& size) const;
 
-		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
-		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
+		bool Clip(const RgVec4<RgFloat>& rect, RgVec2<RgFloat>& pos, RgVec2<RgFloat>& sz) const;
+		bool _GroupClip(RgVec2<RgFloat>& pos, RgVec2<RgFloat>& sz) const;
 
 		//draw
 		void DrawLine();
-		void DrawRect(const RgVec2& lp,const RgVec2& size) const;
+		void DrawRect(const RgVec2<RgFloat>& lp,const RgVec2<RgFloat>& size) const;
 
 		//controller
-		bool GUIButton(const RgVec2& lp, const RgVec2& size) const;
+		bool GUIButton(const RgVec2<RgFloat>& lp, const RgVec2<RgFloat>& size) const;
 
 		//state
-		void SetColor(RgVec4 color);
+		void SetColor(RgVec4<RgFloat> color);
 
 		
 

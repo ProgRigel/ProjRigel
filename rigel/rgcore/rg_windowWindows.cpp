@@ -135,7 +135,7 @@ namespace rg {
 			int mousex = GET_X_LPARAM(lParam);
 			int mousey = GET_Y_LPARAM(lParam);
 			EventOnMouseMove.emit(mousex,mousey );
-			m_windowInput.MousePos = RgVec2((float)mousex, (float)mousey);
+			m_windowInput.MousePos = RgVec2<RgFloat>((RgFloat)mousex, (RgFloat)mousey);
 
 		}
 

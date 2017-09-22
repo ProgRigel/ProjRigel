@@ -13,7 +13,7 @@ int main() {
 	RgLogD() << "=================";
 	//rg_math.h
 	{
-		RgVec2 v(10, -20);
+		RgVec2<RgFloat> v(10, -20);
 		v = v + v;
 		Check(v.x == 20 && v.y == -41, "RgVec2 + fail");
 	}

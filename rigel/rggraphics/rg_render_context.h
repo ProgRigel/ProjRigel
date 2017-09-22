@@ -38,7 +38,7 @@ namespace rg {
 		virtual void Draw();
 
 		virtual void SetRenderTarget(RgRenderTarget * rtarget) = 0;
-		virtual void ClearRenderTarget(RgVec4 color, RgRenderTarget * rtarget) = 0;
+		virtual void ClearRenderTarget(RgVec4<RgFloat> color, RgRenderTarget * rtarget) = 0;
 		virtual void ClearDepthStencil(RgRenderTarget * rtarget) = 0;
 
 		virtual void SetViewPort(const RgViewPort*) = 0;

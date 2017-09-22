@@ -3,19 +3,22 @@
 #include "rg_math.h"
 
 namespace rg {
-	std::string RgVec4::toStr() const
+	template<typename T>
+	std::string RgVec4<T>::toStr() const
 	{
 		std::stringstream ss;
 		ss << "(" << x << "," << y << "," << z << "," << w << ")";
 		return ss.str();
 	}
-	std::string RgVec3::toStr() const
+	template<typename T>
+	std::string RgVec3<T>::toStr() const
 	{
 		std::stringstream ss;
 		ss << "(" << x << "," << y << "," << z << ")";
 		return ss.str();
 	}
-	std::string RgVec2::toStr() const
+	template<typename T>
+	std::string RgVec2<T>::toStr() const
 	{
 		std::stringstream ss;
 		ss << "(" << x << "," << y << ")";

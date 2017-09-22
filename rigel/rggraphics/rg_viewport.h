@@ -5,8 +5,8 @@
 namespace rg {
 	struct RgViewPort
 	{
-		RgVec2 TopLeft;
-		RgVec2 Size;
-		RgVec2 DepthMinMax;
+		RgVec2<RgFloat> TopLeft;
+		RgVec2<RgFloat> Size;
+		RgVec2<RgFloat> DepthMinMax;
 	};
 }

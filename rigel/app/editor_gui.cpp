@@ -39,16 +39,16 @@ namespace editor {
 		m_pGUIContext->BeginGUI(e);
 
 		m_pGUIContext->SetColor(RgGUIColors::Pumpkin);
-		m_pGUIContext->DrawRect(RgVec2(10, 30), RgVec2(50, 50));
+		m_pGUIContext->DrawRect(RgVec2<RgFloat>(10, 30), RgVec2<RgFloat>(50, 50));
 		
-		m_pGUIContext->BeginGroup(RgVec2(10, 30), RgVec2(50, 50));
+		m_pGUIContext->BeginGroup(RgVec2<RgFloat>(10, 30), RgVec2<RgFloat>(50, 50));
 
 		m_pGUIContext->SetColor(RgGUIColors::Clouds);
-		m_pGUIContext->DrawRect(RgVec2(-10,0), RgVec2(30, 30));
+		m_pGUIContext->DrawRect(RgVec2<RgFloat>(-10,0), RgVec2<RgFloat>(30, 30));
 
 		m_pGUIContext->EndGroup();
 
-		m_pGUIContext->DrawRect(RgVec2(100, 20), RgVec2(50, 50));
+		m_pGUIContext->DrawRect(RgVec2<RgFloat>(100, 20), RgVec2<RgFloat>(50, 50));
 
 		m_pGUIContext->EndGUI();
 

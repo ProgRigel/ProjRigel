@@ -10,8 +10,8 @@
 namespace rg {
 
 	struct RgGUIConstantData {
-		RgVec4 color;
-		RgMatrix4x4 mtx;
+		RgVec4<RgFloat> color;
+		RgMatrix4x4<RgFloat> mtx;
 	};
 
 	class RgGUIContext;

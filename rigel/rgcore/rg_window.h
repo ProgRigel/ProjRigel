@@ -29,8 +29,8 @@ namespace rg {
 		bool MButton = false;
 		bool KeyCode[256];
 		bool AltDown = false;
-		RgVec4 WindowRect;
-		RgVec2 MousePos;
+		RgVec4<RgFloat> WindowRect;
+		RgVec2<RgFloat> MousePos;
 	};
 
 	class RgWindowEvent{

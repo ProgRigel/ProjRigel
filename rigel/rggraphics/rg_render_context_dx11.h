@@ -20,7 +20,7 @@ namespace rg {
 
 
 		void SetRenderTarget(RgRenderTarget * rtarget);
-		void ClearRenderTarget(RgVec4 color,RgRenderTarget * rtarget);
+		void ClearRenderTarget(RgVec4<RgFloat> color,RgRenderTarget * rtarget);
 		void ClearDepthStencil(RgRenderTarget * rtarget);
 
 		void SetViewPort(const RgViewPort*);

@@ -93,7 +93,7 @@ namespace rg {
 		m_pDeviceContext->OMSetRenderTargets(1, &rtv, dsv);
 
 	}
-	void RgRenderContextDX11::ClearRenderTarget(RgVec4 color,RgRenderTarget * rtarget)
+	void RgRenderContextDX11::ClearRenderTarget(RgVec4<RgFloat> color,RgRenderTarget * rtarget)
 	{
 		auto rtv =(ID3D11RenderTargetView*) rtarget->GetColorBufferPtr();
 		if (rtv == nullptr) {
