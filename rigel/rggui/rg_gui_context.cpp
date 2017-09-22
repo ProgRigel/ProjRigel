@@ -39,113 +39,6 @@ namespace rg {
 		SetDirty(true);
 	}
 
-	void RgGUIContext::BeginGroup(RG_PARAM_RECT)
-	{
-		BeginGroup(lp, size, m_style.ColorBg);
-	}
-
-	void RgGUIContext::BeginGroup(RG_PARAM_RECT, RgVec4 color)
-	{
-		auto& stack = m_sState.GroupRectStack;
-		if (stack.empty()) {
-			stack.push(RgVec4(lp, lp + size));
-
-			RestoreColor(color);
-			DrawRect(RgVec2(),size);
-			DropColor();
-		}
-		else
-		{
-			
-			RgVec4 rect = stack.top();
-			rect.x += lp.x;
-			rect.y += lp.y;
-			rect.z = size.x > rect.z ? rect.z : size.x;
-			rect.w = size.y > rect.y ? rect.y : size.y;
-			stack.push(rect);
-
-			RestoreColor(color);
-			DrawRect(RgVec2(),rect.zw());
-			DropColor();
-		}
-	}
-
-	void RgGUIContext::EndGroup()
-	{
-		auto& stack = m_sState.GroupRectStack;
-		if (!stack.empty()) stack.pop();
-	}
-
-	void RgGUIContext::DrawLine()
-	{
-
-	}
-	void RgGUIContext::DrawRect(const RgVec2& lp, const RgVec2& sz)
-	{
-		RgVec2 point = lp;
-		RgVec2 size = sz;
-
-		bool d = _GroupClip(point, size);
-
-		//RgLogW()<< lp.toStr() << size.toStr();
-
-		if (d == false) return;
-
-		auto color = m_sState.Color;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y,m_sState.RectZ,1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x + size.x, point.y, m_sState.RectZ,1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos =RgVec4(point + size, m_sState.RectZ,1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(point.x, point.y + size.y, m_sState.RectZ,1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-
-		m_pDrawBuffer->ExtendBufferCheck();
-
-		m_sState.RectZInc();
-	}
-
-	bool RgGUIContext::DrawButton(const RgVec2 & lp, const RgVec2 & size)
-	{
-		DrawRect(lp, size);
-
-		RgVec2 cliplp, clipsz;
-		_GroupClip(cliplp, clipsz);
-		if (m_pWindowInput->LButton && CheckMousePos(cliplp, clipsz)) {
-			return true;
-		}
-		return false;
-	}
-
-	void RgGUIContext::GUIMenuBarBegin(bool horizontal)
-	{
-		m_sState.guiMenuBar = true;
-		m_sState.guiMenuBarHorizontal = horizontal;
-		m_sState.guiMenuBarOffset = 0;
-
-		RestoreColor(m_style.MenuBarBackgroudColor);
-
-		auto groupr = _GetGroupRect();
-		DrawRect(RgVec2(), RgVec2(groupr.z - groupr.x, m_style.MenuBarHeight));
-		DropColor();
-	}
-
-	void RgGUIContext::GUIMenuBarEnd()
-	{
-		m_sState.guiMenuBar = false;
-	}
-
-	bool RgGUIContext::GUIMenuItem()
-	{
-		RgFloat offset = m_sState.guiMenuBarOffset;
-		m_sState.guiMenuBarOffset += m_style.MenuBarItemWdith;
-		return DrawButton(RgVec2(offset, 0.0f), RgVec2(m_style.MenuBarItemWdith, m_style.MenuBarHeight));
-	}
 
 	void RgGUIContext::GUIMenuItemList()
 	{
@@ -159,21 +52,23 @@ namespace rg {
 	{
 	}
 
+	////////////////
+
 
 	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz)
 	{
 		GUIRect(lp, sz);
-		return (m_pWindowInput->LButton && CheckMousePos(lp, sz));
+		return (m_pWindowInput->LButton && UtilCheckMousePos(lp, sz));
 	}
 
-	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz)
+	//draw with raw pos
+	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz, bool grouped)
 	{
 
 		RgVec4 rect(lp, sz);
-		if (UtilIsInGroup()) {
-			if (!UtilClipRect(rect, m_sState.GroupRectStack.top())) {
-				return;
-			}
+		if (grouped && UtilIsInGroup()) {
+			rect.setxy(lp + m_sState.GroupRectStack.top().xy());
+			UtilClipRect(rect, m_sState.GroupRectStack.top());
 		}
 
 		auto& color = m_sState.Color;
@@ -194,9 +89,9 @@ namespace rg {
 		m_sState.RectZInc();
 	}
 
-	void RgGUIContext::GUIRect(const RgVec4 & rect)
+	void RgGUIContext::GUIRect(const RgVec4 & rect,bool grouped)
 	{
-		GUIRect(rect.xy(), rect.zw());
+		GUIRect(rect.xy(), rect.zw(), grouped);
 	}
 
 	void RgGUIContext::GUIRect(const RgVec4 & rect, const RgVec4 & color)
@@ -221,6 +116,11 @@ namespace rg {
 		}
 	}
 
+	void RgGUIContext::GUIGroupBegin(const RgVec4 & rect)
+	{
+		GUIGroupBegin(rect.xy(), rect.zw());
+	}
+
 	void RgGUIContext::GUIGroupBegin(const RgVec4 & rect, const RgVec4 & color)
 	{
 		GUIGroupBegin(rect.xy(), rect.zw(), color);
@@ -230,7 +130,7 @@ namespace rg {
 	{
 		GUIGroupBegin(lp,sz);
 		RestoreColor(color);
-		GUIRect(m_sState.GroupRectStack.top());
+		GUIRect(m_sState.GroupRectStack.top(),false);
 		DropColor();
 	}
 
@@ -239,12 +139,34 @@ namespace rg {
 		if (!m_sState.GroupRectStack.empty()) m_sState.GroupRectStack.pop();
 	}
 
-	bool RgGUIContext::UtilIsInGroup()
+	void RgGUIContext::GUIMenuBarBegin(const RgVec4 & rect)
+	{
+		GUIGroupBegin(rect, m_style.MenuBarBackgroudColor);
+		m_sState.guiMenuBar = true;
+		m_sState.guiMenuBarOffset = 0;
+		m_sState.guiMenuBarHeight = rect.w;
+	}
+
+	void RgGUIContext::GUIMenuBarEnd()
+	{
+		m_sState.guiMenuBar = false;
+		GUIGroupEnd();
+		
+	}
+
+	bool RgGUIContext::GUIMenuItem(RgFloat width)
+	{
+		bool clicked = GUIButton(RgVec2(m_sState.guiMenuBarOffset, 0.0f), RgVec2(width, m_sState.guiMenuBarHeight));
+		m_sState.guiMenuBarOffset += width;
+		return clicked;
+	}
+
+	bool RgGUIContext::UtilIsInGroup() const
 	{
 		return !m_sState.GroupRectStack.empty();
 	}
 
-	bool RgGUIContext::UtilClipRect(RgVec4 & content, const RgVec4 & rect)
+	bool RgGUIContext::UtilClipRect(RgVec4 & content, const RgVec4 & rect) const
 	{
 		auto cxy = content.xy();
 		auto rxy = rect.xy();
@@ -264,12 +186,18 @@ namespace rg {
 		m_sState.Color = color;
 	}
 
-	bool RgGUIContext::CheckMousePos(const RgVec2 & lp, const RgVec2 & size) const
+	bool RgGUIContext::UtilCheckMousePos(const RgVec2 & lp, const RgVec2 & size,bool grouped) const
 	{
 		if (m_pWindowInput == nullptr) return false;
 		
+		RgVec4 rect(lp, size);
 		const RgVec2& mousepos = m_pWindowInput->MousePos;
-		if (lp.x < mousepos.x && mousepos.x < size.x + lp.x && lp.y < mousepos.y && mousepos.y < lp.y + size.y) {
+		if (grouped && UtilIsInGroup()) {
+			rect.setxy(lp + m_sState.GroupRectStack.top().xy());
+			if (!UtilClipRect(rect, m_sState.GroupRectStack.top())) return false;
+		}
+
+		if (rect.x < mousepos.x && mousepos.x < rect.x + rect.z && rect.y < mousepos.y && mousepos.y < rect.y + rect.w) {
 			return true;
 		}
 		return false;

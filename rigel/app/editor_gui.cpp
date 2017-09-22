@@ -42,7 +42,6 @@ namespace editor {
 			return;
 		}
 
-
 		ctx->BeginGUI(e);
 
 		//GUIRect
@@ -62,14 +61,28 @@ namespace editor {
 		//group
 		{
 			ctx->GUIGroupBegin(RgVec4(5, 35, 100, 100), RgGUIColors::Orange);
-			ctx->GUIGroupBegin(RgVec4(10, 10, 80, 40), RgGUIColors::BelizeHole);
-			ctx->GUIGroupEnd();
 
-			ctx->GUIGroupBegin(RgVec4(40, 70, 80, 40), RgGUIColors::Pumpkin);
+			ctx->GUIRect(RgVec4(0, -10, 30, 30), RgGUIColors::BelizeHole);
+
+			ctx->GUIGroupBegin(RgVec4(50, 5, 100, 40));
+
+			ctx->GUIRect(RgVec4(-15, 10, 30, 30),RgGUIColors::Pomegranate);
+
 			ctx->GUIGroupEnd();
 
 			ctx->GUIGroupEnd();
 		}
+
+		//grouped button
+		ctx->GUIGroupBegin(RgVec4(230, 5, 100, 100),RgGUIColors::Nephritis);
+
+		ctx->SetColor(RgGUIColors::SunFlower);
+		if (ctx->GUIButton(RgVec2(3, 3), RgVec2(50, 30))) {
+			RgLogD() << "grouped button";
+		}
+
+		ctx->GUIGroupEnd();
+
 		
 		//clip
 		{
@@ -80,6 +93,23 @@ namespace editor {
 			if (ctx->UtilClipRect(r1, r2)) {
 				ctx->GUIRect(r1, RgGUIColors::Amethyst);
 			}
+		}
+
+		//menubar
+		{
+			ctx->GUIGroupBegin(RgVec4(120, 5, 100, 100),RgGUIColors::Carrot);
+
+			ctx->GUIMenuBarBegin(RgVec4(0, 0, 100, 20));
+			if (ctx->GUIMenuItem(20.0f)) {
+				RgLogD() << "menubar1 click";
+			}
+			ctx->SetColor(RgGUIColors::Sliver);
+			if (ctx->GUIMenuItem(30.0f)) {
+				RgLogD() << "menubar2 click";
+			}
+			ctx->GUIMenuBarEnd();
+
+			ctx->GUIGroupEnd();
 		}
 		
 

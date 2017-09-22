@@ -24,6 +24,7 @@ namespace rg {
 		bool guiMenuBar = false;
 		bool guiMenuBarHorizontal = false;
 		RgFloat guiMenuBarOffset = 0;
+		RgFloat guiMenuBarHeight = 0;
 
 		void Reset();
 		void RectZInc();
@@ -47,7 +48,7 @@ namespace rg {
 		void BeginGroup(RG_PARAM_RECT,RgVec4 color);
 		void EndGroup();
 
-		bool CheckMousePos(const RgVec2& lp, const RgVec2& size) const;
+		
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
 
@@ -56,33 +57,32 @@ namespace rg {
 		void DropColor();
 		
 
-		//draw
-		void DrawLine();
-		void DrawRect(const RgVec2& lp,const RgVec2& size);
 
-		//controller
-		bool DrawButton(const RgVec2& lp, const RgVec2& size);
-		void GUIMenuBarBegin(bool horizontal = true);
-		void GUIMenuBarEnd();
 
-		bool GUIMenuItem();
+		
 		void GUIMenuItemList();
 		void GUIMenuItemListBegin();
 		void GUIMenuItemListEnd();
 
 		////////////////////////
 		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
-		void GUIRect(const RgVec2& lp, const RgVec2& sz);
-		void GUIRect(const RgVec4& rect);
+		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
+		void GUIRect(const RgVec4& rect,bool grouped = true);
 		void GUIRect(const RgVec4& rect, const RgVec4& color);
 		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz);
+		void GUIGroupBegin(const RgVec4& rect);
 		void GUIGroupBegin(const RgVec4& rect,const RgVec4& color);
 		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz,const RgVec4& color);
 		void GUIGroupEnd();
 
+		void GUIMenuBarBegin(const RgVec4& rect);
+		void GUIMenuBarEnd();
+		bool GUIMenuItem(RgFloat width);
+
 		/////////////////////
-		bool UtilIsInGroup();
-		bool UtilClipRect(RgVec4& content, const RgVec4& rect);		//return false is no need to draw
+		bool UtilIsInGroup() const;
+		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
+		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true) const;
 		//////////////////
 		
 
