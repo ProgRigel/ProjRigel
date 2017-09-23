@@ -107,7 +107,16 @@ namespace editor {
 			if (ctx->GUIMenuItem(30.0f)) {
 				RgLogD() << "menubar2 click";
 			}
+
+			//menuitemlist
+			ctx->SetColor(RgGUIColors::Turquoise);
+			ctx->GUIMenuListBegin("MenuList",40.0f);
+
+
+			ctx->GUIMenuListEnd();
+
 			ctx->GUIMenuBarEnd();
+
 
 			ctx->GUIGroupEnd();
 		}

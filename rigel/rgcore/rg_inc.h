@@ -16,7 +16,7 @@ typedef char RgChar;
 typedef unsigned short RgWord;
 typedef short RgShort;
 
-typedef std::wstring RgStr;
+typedef std::string RgStr;
 
 
 #define RG_RELEASE(x) if(x!= nullptr){delete x;x = 0;}

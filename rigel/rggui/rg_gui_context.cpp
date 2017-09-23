@@ -40,17 +40,6 @@ namespace rg {
 	}
 
 
-	void RgGUIContext::GUIMenuItemList()
-	{
-	}
-
-	void RgGUIContext::GUIMenuItemListBegin()
-	{
-	}
-
-	void RgGUIContext::GUIMenuItemListEnd()
-	{
-	}
 
 	////////////////
 
@@ -161,8 +150,13 @@ namespace rg {
 		return clicked;
 	}
 
-	void RgGUIContext::GUIMenuListBegin(RgStr label)
+	void RgGUIContext::GUIMenuListBegin(RgStr label, RgFloat width)
 	{
+		bool clicked = GUIMenuItem(width);
+		if (clicked) {
+			SetColor(RgGUIColors::Alizarin);
+			GUIRect(RgVec4(400, 400, 100, 200), false);
+		}
 	}
 
 	void RgGUIContext::GUIMenuListEnd()
@@ -194,9 +188,11 @@ namespace rg {
 		m_sState.Color = color;
 	}
 
-	bool RgGUIContext::UtilCheckMousePos(const RgVec2 & lp, const RgVec2 & size,bool grouped) const
+	bool RgGUIContext::UtilCheckMousePos(const RgVec2 & lp, const RgVec2 & size,bool grouped)
 	{
 		if (m_pWindowInput == nullptr) return false;
+
+		if (m_sState.mouseLeftChecked) return false; //hack optimize
 		
 		RgVec4 rect(lp, size);
 		const RgVec2& mousepos = m_pWindowInput->MousePos;
@@ -206,6 +202,7 @@ namespace rg {
 		}
 
 		if (rect.x < mousepos.x && mousepos.x < rect.x + rect.z && rect.y < mousepos.y && mousepos.y < rect.y + rect.w) {
+			m_sState.SetMouseDownCheck(0);// hack optimize. may cause bugs
 			return true;
 		}
 		return false;
@@ -225,6 +222,23 @@ namespace rg {
 	const RgVec2 RgGUIContext::UtilGetOriginPos(const RgVec2 & lp) const
 	{
 		return lp + m_sState.GroupRectStack.top().xy();
+	}
+
+	int RgGUIContext::UtilGetHash(RgStr label,const RgGUIControllerType type, const RgVec4 & rect)
+	{
+		byte data[64];
+		byte* data_ptr = &data[0];
+		ZeroMemory(data_ptr, 64);
+		size_t labelt = label.size() > 32?32: label.size();
+		memcpy(data_ptr, label.data(), labelt);
+		data_ptr += 32;
+		
+		memcpy(data_ptr, &rect, sizeof(RgVec4));
+		data_ptr += 16;
+		byte t = (unsigned char)type;
+		data_ptr[0] = t;
+
+		return RgHash(&data[0], 64);
 	}
 
 	//pos sz in related to group root
@@ -299,11 +313,18 @@ namespace rg {
 	{
 		std::stack<RgVec4>().swap(GroupRectStack);
 		RectZ = 1.0f;
+		
+		mouseLeftChecked = false;
 	}
 
 	void RgGUIState::RectZInc()
 	{
 		RectZ += 1.0f;
+	}
+
+	void RgGUIState::SetMouseDownCheck(int uihash)
+	{
+		mouseLeftChecked = true;
 	}
 
 }

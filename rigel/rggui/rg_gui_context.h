@@ -2,12 +2,23 @@
 #include <rgcore\rg_window.h>
 #include "rg_gui_style.h"
 #include <stack>
+#include <vector>
 namespace rg {
 
 #define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
 
 	class RgGUI;
 	class RgGUIDrawBuffer;
+	
+
+	enum class RgGUIControllerType {
+		ContextMenu,
+		TextInput,
+	};
+
+	struct RgGUIStateContextMenu {
+		std::vector<int> menuHashs;
+	};
 
 	struct RgGUIState {
 		RgVec4 ColorBg;
@@ -26,8 +37,16 @@ namespace rg {
 		RgFloat guiMenuBarOffset = 0;
 		RgFloat guiMenuBarHeight = 0;
 
+		bool mouseLeftChecked = false;
+
+		RgGUIStateContextMenu stateContextMenu;
+
 		void Reset();
+
 		void RectZInc();
+		void SetMouseDownCheck(int uihash);
+
+		//contextMenu
 	};
 
 	class RgGUIContext {
@@ -59,10 +78,7 @@ namespace rg {
 
 
 
-		
-		void GUIMenuItemList();
-		void GUIMenuItemListBegin();
-		void GUIMenuItemListEnd();
+
 
 		////////////////////////
 		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
@@ -78,15 +94,16 @@ namespace rg {
 		void GUIMenuBarBegin(const RgVec4& rect);
 		void GUIMenuBarEnd();
 		bool GUIMenuItem(RgFloat width);
-		void GUIMenuListBegin(RgStr label);
+		void GUIMenuListBegin(RgStr label,RgFloat width);
 		void GUIMenuListEnd();
 
 		/////////////////////
 		bool UtilIsInGroup() const;
 		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
-		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true) const;
+		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true);
 		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
 		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
+		int UtilGetHash(RgStr label, const RgGUIControllerType type,const RgVec4& rect);
 		//////////////////
 		
 

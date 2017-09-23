@@ -8,4 +8,6 @@ namespace rg {
 	inline unsigned int HR_CODE(HRESULT hr) {
 		return hr &(0xFFFF);
 	}
+
+	int RgHash(const void* data, int datasize, unsigned int seed = 0);
 }
