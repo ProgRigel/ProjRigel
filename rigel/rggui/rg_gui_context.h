@@ -3,6 +3,7 @@
 #include "rg_gui_style.h"
 #include <stack>
 #include <vector>
+#include <map>
 namespace rg {
 
 #define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
@@ -18,6 +19,8 @@ namespace rg {
 
 	struct RgGUIStateContextMenu {
 		std::vector<int> menuHashs;
+		std::unordered_map<int, RgVec4> menuMap;
+		bool newMenuContext = false;
 	};
 
 	struct RgGUIState {
@@ -38,13 +41,20 @@ namespace rg {
 		RgFloat guiMenuBarHeight = 0;
 
 		bool mouseLeftChecked = false;
+		bool mouseLeftClick = false;
+		bool mouseLeftDown = false;
+		RgVec2 mouseLeftCheckedPos;
 
 		RgGUIStateContextMenu stateContextMenu;
 
 		void Reset();
 
 		void RectZInc();
-		void SetMouseDownCheck(int uihash);
+		void SetMouseDownCheck(int uihash,const RgVec2& pos);
+
+		void contextMenuReset();
+		void contextMenuAdd(const int& hash, const RgVec4 rect);
+		void contextMenuClear();
 
 		//contextMenu
 	};
@@ -62,11 +72,6 @@ namespace rg {
 		//logic
 		void BeginGUI(const RgWindowEvent&);
 		void EndGUI();
-
-		void BeginGroup(RG_PARAM_RECT);
-		void BeginGroup(RG_PARAM_RECT,RgVec4 color);
-		void EndGroup();
-
 		
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
@@ -75,16 +80,11 @@ namespace rg {
 		void RestoreColor();
 		void DropColor();
 		
-
-
-
-
-
 		////////////////////////
 		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
 		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
 		void GUIRect(const RgVec4& rect,bool grouped = true);
-		void GUIRect(const RgVec4& rect, const RgVec4& color);
+		void GUIRect(const RgVec4& rect, const RgVec4& color,bool grouped = true);
 		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz);
 		void GUIGroupBegin(const RgVec4& rect);
 		void GUIGroupBegin(const RgVec4& rect,const RgVec4& color);
@@ -104,6 +104,8 @@ namespace rg {
 		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
 		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
 		int UtilGetHash(RgStr label, const RgGUIControllerType type,const RgVec4& rect);
+
+		bool UtilRectContain(const RgVec4& rect, const RgVec2& pos);
 		//////////////////
 		
 

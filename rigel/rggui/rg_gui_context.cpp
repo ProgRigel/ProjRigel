@@ -30,13 +30,41 @@ namespace rg {
 		m_pWindowInput = e.Input;
 		m_pDrawBuffer->ResetBuffer();
 		m_sState.Reset();
+		m_sState.contextMenuReset();
 		m_sState.WindowGroupRect.z = m_pWindowInput->WindowRect.z;
 		m_sState.WindowGroupRect.w = m_pWindowInput->WindowRect.w;
+
+		//mouseclick check
+		m_sState.mouseLeftClick = false;
+		if (m_pWindowInput->LButton && m_sState.mouseLeftDown == false) {
+			m_sState.mouseLeftDown = true;
+		}
+		if (m_sState.mouseLeftDown == true && m_pWindowInput->LButton == false) {
+			m_sState.mouseLeftDown = false;
+			m_sState.mouseLeftClick = true;
+		}
+
 
 	}
 	void RgGUIContext::EndGUI()
 	{
 		SetDirty(true);
+
+		//contextmenu
+		{
+			if (!m_sState.stateContextMenu.menuMap.empty()) {
+				auto pair = *m_sState.stateContextMenu.menuMap.begin();
+
+				bool mousedown = m_sState.mouseLeftDown;
+				if (mousedown && !m_sState.stateContextMenu.newMenuContext) {
+					RgLogD() << "clear";
+					m_sState.contextMenuClear();
+					return;
+				}
+				GUIRect(pair.second,RgGUIColors::Alizarin, false);
+			}
+		}
+		
 	}
 
 
@@ -83,10 +111,10 @@ namespace rg {
 		GUIRect(rect.xy(), rect.zw(), grouped);
 	}
 
-	void RgGUIContext::GUIRect(const RgVec4 & rect, const RgVec4 & color)
+	void RgGUIContext::GUIRect(const RgVec4 & rect, const RgVec4 & color, bool grouped)
 	{
 		RestoreColor(color);
-		GUIRect(rect);
+		GUIRect(rect,grouped);
 		DropColor();
 	}
 
@@ -155,7 +183,10 @@ namespace rg {
 		bool clicked = GUIMenuItem(width);
 		if (clicked) {
 			SetColor(RgGUIColors::Alizarin);
-			GUIRect(RgVec4(400, 400, 100, 200), false);
+
+			RgVec4 rect(400, 400, 100, 200);
+			int ctxmenu = UtilGetHash(label, RgGUIControllerType::ContextMenu, rect);
+			m_sState.contextMenuAdd(ctxmenu, rect);
 		}
 	}
 
@@ -202,7 +233,8 @@ namespace rg {
 		}
 
 		if (rect.x < mousepos.x && mousepos.x < rect.x + rect.z && rect.y < mousepos.y && mousepos.y < rect.y + rect.w) {
-			m_sState.SetMouseDownCheck(0);// hack optimize. may cause bugs
+			
+			m_sState.SetMouseDownCheck(0,grouped? UtilGetOriginPos(lp):lp);// hack optimize. may cause bugs
 			return true;
 		}
 		return false;
@@ -239,6 +271,14 @@ namespace rg {
 		data_ptr[0] = t;
 
 		return RgHash(&data[0], 64);
+	}
+
+	bool RgGUIContext::UtilRectContain(const RgVec4 & rect, const RgVec2 & pos)
+	{
+		if (pos.x > rect.x && pos.y > rect.y && pos.x < rect.x + rect.z && pos.y < rect.y + rect.w) {
+			return true;
+		}
+		return false;
 	}
 
 	//pos sz in related to group root
@@ -322,10 +362,36 @@ namespace rg {
 		RectZ += 1.0f;
 	}
 
-	void RgGUIState::SetMouseDownCheck(int uihash)
+	void RgGUIState::SetMouseDownCheck(int uihash,const RgVec2& pos)
 	{
 		mouseLeftChecked = true;
+		mouseLeftCheckedPos = pos;
 	}
+
+	void RgGUIState::contextMenuReset()
+	{
+		stateContextMenu.newMenuContext = false;
+	}
+
+	void RgGUIState::contextMenuAdd(const int & hash, const RgVec4 rect)
+	{
+		if (stateContextMenu.menuMap.find(hash) == stateContextMenu.menuMap.end()) {
+			std::unordered_map<int, RgVec4>().swap(stateContextMenu.menuMap);
+			stateContextMenu.menuMap.insert(std::make_pair(hash, rect));
+		}
+		else
+		{
+			stateContextMenu.menuMap[hash] = rect;
+		}
+
+		stateContextMenu.newMenuContext = true;
+	}
+
+	void RgGUIState::contextMenuClear()
+	{
+		std::unordered_map<int, RgVec4>().swap(stateContextMenu.menuMap);
+	}
+
 
 }
 
