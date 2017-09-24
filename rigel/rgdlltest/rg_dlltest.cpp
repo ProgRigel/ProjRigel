@@ -1,6 +1,8 @@
 #include "rg_dlltest.h"
 #include <sstream>
 #include <iostream>
+#include <vector>
+#include <map>
 std::string asterisk(int num)
 {
 	std::ostringstream oss;
