@@ -3,6 +3,7 @@
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggui\rg_gui.h>
 #include <rgcore\rg_utility.h>
+#include <rgdlltest\rg_dlltest.h>
 using namespace rg;
 
 #define Check(h,l) if((h) == false) RgLogW()<<l;
@@ -21,7 +22,34 @@ int main() {
 	HRESULT hr;
 	hr = S_FALSE;
 	std::wcout <<"test:HrToMessage:"<< HrToMessage(hr) << std::endl;;
-
+	//rg_dlltest
+	disp_asterisk(20);
+	typedef void(*DLLFunction)(int);
+	DLLFunction dllFunc;
+	std::wstring dllpath = GetWorkDirectory();
+	std::string fun_name("disp_asterisk");
+	dllpath.append(L"\\rgdlltest.dll");
+	std::wcout << dllpath << std::endl;
+	HINSTANCE hInstLibrary = LoadLibrary(dllpath.c_str());
+	if (hInstLibrary == NULL)
+	{
+		std::cout << "no dll loaded" << std::endl;
+		FreeLibrary(hInstLibrary);
+	}
+	else
+	{
+		dllFunc = (DLLFunction)GetProcAddress(hInstLibrary, fun_name.c_str());
+		if (dllFunc == NULL)
+		{
+			std::cout << "function entry not found" << std::endl;
+		}
+		else
+		{
+			dllFunc(20);
+		}
+		FreeLibrary(hInstLibrary);
+	}
+	
 	RgLogD() << "=================";
 	RgLogD() << "Unitest Done!";
 	getchar();
