@@ -43,6 +43,7 @@
     <ClInclude Include="rgcore.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="rg_font.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_image.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="rg_windowWindows.cpp" />
     <ClCompile Include="rgcore.cpp" />
     <ClCompile Include="rg_math.cpp" />
+    <ClCompile Include="rg_font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="header">
