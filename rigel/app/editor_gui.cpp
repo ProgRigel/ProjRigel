@@ -57,7 +57,8 @@ namespace editor {
 				RgLogD() << "GUIButton";
 			}
 		}
-		
+
+
 		//group
 		{
 			ctx->GUIGroupBegin(RgVec4(5, 35, 100, 100), RgGUIColors::Orange);
@@ -112,9 +113,7 @@ namespace editor {
 			ctx->SetColor(RgGUIColors::Turquoise);
 			ctx->GUIMenuListBegin("MenuList",40.0f);
 
-
 			ctx->GUIMenuListEnd();
-
 			ctx->GUIMenuBarEnd();
 
 
@@ -123,6 +122,13 @@ namespace editor {
 		
 
 		ctx->EndGUI();
+
+		static RgGUIGenericMenu menu("menu",true,[](RgGUIGenericMenu* menu)->void{
+			menu->AddMenuItem(RgGUIMenuItem("menu1", nullptr));
+			menu->AddMenuItem(RgGUIMenuItem("menu2", []()->void{
+				RgLogD() << "menu2 click";
+			}));
+		});
 
 
 	}

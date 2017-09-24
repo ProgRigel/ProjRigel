@@ -194,6 +194,11 @@ namespace rg {
 	{
 	}
 
+	void RgGUIContext::GUIMenuBar(const RgGUIGenericMenu * _menu, const RgVec4 & _rect)
+	{
+
+	}
+
 	bool RgGUIContext::UtilIsInGroup() const
 	{
 		return !m_sState.GroupRectStack.empty();
@@ -253,6 +258,7 @@ namespace rg {
 
 	const RgVec2 RgGUIContext::UtilGetOriginPos(const RgVec2 & lp) const
 	{
+		if (m_sState.GroupRectStack.empty()) return lp;
 		return lp + m_sState.GroupRectStack.top().xy();
 	}
 

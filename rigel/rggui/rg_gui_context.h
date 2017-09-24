@@ -1,6 +1,7 @@
 #pragma once
 #include <rgcore\rg_window.h>
 #include "rg_gui_style.h"
+#include "rg_gui_component.h"
 #include <stack>
 #include <vector>
 #include <map>
@@ -10,6 +11,9 @@ namespace rg {
 
 	class RgGUI;
 	class RgGUIDrawBuffer;
+	struct RgGUIGenericMenu;
+	struct RgGUIMenuItem;
+	struct RgGUIMenuItemList;
 	
 
 	enum class RgGUIControllerType {
@@ -96,6 +100,8 @@ namespace rg {
 		bool GUIMenuItem(RgFloat width);
 		void GUIMenuListBegin(RgStr label,RgFloat width);
 		void GUIMenuListEnd();
+
+		void GUIMenuBar(const RgGUIGenericMenu * _menu, const RgVec4& _rect);
 
 		/////////////////////
 		bool UtilIsInGroup() const;
