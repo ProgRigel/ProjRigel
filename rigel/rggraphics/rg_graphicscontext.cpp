@@ -6,6 +6,7 @@
 #include "rg_buffer.h"
 #include "rg_material.h"
 #include "rg_rasterizer_state.h"
+#include "rg_sampler.h"
 
 namespace rg {
 	RgGraphicsContext::RgGraphicsContext()
@@ -58,6 +59,10 @@ namespace rg {
 	{
 		return nullptr;
 	}
+	RgGraphicsSampler * RgGraphicsContext::CreateSampler(const RgGraphicsSamplerSettings &)
+	{
+		return nullptr;
+	}
 	RgRenderTarget * RgGraphicsContext::GetRenderTarget()
 	{
 		return m_pRenderTarget;
@@ -105,6 +110,12 @@ namespace rg {
 			tex->Release();
 		}
 		std::vector<std::shared_ptr<RgTexture>>().swap(m_vTexture);
+
+		for (auto sampler : m_vSampler) {
+			sampler->Release();
+			sampler = nullptr;
+		}
+		std::vector<RgGraphicsSampler*>().swap(m_vSampler);
 
 		if (m_pRenderContext != nullptr) {
 			m_pRenderContext->Release();

@@ -17,6 +17,8 @@ namespace rg {
 	enum class RgGraphicsComparisonFunc;
 	enum class RgDepthStencilOp;
 	enum class RgGraphicsBufferMap;
+	enum class RgGraphicsFilter;
+	enum class RgGraphicsTextureAddressMode;
 
 	enum class RgRasterizerFillMode;
 	enum class RgRasterizerCullMode;
@@ -30,5 +32,6 @@ namespace rg {
 	struct RgRasterizerSettings;
 	struct RgDepthStencilSettings;
 	struct RgDepthStencilOperation;
+	struct RgGraphicsSamplerSettings;
 }
 

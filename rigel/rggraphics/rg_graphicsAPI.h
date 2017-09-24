@@ -45,6 +45,18 @@ namespace rg {
 		Pixel = 1 << 7,
 	};
 
+	enum class RgGraphicsComparisonFunc
+	{
+		NEVER = 1,
+		LESS = 2,
+		EQUAL = 3,
+		LESS_EQUAL = 4,
+		GREATER = 5,
+		NOT_EQUAL = 5,
+		GREATER_EQUAL = 7,
+		ALWAYS = 8,
+	};
+
 	
 
 	class RgGraphicsAPI

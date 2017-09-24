@@ -6,6 +6,7 @@
 #include <rggraphics\rg_buffer.h>
 #include <rggraphics\rg_render_context.h>
 #include <rggraphics\rg_render_target.h>
+#include <rggraphics\rg_texture.h>
 namespace rg {
 
 	RgGUIBindGraphics::RgGUIBindGraphics(RgGUIContext * gui, RgGraphicsContext * graphics)
@@ -86,6 +87,8 @@ namespace rg {
 		m_pRenderCtx->InputSetShader(m_pShaderPixel);
 
 		m_pRenderCtx->InputSetPrimitiveTopology();
+
+		m_pRenderCtx->SetShaderTexture(m_pTextureFont,RgGraphicsPipelineStage::Pixel);
 
 		m_pRenderCtx->DrawIndexed(m_pGUICtx->GetDrawBuffer()->GetIndicesSize());
 
@@ -213,9 +216,34 @@ namespace rg {
 			RG_ASSERT(m_pDepthStencilState);
 		}
 
-		//m_pGUICtx->DrawRect(RgVec2(0.0f, .0f), RgVec2(70, 30.0f));
-		//m_pGUICtx->DrawRect(RgVec2(30.f, 100.f), RgVec2(200, 60.0f));
-		//m_pGUICtx->DrawRect(RgVec2(70.0f, 200.0f), RgVec2(50, 50.0f));
+		//textures
+		{
+			RgTextureSettings texsettings;
+			texsettings.Width = 256;
+			texsettings.Height = 256;
+			texsettings.SampleDesc.Count = 1;
+			texsettings.SampleDesc.Quality = 0;
+			texsettings.Format = RgGraphicsFormat::R8G8B8A8_UNORM;
+			texsettings.DX_CPUAccessFlag = 0;
+			texsettings.DX_MiscFlags = 0;
+			texsettings.Usage = RgGraphicsUsage::DEFAULT;
+			texsettings.BindFlags = RgGraphicsBindFlag::ShaderResource;
+			texsettings.ArraySize = 1;
+			texsettings.MipLevels = 1;
+
+			m_pTextureFont = m_pGraphics->CreateTexture(texsettings);
+		}
+
+		//PixelShader
+		{
+			RgShaderOptions shaderFont;
+			shaderFont.ShaderEntry = RG_SHADER_ENTRY::Pixel;
+			shaderFont.EntryPoint = "main";
+			shaderFont.ShaderTarget = "ps_4_0";
+			std::wstring fpath = GetWorkDirectory();
+			fpath = fpath + L"/Data/Res/ps.hlsl";
+			m_pShaderPixelText = m_pGraphics->CompileShaderFromFile(fpath, shaderFont);
+		}
 		
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
@@ -285,6 +313,17 @@ namespace rg {
 			m_pDepthStencilState->Release();
 			m_pDepthStencilState = nullptr;
 		}
+
+		if (m_pTextureFont != nullptr) {
+			m_pTextureFont->Release();
+			m_pTextureFont = nullptr;
+		}
+
+		if (m_pShaderPixelText != nullptr) {
+			m_pShaderPixelText->Release();
+			m_pShaderPixelText = nullptr;
+		}
+
 	}
 	void RgGUIBindGraphics::BeforeResize()
 	{

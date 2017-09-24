@@ -11,7 +11,10 @@ struct PixelInput
 	float2 uv:TEXCOORD0;
 };
 
+sampler TextureSampler;
+
 float4 main(PixelInput i):SV_TARGET
 {
-	return float4(i.color.xyz,1.0);
+	float4 color = tex2D(TextureSampler,i.uv);
+	return color;
 }

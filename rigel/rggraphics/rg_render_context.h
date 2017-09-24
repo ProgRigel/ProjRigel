@@ -13,6 +13,7 @@ namespace rg {
 	class RgRasterizerState;
 	class RgDepthStencilState;
 	class RgRenderTarget;
+	class RgTexture;
 
 	class RgRenderContext {
 
@@ -45,6 +46,8 @@ namespace rg {
 
 		virtual void SetRasterizerState(RgRasterizerState*) = 0;
 		virtual void SetDepthStencilState(RgDepthStencilState *) = 0;
+
+		virtual void SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage) = 0;
 
 
 

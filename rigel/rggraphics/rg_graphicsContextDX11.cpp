@@ -10,6 +10,7 @@
 #include "rg_depthstencil_state_dx11.h"
 #include "rg_render_target.h"
 #include "rg_texture_dx11.h"
+#include "rg_sampler_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -371,6 +372,9 @@ namespace rg {
 		auto ret = std::dynamic_pointer_cast<RgTexture>(rgtex);
 
 		m_vTexture.push_back(ret);
+
+		CreateShaderResourceView(rgtex.get());
+
 		return ret;
 	}
 	void ConvertInputLayout(D3D11_INPUT_ELEMENT_DESC& desc,const RgInputLayoutElement element) {
@@ -459,6 +463,41 @@ namespace rg {
 		m_vDepthStencilState.push_back(dss);
 		return dss;
 	}
+	RgGraphicsSampler * RgGraphicsContextDX11::CreateSampler(const RgGraphicsSamplerSettings &)
+	{
+		RgGraphicsSamplerSettings settings;
+
+		D3D11_SAMPLER_DESC samplerDesc;
+		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.MipLODBias = 0.0F;
+		samplerDesc.MaxAnisotropy = 1;
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		samplerDesc.BorderColor[0] = 0;
+		samplerDesc.BorderColor[1] = 0;
+		samplerDesc.BorderColor[2] = 0;
+		samplerDesc.BorderColor[3] = 0;
+		samplerDesc.MinLOD = 0;
+		samplerDesc.MaxLOD = 0;
+
+		ID3D11SamplerState * sampler = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateSamplerState(&samplerDesc, &sampler);
+		HR_CEHCK(hr);
+		if (hr != S_OK || sampler == nullptr) {
+			RgLogE() << "create sampler state error";
+			return nullptr;
+		}
+
+		RgGraphicsSamplerDX11 * rgsampler = new RgGraphicsSamplerDX11(settings);
+		rgsampler->m_psampler = sampler;
+
+
+		m_vSampler.push_back(rgsampler);
+
+		return rgsampler;
+	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
 
@@ -490,6 +529,32 @@ namespace rg {
 	void RgGraphicsContextDX11::prerender()
 	{
 
+	}
+	ID3D11ShaderResourceView * RgGraphicsContextDX11::CreateShaderResourceView(RgTextureDX11 * texture)
+	{
+		if (texture == nullptr) return nullptr;
+		if (texture->m_psrv != nullptr) {
+			RgLogW() << "srv not null";
+			return texture->m_psrv;
+		}
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		desc.Format = directx::MapFormat(texture->m_sSettings.Format);
+		desc.Texture2D.MipLevels = -1;
+		desc.Texture2D.MostDetailedMip = 0;
+
+		ID3D11ShaderResourceView * srv = nullptr;
+
+		HRESULT hr = m_pD3D11Device->CreateShaderResourceView(texture->m_pd3d11tex2d, &desc, &srv);
+		HR_CEHCK(hr);
+		if (srv == nullptr) {
+			RgLogE() << "create shader resources view error";
+			return nullptr;
+		}
+
+		texture->m_psrv = srv;
+		return texture->m_psrv;
 	}
 	const RgViewPort * RgGraphicsContextDX11::GetViewPortDefault()
 	{
@@ -538,6 +603,28 @@ D3D11_USAGE rg::directx::MapUsage(RgGraphicsUsage usage)
 	};
 	return map[usage];
 }
+D3D11_FILTER rg::directx::MapFilter(RgGraphicsFilter filter)
+{
+	static std::unordered_map<RgGraphicsFilter, D3D11_FILTER> map = {
+		{RgGraphicsFilter::MinMagPointMipLinear,D3D11_FILTER_MIN_MAG_MIP_LINEAR},
+		{ RgGraphicsFilter::MinMagMipPoint,D3D11_FILTER_MIN_MAG_MIP_POINT },
+		{ RgGraphicsFilter::Anisotropic,D3D11_FILTER_ANISOTROPIC}
+	};
+
+	return map[filter];
+}
+D3D11_TEXTURE_ADDRESS_MODE rg::directx::MapTextureAddressMode(RgGraphicsTextureAddressMode addressmode)
+{
+	static std::unordered_map<RgGraphicsTextureAddressMode, D3D11_TEXTURE_ADDRESS_MODE> map = {
+		{ RgGraphicsTextureAddressMode::Wrap,D3D11_TEXTURE_ADDRESS_WRAP},
+		{ RgGraphicsTextureAddressMode::Mirror,D3D11_TEXTURE_ADDRESS_MIRROR},
+		{ RgGraphicsTextureAddressMode::Clamp,D3D11_TEXTURE_ADDRESS_CLAMP},
+		{ RgGraphicsTextureAddressMode::Border,D3D11_TEXTURE_ADDRESS_BORDER},
+		{ RgGraphicsTextureAddressMode::MirrorOnce,D3D11_TEXTURE_ADDRESS_MIRROR_ONCE}
+	};
+
+	return map[addressmode];
+}
 void rg::directx::ConvertDepthStencilState(const RgDepthStencilSettings & settings, D3D11_DEPTH_STENCIL_DESC & desc)
 {
 	desc.DepthEnable = settings.DepthEnable;
@@ -585,6 +672,9 @@ void rg::directx::ConvertTexture(const RgTextureSettings & settings, D3D11_TEXTU
 
 	desc.CPUAccessFlags = settings.DX_CPUAccessFlag;
 	desc.MiscFlags = settings.DX_MiscFlags;
+}
+void rg::directx::ConvertSampler(const RgGraphicsSamplerSettings & settings, D3D11_SAMPLER_DESC & desc)
+{
 }
 #pragma endregion
 

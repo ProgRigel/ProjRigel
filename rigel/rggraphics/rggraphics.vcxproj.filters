@@ -64,6 +64,12 @@
     <ClInclude Include="rg_graphicscontext.h">
       <Filter>struct</Filter>
     </ClInclude>
+    <ClInclude Include="rg_sampler.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_sampler_dx11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicsAPI.cpp" />
@@ -121,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="rg_graphicscontext.cpp">
       <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_sampler.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_sampler_dx11.cpp">
+      <Filter>dx11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

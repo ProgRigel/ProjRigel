@@ -1,5 +1,6 @@
 #pragma once
 #include "rggraphics_inc.h"
+#include "rg_graphicsAPI.h"
 
 namespace rg {
 
@@ -14,17 +15,7 @@ namespace rg {
 		DECR = 8,
 	};
 
-	enum class RgGraphicsComparisonFunc
-	{
-		NEVER = 1,
-		LESS = 2,
-		EQUAL = 3,
-		LESS_EQUAL = 4,
-		GREATER = 5,
-		NOT_EQUAL = 5,
-		GREATER_EQUAL = 7,
-		ALWAYS = 8,
-	};
+
 
 	enum class RgDepthWriteMask {
 		MASK_ZERO = 0,

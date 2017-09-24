@@ -62,6 +62,10 @@ namespace rg {
 		std::shared_ptr<RgShader> m_pShaderVertex = nullptr;
 		std::shared_ptr<RgShader> m_pShaderPixel = nullptr;
 
+		std::shared_ptr<RgTexture> m_pTextureFont = nullptr;
+
+		std::shared_ptr<RgShader> m_pShaderPixelText = nullptr;
+
 		RgGUIConstantData constantData;
 
 	};

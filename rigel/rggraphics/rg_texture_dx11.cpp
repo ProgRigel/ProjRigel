@@ -6,8 +6,14 @@ namespace rg {
 	{
 		Release();
 	}
+
 	void RgTextureDX11::Release()
 	{
+		if (m_psrv != nullptr) {
+			m_psrv->Release();
+			m_psrv = nullptr;
+		}
+
 		if (m_pd3d11tex2d != nullptr) {
 			m_pd3d11tex2d->Release();
 			m_pd3d11tex2d = nullptr;

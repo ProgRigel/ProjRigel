@@ -12,6 +12,7 @@
 
 namespace rg {
 
+	class RgTextureDX11;
 
 	class RgGraphicsContextDX11 : public RgGraphicsContext
 	{
@@ -32,18 +33,18 @@ namespace rg {
 		std::shared_ptr<RgShader> CompileShaderFromFile(std::wstring filepath, RgShaderOptions& options);
 		RgBuffer* CreateBuffer(RgBufferSettings settings);
 		std::shared_ptr<RgTexture> CreateTexture(RgTextureSettings& settings);
-
 		RgInputLayout * CreateInputLayout(const RgInputLayoutElement * elements, const unsigned int size, std::shared_ptr<RgShader> vertexShader);
-
 		RgRenderContext * CreateDeferredContext();
-
 		RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
 		RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
+		RgGraphicsSampler* CreateSampler(const RgGraphicsSamplerSettings&);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();
 		void prerender();
 
+	protected:
+		ID3D11ShaderResourceView * CreateShaderResourceView(RgTextureDX11* texture);
 	public:
 
 		const RgViewPort* GetViewPortDefault();
@@ -68,6 +69,7 @@ namespace rg {
 
 	private:
 		std::vector<ID3D11InputLayout*> m_vInputLayouts;
+		ID3D11SamplerState * m_pSamplerState = nullptr;
 
 	public:
 		friend class RgGraphicsAPI;
@@ -79,11 +81,14 @@ namespace rg {
 		DXGI_FORMAT MapFormat(RgGraphicsFormat fmt);
 		unsigned int MapBind(RgGraphicsBindFlag bind);
 		D3D11_USAGE MapUsage(RgGraphicsUsage usage);
+		D3D11_FILTER MapFilter(RgGraphicsFilter filter);
+		D3D11_TEXTURE_ADDRESS_MODE MapTextureAddressMode(RgGraphicsTextureAddressMode addressmode);
 
 		void ConvertDepthStencilState(const RgDepthStencilSettings& settings, D3D11_DEPTH_STENCIL_DESC& desc);
 		void ConvertRasterizerState(const RgRasterizerSettings& settings, D3D11_RASTERIZER_DESC& desc);
 
 		void ConvertTexture(const RgTextureSettings& settings, D3D11_TEXTURE2D_DESC& desc);
+		void ConvertSampler(const RgGraphicsSamplerSettings& settings, D3D11_SAMPLER_DESC& desc);
 	}
 #pragma endregion
 

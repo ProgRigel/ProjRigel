@@ -6,6 +6,7 @@ namespace rg {
 	class RgGraphicsContextDX11;
 	class RgCommandList;
 	class RgRenderTarget;
+	class RgTexture;
 
 	class RgRenderContextDX11 : public RgRenderContext {
 
@@ -28,6 +29,7 @@ namespace rg {
 		void SetRasterizerState(RgRasterizerState*);
 		void SetDepthStencilState(RgDepthStencilState *);
 		
+		void SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage);
 
 		void DrawIndexed(unsigned int size);
 		void Draw();

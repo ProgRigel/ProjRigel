@@ -13,6 +13,7 @@
 #include "rg_rasterizer_state_dx11.h"
 #include "rg_depthstencil_state_dx11.h"
 #include "rg_render_target.h"
+#include "rg_texture_dx11.h"
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -85,6 +86,12 @@ namespace rg {
 			return;
 		}
 		m_pDeviceContext->OMSetDepthStencilState(dxdss->m_state, 0);
+	}
+	void RgRenderContextDX11::SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage)
+	{
+		std::shared_ptr<RgTextureDX11> texdx11 = std::dynamic_pointer_cast<RgTextureDX11>(texture);
+		RG_ASSERT(texdx11);
+		m_pDeviceContext->PSSetShaderResources(0, 1, &(texdx11->m_psrv));
 	}
 	void RgRenderContextDX11::SetRenderTarget(RgRenderTarget * rtarget)
 	{

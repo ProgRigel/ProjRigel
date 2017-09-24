@@ -16,6 +16,7 @@ struct PixelInput
 {
 	float4 position:SV_POSITION;
 	float4 color : COLOR0;
+	float2 uv:TEXCOORD0;
 };
 
 
@@ -28,5 +29,6 @@ PixelInput main(VertexInput v)
 	vpos.y += 1.0;
 	o.position = float4(vpos.xy,1.0 -vpos.z, 1.0);
 	o.color = v.color;
+	o.uv = v.uv;
 	return o;
 }

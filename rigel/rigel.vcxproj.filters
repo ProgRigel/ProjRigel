@@ -56,5 +56,8 @@
     <FxCompile Include="Data\Res\vs.hlsl">
       <Filter>Data\Res</Filter>
     </FxCompile>
+    <FxCompile Include="Data\Res\ps_font.hlsl">
+      <Filter>Data\Res</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
