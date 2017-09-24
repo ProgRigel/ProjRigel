@@ -100,6 +100,12 @@ namespace rg {
 		}
 		std::vector<RgRenderContext*>().swap(m_vRenderContexts);
 
+
+		for (auto tex : m_vTexture) {
+			tex->Release();
+		}
+		std::vector<std::shared_ptr<RgTexture>>().swap(m_vTexture);
+
 		if (m_pRenderContext != nullptr) {
 			m_pRenderContext->Release();
 			delete m_pRenderContext;

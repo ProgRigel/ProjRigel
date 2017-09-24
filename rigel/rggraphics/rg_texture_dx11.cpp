@@ -8,6 +8,10 @@ namespace rg {
 	}
 	void RgTextureDX11::Release()
 	{
+		if (m_pd3d11tex2d != nullptr) {
+			m_pd3d11tex2d->Release();
+			m_pd3d11tex2d = nullptr;
+		}
 	}
 }
 

@@ -64,10 +64,10 @@ namespace rg {
 		std::vector<RgRenderContext *> m_vRenderContexts;
 		std::vector<RgRasterizerState*> m_vRasterState;
 		std::vector<RgDepthStencilState*> m_vDepthStencilState;
-
+		std::vector<std::shared_ptr<RgTexture>> m_vTexture;
 
 		std::unordered_map<std::wstring, std::shared_ptr<RgShader>> m_mShaderCaches;
-
+		
 
 		RgRenderContext *m_pRenderContext = nullptr;
 		RgRenderTarget * m_pRenderTarget = nullptr;

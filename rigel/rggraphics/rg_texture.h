@@ -3,15 +3,11 @@
 
 namespace rg {
 
-	enum class RG_TEXTURE_FORMAT {
-		DEFAULT,
-		R8G8B8A8_UNORM,
-	};
-
 	enum class RgGraphicsUsage {
 		DEFAULT,
 		DYNAMIC,
 		STAGE,
+		IMMUTABLE,
 	};
 
 	struct RgSampleDesc {
@@ -24,7 +20,7 @@ namespace rg {
 		unsigned int Height;
 		unsigned int MipLevels = 1;
 		unsigned int ArraySize = 1;
-		RG_TEXTURE_FORMAT Format = RG_TEXTURE_FORMAT::DEFAULT;
+		RgGraphicsFormat Format = RgGraphicsFormat::UNKNOWN;
 		RgSampleDesc SampleDesc;
 		RgGraphicsUsage Usage = RgGraphicsUsage::DEFAULT;
 		RgGraphicsBindFlag BindFlags;

@@ -9,6 +9,7 @@
 #include "rg_rasterizer_state_dx11.h"
 #include "rg_depthstencil_state_dx11.h"
 #include "rg_render_target.h"
+#include "rg_texture_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -177,18 +178,21 @@ namespace rg {
 		//DEPTH STENCIL BUFFER
 		D3D11_TEXTURE2D_DESC depthBufferDesc;
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-		depthBufferDesc.Width = m_settings.BufferWidth;
-		depthBufferDesc.Height = m_settings.BufferHeight;
-		depthBufferDesc.MipLevels = 1;
-		depthBufferDesc.ArraySize = 1;
-		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		depthBufferDesc.SampleDesc.Count = 1;
-		depthBufferDesc.SampleDesc.Quality = 0;
-		depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		depthBufferDesc.CPUAccessFlags = 0;
-		depthBufferDesc.MiscFlags = 0;
 
+		RgTextureSettings settings;
+		settings.Width = m_settings.BufferWidth;
+		settings.Height = m_settings.BufferHeight;
+		settings.MipLevels = 1;
+		settings.ArraySize = 1;
+		settings.Format = RgGraphicsFormat::D24_UNORM_S8_UINT;
+		settings.BindFlags = RgGraphicsBindFlag::DepthStencil;
+		settings.Usage = RgGraphicsUsage::DEFAULT;
+		settings.DX_CPUAccessFlag = 0;
+		settings.DX_MiscFlags = 0;
+		settings.SampleDesc.Count = 1;
+		settings.SampleDesc.Quality = 0;
+
+		directx::ConvertTexture(settings, depthBufferDesc);
 
 		hr = m_pD3D11Device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 		HR_CEHCK(hr);
@@ -354,7 +358,20 @@ namespace rg {
 	}
 	std::shared_ptr<RgTexture> RgGraphicsContextDX11::CreateTexture(RgTextureSettings & settings)
 	{
-		return std::shared_ptr<RgTexture>();
+		D3D11_TEXTURE2D_DESC desc;
+		directx::ConvertTexture(settings, desc);
+
+		ID3D11Texture2D* dxtexture = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateTexture2D(&desc, nullptr, &dxtexture);
+		HR_CEHCK(hr);
+		if (hr != S_OK || dxtexture == nullptr) return nullptr;
+
+		auto rgtex = std::make_shared<RgTextureDX11>(settings);
+		rgtex->m_pd3d11tex2d = dxtexture;
+		auto ret = std::dynamic_pointer_cast<RgTexture>(rgtex);
+
+		m_vTexture.push_back(ret);
+		return ret;
 	}
 	void ConvertInputLayout(D3D11_INPUT_ELEMENT_DESC& desc,const RgInputLayoutElement element) {
 		desc.SemanticName = element.SemanticName;
@@ -418,7 +435,7 @@ namespace rg {
 	{
 		auto rs = new RgRasterizerStateDX11(settings);
 		D3D11_RASTERIZER_DESC desc;
-		ConvertRasterizerState(settings, desc);
+		directx::ConvertRasterizerState(settings, desc);
 		ID3D11RasterizerState * dxrs = nullptr;
 		HRESULT hr = m_pD3D11Device->CreateRasterizerState(&desc, &dxrs);
 		HR_CEHCK(hr);
@@ -429,7 +446,7 @@ namespace rg {
 	{
 		auto dss = new RgDepthStencilStateDX11(settings);
 		D3D11_DEPTH_STENCIL_DESC desc;
-		ConvertDepthStencilState(settings, desc);
+		directx::ConvertDepthStencilState(settings, desc);
 		ID3D11DepthStencilState * dxdss = nullptr;
 		HRESULT hr = m_pD3D11Device->CreateDepthStencilState(&desc, &dxdss);
 		HR_CEHCK(hr);
@@ -479,4 +496,96 @@ namespace rg {
 		return (RgViewPort*)&m_sViewPort;
 	}
 }
+
+#pragma region map
+
+DXGI_FORMAT rg::directx::MapFormat(RgGraphicsFormat fmt)
+{
+	static std::unordered_map<RgGraphicsFormat, DXGI_FORMAT> map = {
+		{ RgGraphicsFormat::UNKNOWN,				DXGI_FORMAT::DXGI_FORMAT_UNKNOWN },
+		{ RgGraphicsFormat::R32G32_FLOAT,			DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT },
+		{ RgGraphicsFormat::R32G32B32_FLOAT,		DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT },
+		{ RgGraphicsFormat::R32G32B32A32_FLOAT,		DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT },
+		{ RgGraphicsFormat::R8G8B8A8_UNORM,			DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM },
+		{ RgGraphicsFormat::D24_UNORM_S8_UINT,		DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT},
+	};
+	return map[fmt];
+}
+unsigned int rg::directx::MapBind(RgGraphicsBindFlag bind)
+{
+	static std::unordered_map<RgGraphicsBindFlag, unsigned int> map = {
+		{ RgGraphicsBindFlag::ShaderResource,		D3D11_BIND_SHADER_RESOURCE },
+		{ RgGraphicsBindFlag::DepthStencil,			D3D11_BIND_DEPTH_STENCIL},
+		{ RgGraphicsBindFlag::VertexBuffer,			D3D11_BIND_VERTEX_BUFFER },
+		{ RgGraphicsBindFlag::ConstantBuffer,		D3D11_BIND_CONSTANT_BUFFER },
+		{ RgGraphicsBindFlag::IndexBuffer,			D3D11_BIND_INDEX_BUFFER },
+		{ RgGraphicsBindFlag::StreamOutput,			D3D11_BIND_STREAM_OUTPUT },
+		{ RgGraphicsBindFlag::RenderTarget,			D3D11_BIND_RENDER_TARGET },
+		{ RgGraphicsBindFlag::UnorderedAccess,		D3D11_BIND_UNORDERED_ACCESS },
+		{ RgGraphicsBindFlag::Decoder,				D3D11_BIND_DECODER },
+		{ RgGraphicsBindFlag::VideoEncoder,			D3D11_BIND_VIDEO_ENCODER },
+	};
+
+	return map[bind];
+}
+D3D11_USAGE rg::directx::MapUsage(RgGraphicsUsage usage)
+{
+	static std::unordered_map<RgGraphicsUsage, D3D11_USAGE> map = {
+		{ RgGraphicsUsage::DEFAULT,D3D11_USAGE::D3D11_USAGE_DEFAULT },
+		{ RgGraphicsUsage::DYNAMIC,D3D11_USAGE::D3D11_USAGE_DYNAMIC },
+		{ RgGraphicsUsage::STAGE,D3D11_USAGE::D3D11_USAGE_STAGING },
+		{ RgGraphicsUsage::IMMUTABLE,D3D11_USAGE::D3D11_USAGE_IMMUTABLE },
+	};
+	return map[usage];
+}
+void rg::directx::ConvertDepthStencilState(const RgDepthStencilSettings & settings, D3D11_DEPTH_STENCIL_DESC & desc)
+{
+	desc.DepthEnable = settings.DepthEnable;
+	desc.DepthWriteMask = (D3D11_DEPTH_WRITE_MASK)settings.DepthWriteMask;
+	desc.DepthFunc = (D3D11_COMPARISON_FUNC)settings.DepthFunc;
+
+	desc.StencilEnable = settings.StencilEnable;
+	desc.StencilReadMask = settings.StencilReadMask;
+	desc.StencilWriteMask = settings.StencilWriteMask;
+
+	desc.FrontFace.StencilFailOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilFailOp;
+	desc.FrontFace.StencilDepthFailOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilDepthFailOp;
+	desc.FrontFace.StencilPassOp = (D3D11_STENCIL_OP)settings.FrontFace.StencilPassOp;
+	desc.FrontFace.StencilFunc = (D3D11_COMPARISON_FUNC)settings.FrontFace.StencilFunc;
+
+	desc.BackFace.StencilFailOp = (D3D11_STENCIL_OP)settings.BackFace.StencilFailOp;
+	desc.BackFace.StencilDepthFailOp = (D3D11_STENCIL_OP)settings.BackFace.StencilDepthFailOp;
+	desc.BackFace.StencilPassOp = (D3D11_STENCIL_OP)settings.BackFace.StencilPassOp;
+	desc.BackFace.StencilFunc = (D3D11_COMPARISON_FUNC)settings.BackFace.StencilFunc;
+}
+void rg::directx::ConvertRasterizerState(const RgRasterizerSettings & settings, D3D11_RASTERIZER_DESC & desc)
+{
+	desc.AntialiasedLineEnable = settings.AntialiasedLine;
+	desc.CullMode = (D3D11_CULL_MODE)settings.CullMode;
+	desc.FillMode = (D3D11_FILL_MODE)settings.FillMode;
+	desc.DepthBias = settings.DepthBias;
+	desc.DepthBiasClamp = settings.DepthBiasClamp;
+	desc.DepthClipEnable = settings.DepthClipEnable;
+	desc.MultisampleEnable = settings.MultisampleEnable;
+	desc.ScissorEnable = settings.ScissorEnable;
+	desc.SlopeScaledDepthBias = settings.SlopeScaledDepthBias;
+	desc.FrontCounterClockwise = settings.FrontCounterClockwise;
+}
+void rg::directx::ConvertTexture(const RgTextureSettings & settings, D3D11_TEXTURE2D_DESC & desc)
+{
+	desc.Width = settings.Width;
+	desc.Height = settings.Height;
+	desc.MipLevels = settings.MipLevels;
+	desc.ArraySize = settings.ArraySize;
+	desc.Format = directx::MapFormat(settings.Format);
+	desc.BindFlags = directx::MapBind(settings.BindFlags);
+	desc.SampleDesc.Count = settings.SampleDesc.Count;
+	desc.SampleDesc.Quality = settings.SampleDesc.Quality;
+	desc.Usage = directx::MapUsage(settings.Usage);
+
+	desc.CPUAccessFlags = settings.DX_CPUAccessFlag;
+	desc.MiscFlags = settings.DX_MiscFlags;
+}
+#pragma endregion
+
 
