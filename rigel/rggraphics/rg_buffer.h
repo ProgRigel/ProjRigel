@@ -44,6 +44,7 @@ namespace rg {
 
 		virtual void Release() = 0;
 		virtual void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size, RgGraphicsBufferMap maptype = RgGraphicsBufferMap::WriteDiscard) = 0;
+		virtual void SetData(RgRenderContext * renderctx, unsigned int datacount, void ** pdata, unsigned int* size, RgGraphicsBufferMap maptype = RgGraphicsBufferMap::WriteDiscard) = 0;
 
 		RgBufferSettings& GetSettings();
 

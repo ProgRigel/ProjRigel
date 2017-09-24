@@ -1,6 +1,7 @@
 #include "rggui.h"
 #include "rg_gui_bind_graphics.h"
 #include "rg_gui_context.h"
+#include "rg_gui_draw_buffer.h"
 
 #include <rggraphics\rg_shader.h>
 #include <rggraphics\rg_buffer.h>
@@ -41,19 +42,16 @@ namespace rg {
 
 			//mapdata
 			auto guibuf = m_pGUICtx->GetDrawBuffer();
-			m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
+			auto textbuf = m_pGUICtx->GetTextBuffer();
+			MapBufferData();
 
-			auto indptr = guibuf->GetIndicesPtr();//???
-			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
-
-			if (guibuf->IsIndicesChanged()) {
+			if (guibuf->IsIndicesChanged() || textbuf->IsIndicesChanged()) {
 
 				RgLogD() << "rebuild";
 
 				ReBuildCommandList();
 			}
 		}
-
 
 		if (m_pCommandList != nullptr) {
 			m_pGraphics->GetRenderContext()->ExecuteCommandList(m_pCommandList, false);
@@ -87,10 +85,17 @@ namespace rg {
 		m_pRenderCtx->InputSetShader(m_pShaderPixel);
 
 		m_pRenderCtx->InputSetPrimitiveTopology();
-
-		m_pRenderCtx->SetShaderTexture(m_pTextureFont,RgGraphicsPipelineStage::Pixel);
-
 		m_pRenderCtx->DrawIndexed(m_pGUICtx->GetDrawBuffer()->GetIndicesSize());
+
+		//draw text
+		m_pRenderCtx->InputSetShader(m_pShaderPixelText);
+		m_pRenderCtx->SetShaderTexture(m_pTextureFont, RgGraphicsPipelineStage::Pixel);
+		m_pRenderCtx->SetSampler(m_pSampler);
+
+		unsigned int textIndicesSize = m_pGUICtx->GetTextBuffer()->GetIndicesSize();
+		unsigned int vertexoffset = m_pGUICtx->GetDrawBuffer()->GetVertexCount();
+
+		m_pRenderCtx->DrawIndexed(textIndicesSize, 0, vertexoffset);
 
 		bool suc = m_pRenderCtx->FinishCommandList(false, &m_pCommandList);
 		if (!suc) {
@@ -234,6 +239,13 @@ namespace rg {
 			m_pTextureFont = m_pGraphics->CreateTexture(texsettings);
 		}
 
+		//sampler
+		{
+			RgGraphicsSamplerSettings samplersettings;
+			m_pSampler = m_pGraphics->CreateSampler(samplersettings);
+			RG_ASSERT(m_pSampler);
+		}
+
 		//PixelShader
 		{
 			RgShaderOptions shaderFont;
@@ -241,7 +253,7 @@ namespace rg {
 			shaderFont.EntryPoint = "main";
 			shaderFont.ShaderTarget = "ps_4_0";
 			std::wstring fpath = GetWorkDirectory();
-			fpath = fpath + L"/Data/Res/ps.hlsl";
+			fpath = fpath + L"/Data/Res/ps_font.hlsl";
 			m_pShaderPixelText = m_pGraphics->CompileShaderFromFile(fpath, shaderFont);
 		}
 		
@@ -324,6 +336,11 @@ namespace rg {
 			m_pShaderPixelText = nullptr;
 		}
 
+		if (m_pSampler != nullptr) {
+			m_pSampler->Release();
+			m_pSampler = nullptr;
+		}
+
 	}
 	void RgGUIBindGraphics::BeforeResize()
 	{
@@ -363,6 +380,23 @@ namespace rg {
 		m_pBufferConst->SetData(m_pGraphics->GetRenderContext(), &constantData, sizeof(constantData));
 
 		ReBuildCommandList();
+	}
+	void RgGUIBindGraphics::MapBufferData()
+	{
+		auto guibuf = m_pGUICtx->GetDrawBuffer();
+		auto textbuf = m_pGUICtx->GetTextBuffer();
+
+		void * buf[2]{ guibuf->GetDataPtr(),textbuf->GetDataPtr() };
+		unsigned int size[2];
+		size[0] = guibuf->GetVertexCount() * sizeof(RgGUIVertex);
+		size[1] = guibuf->GetVertexCount() * sizeof(RgGUIVertex);
+
+		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), 2, &buf[0], &size[0]);
+
+		//m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
+
+		auto indptr = guibuf->GetIndicesPtr();//???
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
 	}
 }
 

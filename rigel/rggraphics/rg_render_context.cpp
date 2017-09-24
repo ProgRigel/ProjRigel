@@ -42,6 +42,10 @@ namespace rg {
 	{
 	}
 
+	void RgRenderContext::DrawIndexed(unsigned int count, unsigned int startpos, int vertexstart)
+	{
+	}
+
 	void RgRenderContext::Draw()
 	{
 	}

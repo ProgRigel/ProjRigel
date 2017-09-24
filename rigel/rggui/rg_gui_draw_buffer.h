@@ -18,6 +18,7 @@ namespace rg {
 		~RgGUIDrawBuffer();
 
 		void ResetBuffer();
+		void ApplyBuffer(); //caculate indices size and prepare for draw
 		unsigned int GetBufferSize();
 		unsigned int GetVertexCount();
 		void * GetDataPtr();

@@ -6,6 +6,7 @@
 #include <rggraphics\rg_command_list.h>
 #include <rggraphics\rg_rasterizer_state.h>
 #include <rggraphics\rg_depthstencil_state.h>
+#include <rggraphics\rg_sampler.h>
 #include <memory>
 
 namespace rg {
@@ -37,6 +38,8 @@ namespace rg {
 		void AfterResize(unsigned int width, unsigned int height);
 
 
+		void MapBufferData();
+
 
 	protected:
 
@@ -63,7 +66,7 @@ namespace rg {
 		std::shared_ptr<RgShader> m_pShaderPixel = nullptr;
 
 		std::shared_ptr<RgTexture> m_pTextureFont = nullptr;
-
+		RgGraphicsSampler * m_pSampler = nullptr;
 		std::shared_ptr<RgShader> m_pShaderPixelText = nullptr;
 
 		RgGUIConstantData constantData;

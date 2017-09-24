@@ -76,6 +76,16 @@ namespace rg {
 		ZeroMemory(m_pData, m_sBufferSize * VERTEX_SIZE);
 	}
 
+	void RgGUIDrawBuffer::ApplyBuffer()
+	{
+		unsigned int quadcount = (unsigned int)(m_pPos - m_pData) / 4;
+		if (quadcount > m_pIndicesBufferQuadSize) {
+			auto scale = quadcount / m_pIndicesBufferQuadSize + 1;
+			ExtendIndicesBuffer(m_pIndicesBufferQuadSize, m_pIndicesBufferQuadSize*scale);
+		}
+		m_pIndicesQuadCount = quadcount;
+	}
+
 	unsigned int RgGUIDrawBuffer::GetBufferSize()
 	{
 		return m_sBufferSize;
@@ -93,13 +103,6 @@ namespace rg {
 
 	unsigned int * RgGUIDrawBuffer::GetIndicesPtr()
 	{
-		unsigned int quadcount =(unsigned int)(m_pPos - m_pData)/4;
-		if (quadcount > m_pIndicesBufferQuadSize) {
-			auto scale = quadcount / m_pIndicesBufferQuadSize + 1;
-			ExtendIndicesBuffer(m_pIndicesBufferQuadSize, m_pIndicesBufferQuadSize*scale);
-		}
-		m_pIndicesQuadCount = quadcount;
-
 		return m_pIndicesBufferData;
 	}
 

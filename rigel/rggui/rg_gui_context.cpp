@@ -11,11 +11,17 @@ namespace rg {
 			m_pDrawBuffer = nullptr;
 		}
 
+		if (m_pTextBuffer != nullptr) {
+			delete m_pTextBuffer;
+			m_pTextBuffer = nullptr;
+		}
+
 		m_pWindowInput = nullptr;
 	}
 	void RgGUIContext::Reset()
 	{
 		m_pDrawBuffer->ResetBuffer();
+		m_pTextBuffer->ResetBuffer();
 	}
 	void RgGUIContext::SetDirty(bool dirty)
 	{
@@ -29,6 +35,7 @@ namespace rg {
 	{
 		m_pWindowInput = e.Input;
 		m_pDrawBuffer->ResetBuffer();
+		m_pTextBuffer->ResetBuffer();
 		m_sState.Reset();
 		m_sState.contextMenuReset();
 		m_sState.WindowGroupRect.z = m_pWindowInput->WindowRect.z;
@@ -43,8 +50,6 @@ namespace rg {
 			m_sState.mouseLeftDown = false;
 			m_sState.mouseLeftClick = true;
 		}
-
-
 	}
 	void RgGUIContext::EndGUI()
 	{
@@ -64,13 +69,33 @@ namespace rg {
 				GUIRect(pair.second,RgGUIColors::Alizarin, false);
 			}
 		}
-		
+
+		m_pDrawBuffer->ApplyBuffer();
+		m_pTextBuffer->ApplyBuffer();
 	}
 
 
 
 	////////////////
 
+
+	void RgGUIContext::GUIText(std::string content, const RgVec4 & rect)
+	{
+		auto color = RgVec4(1, 1, 1, 1);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos++;
+		m_sState.RectZInc();
+	}
 
 	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz)
 	{
@@ -344,10 +369,16 @@ namespace rg {
 		return m_pDrawBuffer;
 	}
 
+	RgGUIDrawBuffer * RgGUIContext::GetTextBuffer()
+	{
+		return m_pTextBuffer;
+	}
+
 
 	RgGUIContext::RgGUIContext()
 	{
 		m_pDrawBuffer = new RgGUIDrawBuffer();
+		m_pTextBuffer = new RgGUIDrawBuffer();
 	}
 
 	RgGUIContext::~RgGUIContext()

@@ -43,6 +43,13 @@ namespace rg {
 
 	void RgBufferDX11::SetData(RgRenderContext * renderctx, void * pdata, unsigned int size, RgGraphicsBufferMap maptype)
 	{
+
+		SetData(renderctx, 1, &pdata, &size, maptype);
+		
+	}
+
+	void RgBufferDX11::SetData(RgRenderContext * renderctx,unsigned int datacount,void ** pdata, unsigned int* size, RgGraphicsBufferMap maptype) {
+
 		auto ctx = dynamic_cast<RgRenderContextDX11*>(renderctx);
 		if (ctx == nullptr) return;
 
@@ -59,11 +66,16 @@ namespace rg {
 		{
 			HRESULT hr = ctx->m_pDeviceContext->Map(m_pbuffer, 0, dxmap, 0, &bufferres);
 			if (hr != S_OK) {
-				RgLogE() << "map buffer data error "<< HR_CODE(hr);
+				RgLogE() << "map buffer data error " << HR_CODE(hr);
 				return;
 			}
 			auto dataptr = bufferres.pData;
-			memcpy(dataptr, pdata, size);
+
+			unsigned int sizeaccu = 0;
+			for (unsigned int i = 0; i < datacount; i++) {
+				memcpy(((byte*)dataptr + sizeaccu), pdata[i], size[i]);// make sure buffer allocates ...
+				sizeaccu += size[i];
+			}
 			ctx->m_pDeviceContext->Unmap(m_pbuffer, 0);
 		}
 	}

@@ -14,6 +14,7 @@
 #include "rg_depthstencil_state_dx11.h"
 #include "rg_render_target.h"
 #include "rg_texture_dx11.h"
+#include "rg_sampler_dx11.h"
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -93,6 +94,12 @@ namespace rg {
 		RG_ASSERT(texdx11);
 		m_pDeviceContext->PSSetShaderResources(0, 1, &(texdx11->m_psrv));
 	}
+	void RgRenderContextDX11::SetSampler(RgGraphicsSampler * sampler)
+	{
+		RgGraphicsSamplerDX11 * dxsampler = (RgGraphicsSamplerDX11*)(sampler);
+		RG_ASSERT(dxsampler != nullptr);
+		m_pDeviceContext->PSSetSamplers(0, 1, &dxsampler->m_psampler);
+	}
 	void RgRenderContextDX11::SetRenderTarget(RgRenderTarget * rtarget)
 	{
 		ID3D11RenderTargetView * rtv =(ID3D11RenderTargetView*) rtarget->GetColorBufferPtr();
@@ -123,6 +130,10 @@ namespace rg {
 	void RgRenderContextDX11::DrawIndexed(unsigned int size)
 	{
 		m_pDeviceContext->DrawIndexed(size, 0, 0);
+	}
+	void RgRenderContextDX11::DrawIndexed(unsigned int count, unsigned int startpos, int vertexstart)
+	{
+		m_pDeviceContext->DrawIndexed(count,startpos,vertexstart);
 	}
 	void RgRenderContextDX11::Draw()
 	{

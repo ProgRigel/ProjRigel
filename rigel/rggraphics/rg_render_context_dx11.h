@@ -7,6 +7,7 @@ namespace rg {
 	class RgCommandList;
 	class RgRenderTarget;
 	class RgTexture;
+	class RgGraphicsSampler;
 
 	class RgRenderContextDX11 : public RgRenderContext {
 
@@ -30,8 +31,10 @@ namespace rg {
 		void SetDepthStencilState(RgDepthStencilState *);
 		
 		void SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage);
+		void SetSampler(RgGraphicsSampler * sampler);
 
 		void DrawIndexed(unsigned int size);
+		void DrawIndexed(unsigned int count,unsigned int startpos,int vertexstart);
 		void Draw();
 
 		void ClearState();

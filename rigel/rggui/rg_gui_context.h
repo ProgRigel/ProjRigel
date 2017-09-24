@@ -85,6 +85,8 @@ namespace rg {
 		void DropColor();
 		
 		////////////////////////
+		void GUIText(std::string content, const RgVec4& rect);
+
 		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
 		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
 		void GUIRect(const RgVec4& rect,bool grouped = true);
@@ -119,6 +121,7 @@ namespace rg {
 		void SetColor(RgVec4 color);
 
 		RgGUIDrawBuffer * GetDrawBuffer();
+		RgGUIDrawBuffer * GetTextBuffer();
 
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
@@ -135,6 +138,7 @@ namespace rg {
 		bool m_bDirty = false;
 		RgGUIState m_sState;
 		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
+		RgGUIDrawBuffer * m_pTextBuffer = nullptr;
 		const RgWindowInput * m_pWindowInput = nullptr;
 
 		RgGUIStyle m_style;

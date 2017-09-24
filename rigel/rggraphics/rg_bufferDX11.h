@@ -13,6 +13,7 @@ namespace rg {
 
 		void Release();
 		void SetData(RgRenderContext *renderctx, void *pdata, unsigned int size, RgGraphicsBufferMap maptype);
+		void SetData(RgRenderContext * renderctx, unsigned int datacount,void ** pdata, unsigned int* size, RgGraphicsBufferMap maptype);
 	protected:
 		HRESULT Create(ID3D11Device * device);
 

@@ -121,6 +121,11 @@ namespace editor {
 		}
 		
 
+		//texttest
+		{
+			ctx->GUIText("test content", RgVec4(250, 100, 200, 30));
+		}
+
 		ctx->EndGUI();
 
 		static RgGUIGenericMenu menu("menu",true,[](RgGUIGenericMenu* menu)->void{
@@ -129,7 +134,6 @@ namespace editor {
 				RgLogD() << "menu2 click";
 			}));
 		});
-
 
 	}
 	void EditorGUI::OnRender()

@@ -14,6 +14,7 @@ namespace rg {
 	class RgDepthStencilState;
 	class RgRenderTarget;
 	class RgTexture;
+	class RgGraphicsSampler;
 
 	class RgRenderContext {
 
@@ -36,6 +37,7 @@ namespace rg {
 		virtual void InputSetInputLayout(RgInputLayout * layout);
 
 		virtual void DrawIndexed(unsigned int size);
+		virtual void DrawIndexed(unsigned int count, unsigned int startpos, int vertexstart);
 		virtual void Draw();
 
 		virtual void SetRenderTarget(RgRenderTarget * rtarget) = 0;
@@ -48,7 +50,7 @@ namespace rg {
 		virtual void SetDepthStencilState(RgDepthStencilState *) = 0;
 
 		virtual void SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage) = 0;
-
+		virtual void SetSampler(RgGraphicsSampler * sampler) = 0;
 
 
 		virtual void ClearState();
