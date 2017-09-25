@@ -123,7 +123,7 @@ namespace editor {
 
 		//texttest
 		{
-			ctx->GUIText("test content", RgVec4(250, 100, 200, 30));
+			ctx->GUIText("test content", RgVec4(250, 100, 256, 256));
 		}
 
 		ctx->EndGUI();

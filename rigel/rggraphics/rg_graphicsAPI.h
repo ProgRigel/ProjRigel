@@ -18,7 +18,8 @@ namespace rg {
 		R32G32B32_FLOAT = 2,
 		R32G32B32A32_FLOAT = 3,
 		R8G8B8A8_UNORM = 4,
-		D24_UNORM_S8_UINT = 5,
+		R8G8B8A8_UINT = 5,
+		D24_UNORM_S8_UINT = 50,
 	};
 
 	enum class RgGraphicsBindFlag {

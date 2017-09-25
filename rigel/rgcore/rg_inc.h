@@ -4,7 +4,7 @@
 
 #ifdef _DEBUG
 #include <assert.h>
-#define RG_ASSERT(x) assert(x)
+#define RG_ASSERT(x) //assert(x)
 #else
 #define RG_ASSERT(x)
 #endif

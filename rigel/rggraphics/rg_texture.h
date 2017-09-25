@@ -3,6 +3,8 @@
 
 namespace rg {
 
+	class RgRenderContext;
+
 	enum class RgGraphicsUsage {
 		DEFAULT,
 		DYNAMIC,
@@ -36,7 +38,8 @@ namespace rg {
 		RgTexture(const RgTextureSettings& settings):m_sSettings(settings){}
 
 		virtual void Release();
-		void SetRawData(void* data, unsigned int length);
+		virtual void SetRawData(void* data, unsigned int length);
+		virtual void SetData(RgRenderContext * renderctx, void * data, size_t size);
 
 	private:
 		RgTexture(const RgTexture&) = delete;

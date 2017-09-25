@@ -82,6 +82,7 @@ namespace rg {
 		(*img)->m_height = height;
 		(*img)->m_pData = m_data;
 		(*img)->m_format = RgImageFormat::R8G8B8A8;
+		(*img)->m_DataSize = imagesize * sizeof(byte);
 
 		return true;
 	}

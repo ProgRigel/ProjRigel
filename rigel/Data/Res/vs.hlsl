@@ -8,8 +8,8 @@ cbuffer ConstBuffer:register(b0)
 struct VertexInput
 {
 	float4 position:POSITION;
-	float4 color:COLOR;
-	float2 uv:TEXCOORD;
+	float4 color:COLOR0;
+	float2 uv:TEXCOORD0;
 };
 
 struct PixelInput

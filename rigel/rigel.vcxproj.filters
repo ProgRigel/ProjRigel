@@ -60,4 +60,9 @@
       <Filter>Data\Res</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Res\tex.tga">
+      <Filter>Data\Res</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

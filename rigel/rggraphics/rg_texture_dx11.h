@@ -5,11 +5,14 @@ namespace rg {
 
 	class RgGraphicsContextDX11;
 	class RgRenderContextDX11;
+	class RgRenderContext;
 
 	class RgTextureDX11 : public RgTexture {
 
 	public:
 		RgTextureDX11(const RgTextureSettings& settings) :RgTexture(settings){}
+		void SetRawData(void* data, unsigned int length);
+		void SetData(RgRenderContext * renderctx,void * data,size_t size);
 		~RgTextureDX11();
 		void Release();
 

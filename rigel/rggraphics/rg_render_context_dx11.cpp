@@ -92,6 +92,9 @@ namespace rg {
 	{
 		std::shared_ptr<RgTextureDX11> texdx11 = std::dynamic_pointer_cast<RgTextureDX11>(texture);
 		RG_ASSERT(texdx11);
+		if (texdx11 == nullptr || texdx11->m_psrv ==nullptr) {
+			RgLogE() << "texture is null";
+		}
 		m_pDeviceContext->PSSetShaderResources(0, 1, &(texdx11->m_psrv));
 	}
 	void RgRenderContextDX11::SetSampler(RgGraphicsSampler * sampler)
@@ -166,6 +169,10 @@ namespace rg {
 		RG_ASSERT(pcmdlistdx11 &&pcmdlistdx11->m_pCommandList);
 		m_pDeviceContext->ExecuteCommandList(pcmdlistdx11->m_pCommandList, restorectx);
 
+	}
+	ID3D11DeviceContext * RgRenderContextDX11::GetDeviceContext() const
+	{
+		return m_pDeviceContext;
 	}
 	RgRenderContextDX11::RgRenderContextDX11(bool immedctx)
 	{

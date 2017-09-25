@@ -11,10 +11,12 @@ struct PixelInput
 	float2 uv:TEXCOORD0;
 };
 
-sampler TextureSampler;
+Texture2D texfont;
+
+SamplerState MeshTextureSampler;
 
 float4 main(PixelInput i):SV_TARGET
 {
-	float4 color = tex2D(TextureSampler,i.uv);
+	float4 color = texfont.Sample(MeshTextureSampler,i.uv);
 	return color;
 }

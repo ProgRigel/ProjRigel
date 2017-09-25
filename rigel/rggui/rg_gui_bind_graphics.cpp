@@ -8,6 +8,7 @@
 #include <rggraphics\rg_render_context.h>
 #include <rggraphics\rg_render_target.h>
 #include <rggraphics\rg_texture.h>
+#include <rgcore\rg_image.h>
 namespace rg {
 
 	RgGUIBindGraphics::RgGUIBindGraphics(RgGUIContext * gui, RgGraphicsContext * graphics)
@@ -229,14 +230,23 @@ namespace rg {
 			texsettings.SampleDesc.Count = 1;
 			texsettings.SampleDesc.Quality = 0;
 			texsettings.Format = RgGraphicsFormat::R8G8B8A8_UNORM;
-			texsettings.DX_CPUAccessFlag = 0;
+			texsettings.DX_CPUAccessFlag = D3D11_CPU_ACCESS_WRITE;
 			texsettings.DX_MiscFlags = 0;
-			texsettings.Usage = RgGraphicsUsage::DEFAULT;
+			texsettings.Usage = RgGraphicsUsage::DYNAMIC;
 			texsettings.BindFlags = RgGraphicsBindFlag::ShaderResource;
 			texsettings.ArraySize = 1;
 			texsettings.MipLevels = 1;
 
 			m_pTextureFont = m_pGraphics->CreateTexture(texsettings);
+
+			RgImage * img = RgImage::RgImageLoad(GetWorkDirectory() + L"/Data/Res/tex.tga", RgImageType::Targa);
+			RG_ASSERT(img);
+
+			m_pTextureFont->SetData(m_pGraphics->GetRenderContext(), img->GetData(), img->GetDataSize());
+
+			img->Release();
+			delete img;
+			img = nullptr;
 		}
 
 		//sampler

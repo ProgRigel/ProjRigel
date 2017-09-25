@@ -29,15 +29,17 @@ namespace rg {
 		unsigned int GetWidth();
 		unsigned int GetHeight();
 		unsigned char* GetData();
+		size_t GetDataSize() const;
 
-
+		virtual ~RgImage();
 	protected:
 		RgImage();
-		virtual ~RgImage();
+		
 		RgImage(const RgImage&) = delete;
 		RgImage& operator= (const RgImage&) = delete;
 
 		unsigned char* m_pData = nullptr;
+		size_t m_DataSize = 0;
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
 		RgImageFormat m_format = RgImageFormat::NONE;

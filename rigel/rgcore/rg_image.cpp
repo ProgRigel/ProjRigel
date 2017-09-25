@@ -55,7 +55,7 @@ namespace rg{
 	}
 	void RgImage::Release()
 	{
-		if (m_pData) delete m_pData;
+		if (m_pData) delete[] m_pData;
 		m_pData = nullptr;
 	}
 	unsigned int RgImage::GetWidth()
@@ -70,6 +70,11 @@ namespace rg{
 	{
 		return m_pData;
 	}
+	size_t RgImage::GetDataSize() const
+	{
+		RG_ASSERT(m_DataSize > 0);
+		return m_DataSize;
+	}
 	RgImage::RgImage()
 	{
 		Release();
@@ -77,7 +82,7 @@ namespace rg{
 
 	RgImage::~RgImage()
 	{
-		delete m_pData;
+		delete[] m_pData;
 		m_pData = nullptr;
 	}
 

@@ -41,6 +41,8 @@ namespace rg {
 		bool FinishCommandList(bool restorectx, RgCommandList ** pcommandlist);
 		void ExecuteCommandList(RgCommandList * pcommandlist, bool restorectx);
 
+		ID3D11DeviceContext * GetDeviceContext() const;
+
 	protected:
 		RgRenderContextDX11(bool immedctx);
 

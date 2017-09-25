@@ -84,15 +84,19 @@ namespace rg {
 		auto color = RgVec4(1, 1, 1, 1);
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
 		m_pTextBuffer->m_pPos++;
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = RgVec2(1, 1);
 		m_pTextBuffer->m_pPos++;
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = RgVec2(1, 0);
 		m_pTextBuffer->m_pPos++;
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = RgVec2(0, 0);
 		m_pTextBuffer->m_pPos++;
 		m_sState.RectZInc();
 	}
