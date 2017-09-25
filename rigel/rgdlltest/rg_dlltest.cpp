@@ -3,21 +3,24 @@
 #include <iostream>
 #include <vector>
 #include <map>
-std::string asterisk(int num)
+extern "C"
 {
-	std::ostringstream oss;
-	while (num--)
+	__declspec(dllexport) int asterisk(std::string*meow, int num)
 	{
-		oss << "*";
+		meow = new std::string;
+		while (num--)
+		{
+			meow->append("*");
+		}
+		return num;
 	}
-	return oss.str();
-}
 
-void disp_asterisk(int num)
-{
-	while (num--)
+	__declspec(dllexport) void disp_asterisk(int num)
 	{
-		std::cout << "*";
+		while (num--)
+		{
+			std::cout << "*";
+		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 }

@@ -1,4 +1,7 @@
 #pragma once
 #include <string>
-std::string asterisk(int num);
-void disp_asterisk(int num);
+extern "C"
+{
+	__declspec(dllexport) int asterisk(std::string*meow, int num);
+	__declspec(dllexport) void disp_asterisk(int num);
+}

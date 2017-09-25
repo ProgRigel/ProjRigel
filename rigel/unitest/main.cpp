@@ -3,7 +3,6 @@
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggui\rg_gui.h>
 #include <rgcore\rg_utility.h>
-#include <rgdlltest\rg_dlltest.h>
 using namespace rg;
 
 #define Check(h,l) if((h) == false) RgLogW()<<l;
@@ -23,12 +22,11 @@ int main() {
 	hr = S_FALSE;
 	std::wcout <<"test:HrToMessage:"<< HrToMessage(hr) << std::endl;;
 	//rg_dlltest
-	disp_asterisk(20);
+
 	typedef void(*DLLFunction)(int);
 	DLLFunction dllFunc;
-	std::wstring dllpath = GetWorkDirectory();
 	std::string fun_name("disp_asterisk");
-	dllpath.append(L"\\rgdlltest.dll");
+	std::wstring dllpath(L"..\\Debug\\rgdlltest.dll");
 	std::wcout << dllpath << std::endl;
 	HINSTANCE hInstLibrary = LoadLibrary(dllpath.c_str());
 	if (hInstLibrary == NULL)
