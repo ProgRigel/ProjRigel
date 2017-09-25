@@ -3,6 +3,8 @@
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggui\rg_gui.h>
 #include <rgcore\rg_utility.h>
+#include <rgcore\rg_pluginmanager.h>
+#include <rgcore\rg_module_dlltest.h>
 using namespace rg;
 
 #define Check(h,l) if((h) == false) RgLogW()<<l;
@@ -22,31 +24,9 @@ int main() {
 	hr = S_FALSE;
 	std::wcout <<"test:HrToMessage:"<< HrToMessage(hr) << std::endl;;
 	//rg_dlltest
-
-	typedef void(*DLLFunction)(int);
-	DLLFunction dllFunc;
-	std::string fun_name("disp_asterisk");
-	std::wstring dllpath(L"..\\Debug\\rgdlltest.dll");
-	std::wcout << dllpath << std::endl;
-	HINSTANCE hInstLibrary = LoadLibrary(dllpath.c_str());
-	if (hInstLibrary == NULL)
-	{
-		std::cout << "no dll loaded" << std::endl;
-		FreeLibrary(hInstLibrary);
-	}
-	else
-	{
-		dllFunc = (DLLFunction)GetProcAddress(hInstLibrary, fun_name.c_str());
-		if (dllFunc == NULL)
-		{
-			std::cout << "function entry not found" << std::endl;
-		}
-		else
-		{
-			dllFunc(20);
-		}
-		FreeLibrary(hInstLibrary);
-	}
+	RgModuleDlltest dlltest;
+	//RgPluginManager::registerPlugin((RgPluginBase*)&dlltest);
+	//dlltest.m_disp_asterisk(10);
 	
 	RgLogD() << "=================";
 	RgLogD() << "Unitest Done!";

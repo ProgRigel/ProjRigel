@@ -21,6 +21,6 @@ namespace rg {
 		RgPluginManager(const RgPluginManager&) = delete;
 		RgPluginManager& operator=(const RgPluginManager&) = delete;
 	private:
-		std::vector<RgPluginBase*> m_vplugins;
+		static std::vector<RgPluginBase*> m_vplugins;
 	};
 }

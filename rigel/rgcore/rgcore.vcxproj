@@ -26,6 +26,7 @@
     <ClInclude Include="rg_inc.h" />
     <ClInclude Include="rg_log.h" />
     <ClInclude Include="rg_math.h" />
+    <ClInclude Include="rg_module_dlltest.h" />
     <ClInclude Include="rg_module_font.h" />
     <ClInclude Include="rg_pluginbase.h" />
     <ClInclude Include="rg_pluginmanager.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="rg_image_loader.cpp" />
     <ClCompile Include="rg_log.cpp" />
     <ClCompile Include="rg_math.cpp" />
+    <ClCompile Include="rg_module_dlltest.cpp" />
     <ClCompile Include="rg_module_font.cpp" />
     <ClCompile Include="rg_pluginbase.cpp" />
     <ClCompile Include="rg_pluginmanager.cpp" />

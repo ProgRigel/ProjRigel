@@ -4,6 +4,8 @@ namespace rg {
 	{
 	public:
 		RgPluginBase();
+		HINSTANCE m_hInstance;
+		std::wstring m_wsName;
 		virtual ~RgPluginBase() = default;
 		virtual const char* GetPluginName() = 0;
 		virtual void LoadPlugin() = 0;

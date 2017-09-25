@@ -44,6 +44,7 @@
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="rg_font.h" />
+    <ClInclude Include="rg_module_dlltest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_image.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="rgcore.cpp" />
     <ClCompile Include="rg_math.cpp" />
     <ClCompile Include="rg_font.cpp" />
+    <ClCompile Include="rg_module_dlltest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="header">
