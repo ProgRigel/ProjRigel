@@ -136,6 +136,7 @@ namespace rg {
 		rgimg->m_width = m_width;
 		rgimg->m_height = m_height;
 		rgimg->m_format = m_alpha ? RgImageFormat::R8G8B8A8 : RgImageFormat::R8G8B8;
+		rgimg->m_DataSize = size * sizeof(byte);
 
 		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
 		fclose(fileptr);
