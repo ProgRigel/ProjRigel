@@ -8,9 +8,9 @@ namespace rg {
 	class RgPluginManager
 	{
 	public:
-		static RgPluginManager& getInstance() {
+		static RgPluginManager* getInstance() {
 			static RgPluginManager instance;
-			return instance;
+			return &instance;
 		}
 		bool registerPlugin(RgPluginBase* plugin);
 		void releasePlugins();
@@ -21,6 +21,6 @@ namespace rg {
 		RgPluginManager(const RgPluginManager&) = delete;
 		RgPluginManager& operator=(const RgPluginManager&) = delete;
 	private:
-		static std::vector<RgPluginBase*> m_vplugins;
+		std::vector<RgPluginBase*> m_vplugins;
 	};
 }

@@ -25,8 +25,9 @@ int main() {
 	std::wcout <<"test:HrToMessage:"<< HrToMessage(hr) << std::endl;;
 	//rg_dlltest
 	RgModuleDlltest dlltest;
-	//RgPluginManager::registerPlugin((RgPluginBase*)&dlltest);
-	//dlltest.m_disp_asterisk(10);
+	RgPluginManager* PluginManager = RgPluginManager::getInstance();
+	PluginManager->registerPlugin((RgPluginBase*)&dlltest);
+	dlltest.m_disp_asterisk(10);
 	
 	RgLogD() << "=================";
 	RgLogD() << "Unitest Done!";
