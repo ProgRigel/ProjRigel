@@ -16,3 +16,12 @@
 #include <algorithm>
 #include <comdef.h>
 #include <wchar.h>
+
+
+#ifdef _DEBUG
+#pragma comment(lib,"libpng16_staticd.lib")
+#pragma comment(lib,"zlibstaticd.lib")
+#else
+#pragma comment(lib,"libpng16_static.lib")
+#pragma comment(lib,"zlibstatic.lib")
+#endif

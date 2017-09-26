@@ -2,6 +2,7 @@
 #include <rgcore\rgcore.h>
 #include <Windows.h>
 
+#include <rgcore\rgcore.h>
 #include <rgcore\rg_windowManager.h>
 #include <rgcore\rg_module_font.h>
 #include <rggraphics\rg_graphicsAPI.h>

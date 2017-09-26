@@ -3,8 +3,6 @@
 #include "rg_image_loader.h"
 #pragma warning(disable:4996)
 #include <../libpng/png.h>
-#pragma comment(lib,"libpng16.lib")
-#pragma comment(lib,"zlib.lib")
 
 namespace rg {
 
