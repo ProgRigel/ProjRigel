@@ -56,7 +56,7 @@ namespace rg {
 	void RgGUIDrawBuffer::ExtendBufferCheck()
 	{
 		
-		if ((m_pPos - m_pData) < m_sBufferSize - BUFFER_SIZE_THRES) return;
+		if ((unsigned int)(m_pPos - m_pData) < (m_sBufferSize - BUFFER_SIZE_THRES)) return;
 		size_t offset = (m_pPos - m_pData);
 		RgGUIVertex * n = new RgGUIVertex[m_sBufferSize* BUFFER_SIZE_SCALE];
 		memcpy(n, m_pData, m_sBufferSize * VERTEX_SIZE);

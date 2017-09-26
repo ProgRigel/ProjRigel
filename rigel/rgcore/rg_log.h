@@ -89,7 +89,8 @@ namespace rg
 			m_sstream << t;
 			return space();
 		}
-		inline RgLogger& operator<<(size_t t) {
+
+		inline RgLogger& operator<<(unsigned long long t) {
 			m_sstream << t;
 			return space();
 		}
