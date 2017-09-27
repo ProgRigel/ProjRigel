@@ -42,8 +42,8 @@ namespace rg {
 		void SetPixelSize(const unsigned int size);
 		void LoadGlyph(unsigned long c);
 
-		void RenderToImage(const RgImage * img, const unsigned int posx, const unsigned int posy) const;
-		void RenderText(std::string text, const RgImage* img, const unsigned int posx, const unsigned int posy);
+		void RenderToImage(RgImage * img, const unsigned int posx, const unsigned int posy) const;
+		void RenderText(std::string text,RgImage* img, const unsigned int posx, const unsigned int posy);
 
 
 		void Release();

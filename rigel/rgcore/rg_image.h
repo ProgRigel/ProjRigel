@@ -24,17 +24,19 @@ namespace rg {
 		static RgImage* RgImageLoad(std::wstring filename, RgImageType imgtype);
 		static bool RgImageSave(std::wstring filename, RgImage* img,RgImageType imgtype);
 		static bool RgImageSave(std::wstring filename, unsigned char* data, unsigned int width, unsigned int height, RgImageType imgtype, RgImageFormat format);
+		static RgImage* Craete(const unsigned int& width, const unsigned int& height, const RgImageFormat&);
 
 		void Release();
 		unsigned int GetWidth();
 		unsigned int GetHeight();
 		unsigned char* GetData();
 		size_t GetDataSize() const;
+		unsigned int GetChannel();
 
 		virtual ~RgImage();
 	protected:
 		RgImage();
-		
+		RgImage(const unsigned int& width, const unsigned int&height, const RgImageFormat& format);
 		RgImage(const RgImage&) = delete;
 		RgImage& operator= (const RgImage&) = delete;
 

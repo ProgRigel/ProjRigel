@@ -384,6 +384,11 @@ namespace rg {
 		return m_pTextBuffer;
 	}
 
+	RgImage * RgGUIContext::GetFontImage()
+	{
+		return m_pGlyph->GetImage();
+	}
+
 
 	RgGUIContext::RgGUIContext(const RgGUISettings & settings)
 	{

@@ -239,14 +239,17 @@ namespace rg {
 
 			m_pTextureFont = m_pGraphics->CreateTexture(texsettings);
 
-			RgImage * img = RgImage::RgImageLoad(GetWorkDirectory() + L"/Data/Res/tex.png", RgImageType::PNG);
-			RG_ASSERT(img);
+			//RgImage * img = RgImage::RgImageLoad(GetWorkDirectory() + L"/Data/Res/tex.png", RgImageType::PNG);
+			//RG_ASSERT(img);
 
-			m_pTextureFont->SetData(m_pGraphics->GetRenderContext(), img->GetData(), img->GetDataSize());
-
-			img->Release();
-			delete img;
-			img = nullptr;
+			auto img = m_pGUICtx->GetFontImage();
+			if (img != nullptr) {
+				m_pTextureFont->SetData(m_pGraphics->GetRenderContext(), img->GetData(), img->GetDataSize());
+			}
+			else
+			{
+				RgLogE() << "gui font texture is null";
+			}
 		}
 
 		//sampler

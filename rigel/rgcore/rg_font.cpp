@@ -36,6 +36,7 @@ namespace rg {
 
 		RgFont* font = new RgFont();
 		font->m_pftface = face;
+		font->m_valid = true;
 		s_vFonts.push_back(font);
 
 		return font;
@@ -92,13 +93,15 @@ namespace rg {
 
 	void RgFont::SetPixelSize(const unsigned int size)
 	{
-		auto error = FT_Set_Pixel_Sizes((FT_Face)m_pftface, size, size);
+		auto face = (FT_Face)m_pftface;
+		RG_ASSERT(face);
+		auto error = FT_Set_Pixel_Sizes(face, size, size);
 		if (error) {
 			RgLogE() << "freetype set pixel size error:" << error;
 			return;
 		}
 		m_pixelsize = size;
-		m_layoutAscender = ((FT_Face)m_pftface)->size->metrics.ascender >> 6;
+		m_layoutAscender = face->size->metrics.ascender >> 6;
 	}
 
 	void RgFont::LoadGlyph(unsigned long c)
@@ -117,12 +120,34 @@ namespace rg {
 		m_glyph.advance = ((slot->advance.x) >> 6);
 	}
 
-	void RgFont::RenderToImage(const RgImage * img, const unsigned int posx, const unsigned int posy) const
+	void RgFont::RenderToImage(RgImage * img, const unsigned int posx, const unsigned int posy) const
 	{
+		FT_GlyphSlot slot = ((FT_Face)m_pftface)->glyph;
+		auto ftbitmap = slot->bitmap;
 
+		unsigned int pitch = ftbitmap.pitch;
+		unsigned int channel = img->GetChannel();
+
+		int xoff = posx + m_glyph.bitmapLeft;
+		int yoff = posy + m_layoutAscender - m_glyph.bitmapTop;
+
+		unsigned char * imgdata = img->GetData();
+		unsigned int imgwidth = img->GetWidth();
+		for (unsigned int y = 0; y < ftbitmap.rows; y++)
+		{
+			for (int x = 0; x < ftbitmap.pitch; x++)
+			{
+				int pos = ((y + yoff) * imgwidth + x + xoff) * channel;
+
+				unsigned char val = ftbitmap.buffer[y*ftbitmap.width + x];
+				imgdata[pos] = val;
+				imgdata[pos + 1] = val;
+				imgdata[pos + 2] = val;
+			}
+		}
 	}
 
-	void RgFont::RenderText(std::string text, const RgImage * img, const unsigned int posx, const unsigned int posy)
+	void RgFont::RenderText(std::string text,RgImage * img, const unsigned int posx, const unsigned int posy)
 	{
 	}
 

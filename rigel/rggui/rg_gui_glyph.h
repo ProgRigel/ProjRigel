@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include <rgcore\rg_image.h>
+#include <rgcore\rg_font.h>
 namespace rg {
-	class RgFont;
 
 	class RgGUIGlyph {
 	public:
@@ -11,11 +12,16 @@ namespace rg {
 		void Release();
 		bool IsValid() const;
 
+		RgImage* GetImage();
+
 	private:
 		RgGUIGlyph(const RgGUIGlyph&) = delete;
 		RgGUIGlyph& operator=(const RgGUIGlyph&) = delete;
 
+		void GenFontImage();
+
 		bool m_bIsValid = false;
 		RgFont * m_pfont = nullptr;
+		RgImage * m_pimg = nullptr;
 	};
 }

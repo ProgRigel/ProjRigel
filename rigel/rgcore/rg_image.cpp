@@ -53,10 +53,30 @@ namespace rg{
 
 		return false;
 	}
+	RgImage* RgImage::Craete(const unsigned int & width, const unsigned int & height, const RgImageFormat &fmt)
+	{
+		auto p = new RgImage(width,height,fmt);
+		return p;
+	}
+
+	RgImage::RgImage(const unsigned int & width, const unsigned int & height, const RgImageFormat & format)
+	{
+		m_width = width;
+		m_height = height;
+		m_format = format;
+		size_t pixelsize = m_format == RgImageFormat::R8G8B8 ? 3 : 4;
+		size_t datasz = m_width * m_height * pixelsize;
+		m_pData = new unsigned char[datasz];
+		m_DataSize = datasz * sizeof(unsigned char);
+		ZeroMemory(&m_pData[0], m_DataSize);
+	}
+
 	void RgImage::Release()
 	{
-		if (m_pData) delete[] m_pData;
-		m_pData = nullptr;
+		if (m_pData != nullptr) {
+			delete[] m_pData;
+			m_pData = nullptr;
+		}
 	}
 	unsigned int RgImage::GetWidth()
 	{
@@ -75,15 +95,32 @@ namespace rg{
 		RG_ASSERT(m_DataSize > 0);
 		return m_DataSize;
 	}
+	unsigned int RgImage::GetChannel()
+	{
+		switch (m_format)
+		{
+			break;
+		case rg::RgImageFormat::R8G8B8A8:
+			return 4;
+			break;
+		case rg::RgImageFormat::R8G8B8:
+			return 3;
+			break;
+		case rg::RgImageFormat::NONE:
+		default:
+			RgLogE() << "rgimage format none";
+			RG_ASSERT(false);
+			return 0;
+		}
+	}
 	RgImage::RgImage()
 	{
-		Release();
+		
 	}
 
 	RgImage::~RgImage()
 	{
-		delete[] m_pData;
-		m_pData = nullptr;
+		Release();
 	}
 
 }

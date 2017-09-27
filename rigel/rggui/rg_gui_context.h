@@ -15,6 +15,7 @@ namespace rg {
 	struct RgGUIMenuItem;
 	struct RgGUIMenuItemList;
 	class RgGUIGlyph;
+	class RgImage;
 
 	struct RgGUISettings {
 		std::wstring Font;
@@ -127,6 +128,7 @@ namespace rg {
 
 		RgGUIDrawBuffer * GetDrawBuffer();
 		RgGUIDrawBuffer * GetTextBuffer();
+		RgImage * GetFontImage();
 
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
