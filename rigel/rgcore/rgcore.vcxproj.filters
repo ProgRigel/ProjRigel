@@ -43,8 +43,10 @@
     <ClInclude Include="rgcore.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="rg_font.h" />
     <ClInclude Include="rg_module_dlltest.h" />
+    <ClInclude Include="rg_font.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_image.cpp" />

@@ -8,6 +8,7 @@
     <ClInclude Include="rg_gui_bind_graphics.h" />
     <ClInclude Include="rg_gui_style.h" />
     <ClInclude Include="rg_gui_component.h" />
+    <ClInclude Include="rg_gui_glyph.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_gui.cpp" />
@@ -17,5 +18,6 @@
     <ClCompile Include="rg_gui_bind_graphics.cpp" />
     <ClCompile Include="rg_gui_style.cpp" />
     <ClCompile Include="rg_gui_component.cpp" />
+    <ClCompile Include="rg_gui_glyph.cpp" />
   </ItemGroup>
 </Project>

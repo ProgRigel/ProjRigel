@@ -5,9 +5,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#pragma comment(lib,"freetype28.lib")
-
-
 namespace rg {
 
 	//////////////////////////////////
@@ -15,6 +12,7 @@ namespace rg {
 
 	static FT_Library s_ftlibrary;
 	static bool s_ftinited = false;
+	std::vector<RgFont*> RgFontManager::s_vFonts;
 
 	RgFontManager::RgFontManager()
 	{
@@ -23,9 +21,9 @@ namespace rg {
 	{
 	}
 
-	void RgFontManager::LoadFont(std::string ttfpath)
+	RgFont* RgFontManager::LoadFont(const std::string ttfpath)
 	{
-		if (!CheckFTInited()) return;
+		if (!CheckFTInited()) return nullptr;
 
 		FT_Face face;
 		auto error = FT_New_Face(s_ftlibrary, ttfpath.c_str(), 0, &face);
@@ -33,17 +31,19 @@ namespace rg {
 			if(face != nullptr)
 				FT_Done_Face(face);
 			RgLogE() << "create ft face error";
-			return;
+			return nullptr;
 		}
 
 		RgFont* font = new RgFont();
 		font->m_pftface = face;
-
 		s_vFonts.push_back(font);
+
+		return font;
 	}
 
 	void RgFontManager::UnloadFont(RgFont * font)
 	{
+		RG_ASSERT(font != nullptr);
 		font->Release();
 	}
 
@@ -131,9 +131,10 @@ namespace rg {
 		m_valid = false;
 		if (m_pftface != nullptr) {
 			FT_Face face = (FT_Face)m_pftface;
-			FT_Done_Face(face);
-			delete face;
-			m_pftface = nullptr;
+			if (face != nullptr) {
+				FT_Done_Face(face);
+				m_pftface = nullptr;
+			}
 		}
 	}
 

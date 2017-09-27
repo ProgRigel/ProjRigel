@@ -6,6 +6,7 @@
 namespace rg {
 
 	class RgFont;
+
 	struct RgFontGlyph {
 		unsigned int bitmapWidth;
 		unsigned int bitmapHeight;
@@ -20,7 +21,7 @@ namespace rg {
 		~RgFontManager();
 
 	public:
-		static void LoadFont(std::string ttfpath);
+		static RgFont* LoadFont(const std::string ttfpath);
 		static void UnloadFont(RgFont * font);
 		static void Release();
 	private:
@@ -29,6 +30,7 @@ namespace rg {
 	private:
 		static std::vector<RgFont*> s_vFonts;
 	};
+	
 
 
 	class RgFont {

@@ -25,6 +25,7 @@
     <ClInclude Include="rg_gui_component.h" />
     <ClInclude Include="rg_gui_context.h" />
     <ClInclude Include="rg_gui_draw_buffer.h" />
+    <ClInclude Include="rg_gui_glyph.h" />
     <ClInclude Include="rg_gui_style.h" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +40,7 @@
     <ClCompile Include="rg_gui_component.cpp" />
     <ClCompile Include="rg_gui_context.cpp" />
     <ClCompile Include="rg_gui_draw_buffer.cpp" />
+    <ClCompile Include="rg_gui_glyph.cpp" />
     <ClCompile Include="rg_gui_style.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -2,6 +2,7 @@
 
 #include "rg_gui_context.h"
 #include "rg_gui_draw_buffer.h"
+#include "rg_gui_glyph.h"
 
 namespace rg {
 	void RgGUIContext::Release()
@@ -14,6 +15,11 @@ namespace rg {
 		if (m_pTextBuffer != nullptr) {
 			delete m_pTextBuffer;
 			m_pTextBuffer = nullptr;
+		}
+
+		if (m_pGlyph != nullptr) {
+			m_pGlyph->Release();
+			m_pGlyph = nullptr;
 		}
 
 		m_pWindowInput = nullptr;
@@ -379,10 +385,19 @@ namespace rg {
 	}
 
 
+	RgGUIContext::RgGUIContext(const RgGUISettings & settings)
+	{
+		m_pDrawBuffer = new RgGUIDrawBuffer();
+		m_pTextBuffer = new RgGUIDrawBuffer();
+		m_style = settings.Style;
+		m_pGlyph = new RgGUIGlyph(settings.Font);
+	}
+
 	RgGUIContext::RgGUIContext()
 	{
 		m_pDrawBuffer = new RgGUIDrawBuffer();
 		m_pTextBuffer = new RgGUIDrawBuffer();
+		m_pGlyph = new RgGUIGlyph();
 	}
 
 	RgGUIContext::~RgGUIContext()

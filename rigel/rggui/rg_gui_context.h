@@ -14,7 +14,12 @@ namespace rg {
 	struct RgGUIGenericMenu;
 	struct RgGUIMenuItem;
 	struct RgGUIMenuItemList;
-	
+	class RgGUIGlyph;
+
+	struct RgGUISettings {
+		std::wstring Font;
+		RgGUIStyle Style;
+	};
 
 	enum class RgGUIControllerType {
 		ContextMenu,
@@ -129,6 +134,7 @@ namespace rg {
 		const RgVec4 _GetGroupRect() const;
 
 	private:
+		RgGUIContext(const RgGUISettings& settings);
 		RgGUIContext();
 		~RgGUIContext();
 
@@ -142,6 +148,7 @@ namespace rg {
 		const RgWindowInput * m_pWindowInput = nullptr;
 
 		RgGUIStyle m_style;
+		RgGUIGlyph * m_pGlyph = nullptr;
 
 	public:
 		friend class RgGUI;

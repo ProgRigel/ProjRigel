@@ -76,6 +76,16 @@ namespace rg {
 		return ~crc;
 	}
 
+	std::wstring towstring(const std::string & str)
+	{
+		return std::wstring(str.begin(), str.end());
+	}
+
+	std::string tostring(const std::wstring & wstr)
+	{
+		return std::string(wstr.begin(), wstr.end());
+	}
+
 }
 
 

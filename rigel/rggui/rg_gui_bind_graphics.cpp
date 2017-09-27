@@ -242,8 +242,6 @@ namespace rg {
 			RgImage * img = RgImage::RgImageLoad(GetWorkDirectory() + L"/Data/Res/tex.png", RgImageType::PNG);
 			RG_ASSERT(img);
 
-			//RgImage::RgImageSave(GetWorkDirectory() + L"/Data/Res/tex1.png", img, RgImageType::PNG);
-
 			m_pTextureFont->SetData(m_pGraphics->GetRenderContext(), img->GetData(), img->GetDataSize());
 
 			img->Release();

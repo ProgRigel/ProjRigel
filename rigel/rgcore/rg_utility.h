@@ -10,4 +10,8 @@ namespace rg {
 	}
 
 	int RgHash(const void* data, int datasize, unsigned int seed = 0);
+
+	std::wstring towstring(const std::string& str);
+	std::string tostring(const std::wstring& wstr);
+
 }
