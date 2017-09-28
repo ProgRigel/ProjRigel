@@ -96,7 +96,7 @@ namespace editor {
 			}
 		}
 
-		//menubar
+		////menubar
 		{
 			ctx->GUIGroupBegin(RgVec4(120, 5, 100, 100),RgGUIColors::Carrot);
 
@@ -121,11 +121,12 @@ namespace editor {
 
 		//texttest
 		{
-			//ctx->GUITextDebug(RgVec4(250, 100, 256, 256));
+			ctx->GUITextDebug(RgVec4(250, 100, 256, 256));
 
-			ctx->SetColor(RgGUIColors::Nephritis);
-			ctx->GUIText("Rigel!?>>>Hel+++++++", RgVec4(200, 70, 500, 20));
-			ctx->GUIText("AKIPVA;LKWITE;;';LPOODSAWW", RgVec4(400, 50, 500, 20));
+			ctx->SetColor(RgGUIColors::White);
+			ctx->GUIText("Rigel!?>>>Rigel!?>>>Rigel!?>>>", RgVec4(0,0 , 500, 20));
+
+			//ctx->GUIText("AKIPVA;LKWITE;;';LPOODSAWW", RgVec4(400, 50, 500, 20));
 		}
 
 		ctx->EndGUI();

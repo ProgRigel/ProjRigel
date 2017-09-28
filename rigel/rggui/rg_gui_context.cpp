@@ -90,6 +90,7 @@ namespace rg {
 		RgVec4 pos = rect;
 		for (char c : content) {
 			pos.x += GUIText(c, pos).x;
+			m_pTextBuffer->ExtendBufferCheck();
 		}
 		m_sState.RectZInc();
 	}

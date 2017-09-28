@@ -273,8 +273,7 @@ namespace rg {
 		auto guibuf = m_pGUICtx->GetDrawBuffer();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
-		auto indptr = guibuf->GetIndicesPtr();//???
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), guibuf->GetIndicesPtr(), guibuf->GetIndicesSize() * sizeof(unsigned int));
 
 
 
