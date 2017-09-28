@@ -18,6 +18,6 @@ SamplerState MeshTextureSampler;
 float4 main(PixelInput i):SV_TARGET
 {
 	float2 uv = i.uv;
-	float4 color = texfont.Sample(MeshTextureSampler,uv);
+	float4 color = texfont.Sample(MeshTextureSampler,uv)* i.color;
 	return color;
 }

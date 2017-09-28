@@ -87,44 +87,53 @@ namespace rg {
 
 	void RgGUIContext::GUIText(std::string content, const RgVec4 & rect)
 	{
-		auto color = RgVec4(1, 1, 1, 1);
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = RgVec2(1, 1);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = RgVec2(1, 0);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = RgVec2(0, 0);
-		m_pTextBuffer->m_pPos++;
+		RgVec4 pos = rect;
+		for (char c : content) {
+			pos.x += GUIText(c, pos).x;
+		}
 		m_sState.RectZInc();
 	}
 
-	void RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
+	const RgVec2 RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
 	{
-		auto color = RgVec4(1, 1, 1, 1);
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
+		auto color = m_sState.Color;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy(), m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
 		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c,1), m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
 		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 2), m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
 		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 3), m_sState.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
+		m_pTextBuffer->m_pPos++;
+
+		return m_pGlyph->GetCharPos(c, 2);
+	}
+
+	void RgGUIContext::GUITextDebug(const RgVec4 & rect)
+	{
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->uv = RgVec2(0,0);
+		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->uv = RgVec2(1, 0);
+		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->uv = RgVec2(1, 1);
+		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
+		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
 		m_pTextBuffer->m_pPos++;
 		m_sState.RectZInc();
 	}

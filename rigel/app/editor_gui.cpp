@@ -115,22 +115,17 @@ namespace editor {
 
 			ctx->GUIMenuListEnd();
 			ctx->GUIMenuBarEnd();
-
-
 			ctx->GUIGroupEnd();
 		}
 		
 
 		//texttest
 		{
-			ctx->GUIText("test content", RgVec4(250, 100, 256, 256));
+			//ctx->GUITextDebug(RgVec4(250, 100, 256, 256));
 
-			
-			ctx->GUIText('R', RgVec4(200, 100, 16, 16));
-			ctx->GUIText('I', RgVec4(216, 100, 16, 16));
-			ctx->GUIText('G', RgVec4(232, 100, 16, 16));
-			ctx->GUIText('E', RgVec4(248, 100, 16, 16));
-			ctx->GUIText('L', RgVec4(264, 100, 16, 16));
+			ctx->SetColor(RgGUIColors::Nephritis);
+			ctx->GUIText("Rigel!?>>>Hel+++++++", RgVec4(200, 70, 500, 20));
+			ctx->GUIText("AKIPVA;LKWITE;;';LPOODSAWW", RgVec4(400, 50, 500, 20));
 		}
 
 		ctx->EndGUI();

@@ -22,8 +22,8 @@ namespace rg {
 		m_bIsValid = true;
 		GenFontImage();
 		GenCharUV();
+		GenCharPos();
 
-		RgLogD() << "#" << m_charrect['#'].toStr() << m_charuv['#' * 4].toStr();
 
 	}
 
@@ -86,6 +86,11 @@ namespace rg {
 		return m_charuv[c * 4 + vi];
 	}
 
+	const RgVec2 & RgGUIGlyph::GetCharPos(const char c, unsigned int vi) const
+	{
+		return m_charpos[c * 4 + vi];
+	}
+
 	void RgGUIGlyph::GenFontImage()
 	{
 		m_pimg = RgImage::Craete(256, 256, RgImageFormat::R8G8B8A8);
@@ -104,8 +109,8 @@ namespace rg {
 			auto x = m_pfont->m_glyph.bitmapLeft;
 			auto y = m_pfont->m_glyph.bitmapTop;
 
-			w = 16;
-			h = 16;
+			w += x;
+			h +=y;
 			if (linewidth + w > 255) {
 				lineheight += linemaxh;
 				m_pfont->RenderToImage(m_pimg, 0, lineheight);
@@ -133,6 +138,18 @@ namespace rg {
 			m_charuv[i * 4 + 1] = RgVec2(r.x + r.z, r.y);
 			m_charuv[i * 4 + 2] = RgVec2(r.x + r.z, r.y + r.w);
 			m_charuv[i * 4 + 3] = RgVec2(r.x, r.y + r.w);
+
+			//RgLogD() << m_charuv[i*4].toStr();
+		}
+	}
+
+	void RgGUIGlyph::GenCharPos()
+	{
+		for (unsigned int i = 32; i < 128; i++) {
+			auto& r = m_charrect[i];
+			m_charpos[i * 4 + 1] = RgVec2(r.z,0.0f);
+			m_charpos[i * 4 + 2] = RgVec2(r.z,r.w);
+			m_charpos[i * 4 + 3] = RgVec2(0.0f,r.w);
 
 			//RgLogD() << m_charuv[i*4].toStr();
 		}

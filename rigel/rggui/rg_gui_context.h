@@ -92,7 +92,8 @@ namespace rg {
 		
 		////////////////////////
 		void GUIText(std::string content, const RgVec4& rect);
-		void GUIText(const char& c, const RgVec4& rect);
+		const RgVec2 GUIText(const char& c, const RgVec4& rect);
+		void GUITextDebug(const RgVec4& rect);
 
 		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
 		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
