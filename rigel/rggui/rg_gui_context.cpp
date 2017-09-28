@@ -107,6 +107,28 @@ namespace rg {
 		m_sState.RectZInc();
 	}
 
+	void RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
+	{
+		auto color = RgVec4(1, 1, 1, 1);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
+		m_pTextBuffer->m_pPos++;
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_sState.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->color = color;
+		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
+		m_pTextBuffer->m_pPos++;
+		m_sState.RectZInc();
+	}
+
 	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz)
 	{
 		GUIRect(lp, sz);

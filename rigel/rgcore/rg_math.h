@@ -251,6 +251,13 @@ namespace rg {
 		return v1.w*v2.w + v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
 	}
 
+	inline const RgVec4 operator*(const RgVec4& v, const float d) {
+		return RgVec4(v.x*d, v.y*d, v.z*d, v.w*d);
+	}
+	inline const RgVec4 operator/(const RgVec4& v, const float d) {
+		return v*(1.0f / d);
+	}
+
 
 	struct RgMatrix3x3 {
 		RgVec3 m1;
