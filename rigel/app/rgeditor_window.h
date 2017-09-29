@@ -10,12 +10,12 @@ namespace editor {
 		virtual ~RgEditorWindow();
 
 	protected:
-		virtual void OnGUI();
+		virtual void OnGUI(rg::RgGUIContext * ctx) = 0;
 
+		rg::RgGUIWindow m_guiwindow;
 	private:
 		RgEditorWindow(const RgEditorWindow&) = delete;
 		RgEditorWindow& operator=(const RgEditorWindow&) = delete;
-
 		void InternalOnGUI(rg::RgGUIContext* ctx);
 
 		friend class EditorGUI;

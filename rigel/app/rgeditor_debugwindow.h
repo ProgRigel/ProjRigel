@@ -4,10 +4,10 @@
 namespace editor {
 	class RgEditorWindowDebugWindow : public RgEditorWindow {
 	public:
-		RgEditorWindowDebugWindow():RgEditorWindow(){}
+		RgEditorWindowDebugWindow();
 		~RgEditorWindowDebugWindow();
 
 	protected:
-		void OnGUI();
+		void OnGUI(rg::RgGUIContext * ctx);
 	};
 }

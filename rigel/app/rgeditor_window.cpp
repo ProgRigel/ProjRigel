@@ -5,16 +5,18 @@
 namespace editor {
 	RgEditorWindow::RgEditorWindow()
 	{
+		m_guiwindow.windowrect.z = 400;
+		m_guiwindow.windowrect.w = 300;
 	}
 	RgEditorWindow::~RgEditorWindow()
 	{
 	}
-	void RgEditorWindow::OnGUI()
-	{
-	}
 	void RgEditorWindow::InternalOnGUI(rg::RgGUIContext* ctx)
 	{
-		this->OnGUI();
+		if (ctx->GUIWindowBegin(m_guiwindow)) {
+			this->OnGUI(ctx);
+		}
+		ctx->GUIWindowEnd();
 	}
 }
 

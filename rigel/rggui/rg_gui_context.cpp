@@ -37,6 +37,26 @@ namespace rg {
 	{
 		return m_bDirty;
 	}
+
+#pragma region GUILayout
+	void RgGUIContext::GUILayoutText()
+	{
+	}
+	void RgGUIContext::GUILayoutButton()
+	{
+	}
+	void RgGUIContext::GUILayoutGroupBegin()
+	{
+	}
+	void RgGUIContext::GUILayoutGroupEnd()
+	{
+	}
+	void RgGUIContext::GUILayoutRect()
+	{
+	}
+#pragma endregion
+
+
 	void RgGUIContext::BeginGUI(const RgWindowEvent& e)
 	{
 		m_pWindowInput = e.Input;
@@ -404,6 +424,15 @@ namespace rg {
 		if (m_sState.GroupRectStack.empty()) return m_sState.WindowGroupRect;
 
 		return m_sState.GroupRectStack.top();
+	}
+
+	bool RgGUIContext::GUIWindowBegin(RgGUIWindow & win)
+	{
+		return true;
+	}
+
+	void RgGUIContext::GUIWindowEnd()
+	{
 	}
 
 	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()

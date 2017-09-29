@@ -3,10 +3,10 @@
 namespace editor {
 	class RgEditorWindowTestSuit : public RgEditorWindow {
 	public:
-		RgEditorWindowTestSuit():RgEditorWindow(){}
+		RgEditorWindowTestSuit();
 		~RgEditorWindowTestSuit();
 
 	protected:
-		void OnGUI();
+		void OnGUI(rg::RgGUIContext * ctx);
 	};
 }

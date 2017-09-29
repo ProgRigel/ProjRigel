@@ -37,6 +37,10 @@ namespace rg {
 	//window
 
 	struct RgGUIWindow {
-
+		bool resizeable = true;
+		bool closeable = false;
+		bool moveable = true;
+		std::string title;
+		RgVec4 windowrect;
 	};
 }

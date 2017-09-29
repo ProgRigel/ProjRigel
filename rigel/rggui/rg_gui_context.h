@@ -19,6 +19,7 @@ namespace rg {
 	struct RgGUIMenuItemList;
 	class RgGUIGlyph;
 	class RgImage;
+	struct RgGUIWindow;
 
 	struct RgGUISettings {
 		std::wstring Font;
@@ -60,6 +61,8 @@ namespace rg {
 
 		RgGUIStateContextMenu stateContextMenu;
 
+		//focus
+
 		void Reset();
 
 		void RectZInc();
@@ -80,6 +83,15 @@ namespace rg {
 
 		void SetDirty(bool dirty);
 		bool IsDirty();
+
+	public:
+		//GUILayout
+		void GUILayoutText();
+		void GUILayoutButton();
+		void GUILayoutGroupBegin();
+		void GUILayoutGroupEnd();
+		void GUILayoutRect();
+
 	public:
 
 		//logic
@@ -116,6 +128,9 @@ namespace rg {
 
 		void GUIMenuBar(const RgGUIGenericMenu * _menu, const RgVec4& _rect);
 
+		bool GUIWindowBegin(RgGUIWindow& win);//return true if focused
+		void GUIWindowEnd();
+
 		/////////////////////
 		bool UtilIsInGroup() const;
 		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
@@ -135,10 +150,13 @@ namespace rg {
 		RgGUIDrawBuffer * GetTextBuffer();
 		RgImage * GetFontImage();
 
+
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
+
+		
 
 	private:
 		RgGUIContext(const RgGUISettings& settings);
