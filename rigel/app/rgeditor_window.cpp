@@ -12,7 +12,7 @@ namespace editor {
 	void RgEditorWindow::OnGUI()
 	{
 	}
-	void RgEditorWindow::InternalOnGUI()
+	void RgEditorWindow::InternalOnGUI(rg::RgGUIContext* ctx)
 	{
 		this->OnGUI();
 	}

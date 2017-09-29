@@ -6,7 +6,7 @@
 
 namespace rg {
 
-
+	//menu related
 	struct RgGUIMenuItem{
 		std::string label;
 		std::function<void()> callback = nullptr;
@@ -32,5 +32,11 @@ namespace rg {
 				_initfunc(this);
 			}
 		}
+	};
+
+	//window
+
+	struct RgGUIWindow {
+
 	};
 }

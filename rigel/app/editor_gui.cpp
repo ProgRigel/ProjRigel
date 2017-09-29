@@ -2,7 +2,7 @@
 #include "editor_gui.h"
 #include <rggui\rg_gui.h>
 #include <rggui\rg_gui_bind_graphics.h>
-
+#include <rggui\rg_gui_context.h>
 #include "rgeditor_window.h"
 #include "rgeditor_testsuit.h"
 #include "rgeditor_debugwindow.h"
@@ -51,8 +51,8 @@ namespace editor {
 
 		ctx->BeginGUI(e);
 
-		testsuitwindow.InternalOnGUI();
-		debugwindow.InternalOnGUI();
+		testsuitwindow.InternalOnGUI(ctx);
+		debugwindow.InternalOnGUI(ctx);
 
 		ctx->EndGUI();
 
