@@ -7,6 +7,7 @@
 #include <rgcore\rg_module_font.h>
 #include <rggraphics\rg_graphicsAPI.h>
 #include <rggui\rg_gui.h>
+#include <rggui\rg_gui_context.h>
 
 #include "app_graphics.h"
 

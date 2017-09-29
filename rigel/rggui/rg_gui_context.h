@@ -1,10 +1,13 @@
 #pragma once
+#include <rgcore\rg_inc.h>
 #include <rgcore\rg_window.h>
 #include "rg_gui_style.h"
 #include "rg_gui_component.h"
+#include <rgcore\rg_math.h>
 #include <stack>
+#include <algorithm>
 #include <vector>
-#include <map>
+#include <unordered_map>
 namespace rg {
 
 #define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size

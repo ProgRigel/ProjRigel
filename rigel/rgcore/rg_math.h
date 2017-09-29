@@ -189,12 +189,12 @@ namespace rg {
 	};
 	struct RgVec4 {
 		RgFloat x, y, z, w;
-		RgVec4(int _x,int _y,int _z,int _w):x((float)_x),y((float)_y),z((float)_z),w((float)_w){}
-		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z,RgFloat _w) :x(_x), y(_y), z(_z),w(_w) {}
-		RgVec4():x(0),y(0),z(0),w(0){}
-		RgVec4(float v) :x(v), y(v), z(v), w(v) {}
-		RgVec4(const RgVec2& v1,const RgVec2& v2):x(v1.x),y(v1.y),z(v2.x),w(v2.y){}
-		RgVec4(const RgVec2& v1, float _z,float _w) :x(v1.x), y(v1.y), z(_z), w(_w) {}
+		RgVec4(int _x, int _y, int _z, int _w) :x((float)_x), y((float)_y), z((float)_z), w((float)_w) {};
+		RgVec4(RgFloat _x, RgFloat _y, RgFloat _z, RgFloat _w) :x(_x), y(_y), z(_z), w(_w) {};
+		RgVec4() :x(0), y(0), z(0), w(0) {};
+		RgVec4(float v) :x(v), y(v), z(v), w(v) {};
+		RgVec4(const RgVec2& v1, const RgVec2& v2) :x(v1.x), y(v1.y), z(v2.x), w(v2.y) {};
+		RgVec4(const RgVec2& v1, float _z, float _w) :x(v1.x), y(v1.y), z(_z), w(_w) {};
 		std::string toStr() const;
 
 		inline const RgVec3 xyz() const{

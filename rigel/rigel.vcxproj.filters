@@ -34,6 +34,15 @@
     <ClCompile Include="app\stdafx.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="app\rgeditor_window.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="app\rgeditor_testsuit.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="app\rgeditor_debugwindow.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app\app.h">
@@ -47,6 +56,15 @@
     </ClInclude>
     <ClInclude Include="app\stdafx.h">
       <Filter>source\header</Filter>
+    </ClInclude>
+    <ClInclude Include="app\rgeditor_window.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="app\rgeditor_testsuit.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="app\rgeditor_debugwindow.h">
+      <Filter>editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

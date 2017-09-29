@@ -176,6 +176,9 @@
     <ClCompile Include="app\app_graphics.cpp" />
     <ClCompile Include="app\editor_gui.cpp" />
     <ClCompile Include="app\main.cpp" />
+    <ClCompile Include="app\rgeditor_debugwindow.cpp" />
+    <ClCompile Include="app\rgeditor_testsuit.cpp" />
+    <ClCompile Include="app\rgeditor_window.cpp" />
     <ClCompile Include="app\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -198,6 +201,9 @@
     <ClInclude Include="app\app.h" />
     <ClInclude Include="app\app_graphics.h" />
     <ClInclude Include="app\editor_gui.h" />
+    <ClInclude Include="app\rgeditor_debugwindow.h" />
+    <ClInclude Include="app\rgeditor_testsuit.h" />
+    <ClInclude Include="app\rgeditor_window.h" />
     <ClInclude Include="app\stdafx.h" />
   </ItemGroup>
   <ItemGroup>

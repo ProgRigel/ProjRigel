@@ -1,5 +1,7 @@
 #pragma once
 #include "rg_signal.hpp"
+#include <Windows.h>
+#include "rg_math.h"
 
 namespace rg {
 
