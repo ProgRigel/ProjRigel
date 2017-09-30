@@ -13,7 +13,7 @@ namespace editor {
 	}
 	void RgEditorWindow::InternalOnGUI(rg::RgGUIContext* ctx)
 	{
-		if (ctx->GUIWindowBegin(m_guiwindow)) {
+		if (ctx->GUIWindowBegin(&m_guiwindow)) {
 			this->OnGUI(ctx);
 		}
 		ctx->GUIWindowEnd();

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
+#include <map>
 namespace rg {
 
 #define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
@@ -20,6 +21,7 @@ namespace rg {
 	class RgGUIGlyph;
 	class RgImage;
 	struct RgGUIWindow;
+	struct RgGUIState;
 
 	struct RgGUISettings {
 		std::wstring Font;
@@ -35,6 +37,18 @@ namespace rg {
 		std::vector<int> menuHashs;
 		std::unordered_map<int, RgVec4> menuMap;
 		bool newMenuContext = false;
+	};
+
+	struct RgGUIStateWindow {
+		//focus
+		RgGUIWindow * windowFocused = nullptr;
+		RgGUIWindow * windowLastDrawed = nullptr;
+
+		std::map<long, RgGUIWindow *> windowMap;
+
+		void ongui(const RgGUIState& state);
+		void register_win(RgGUIWindow* win);
+		bool verify_valid(long winid);
 	};
 
 	struct RgGUIState {
@@ -61,7 +75,6 @@ namespace rg {
 
 		RgGUIStateContextMenu stateContextMenu;
 
-		//focus
 
 		void Reset();
 
@@ -128,7 +141,7 @@ namespace rg {
 
 		void GUIMenuBar(const RgGUIGenericMenu * _menu, const RgVec4& _rect);
 
-		bool GUIWindowBegin(RgGUIWindow& win);//return true if focused
+		bool GUIWindowBegin(RgGUIWindow* win);//return true if focused
 		void GUIWindowEnd();
 
 		/////////////////////
@@ -167,7 +180,8 @@ namespace rg {
 		RgGUIContext& operator=(const RgGUIContext&) = delete;
 
 		bool m_bDirty = false;
-		RgGUIState m_sState;
+		RgGUIState m_state;
+		RgGUIStateWindow m_stateWindow;
 		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
 		RgGUIDrawBuffer * m_pTextBuffer = nullptr;
 		const RgWindowInput * m_pWindowInput = nullptr;

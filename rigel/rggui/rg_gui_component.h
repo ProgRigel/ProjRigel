@@ -3,6 +3,7 @@
 #include <functional>
 #include <vector>
 #include <string>
+#include <ctime>
 
 namespace rg {
 
@@ -37,10 +38,23 @@ namespace rg {
 	//window
 
 	struct RgGUIWindow {
+		std::string title;
+		RgVec4 windowrect;
+
+		bool enabled = true;
 		bool resizeable = true;
 		bool closeable = false;
 		bool moveable = true;
-		std::string title;
-		RgVec4 windowrect;
+
+		long winid;
+		int order = 0;
+
+		bool _initdraw = false;
+		bool _mouseover = false;
+
+		void focused();
+		void lost_focuse();
+
+		RgGUIWindow();
 	};
 }

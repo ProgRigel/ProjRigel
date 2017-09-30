@@ -10,4 +10,21 @@ namespace rg {
 	}
 
 
+	void RgGUIWindow::focused()
+	{
+		RgLogD() << "guiwin focused " << winid;
+	}
+
+	void RgGUIWindow::lost_focuse()
+	{
+		RgLogD() << "gui lost focuse" << winid;
+	}
+
+	RgGUIWindow::RgGUIWindow()
+	{
+		static long id = 0;
+		id++;
+		winid = id;
+	}
+
 }
