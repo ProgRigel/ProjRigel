@@ -13,7 +13,6 @@ namespace editor {
 
 	void RgEditorWindowDebugWindow::OnGUI(rg::RgGUIContext * ctx)
 	{
-		RgLogD() << "debugwindow update";
 	}
 
 }

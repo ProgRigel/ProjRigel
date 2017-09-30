@@ -225,6 +225,8 @@ namespace rg {
 			w = zw.y;
 		}
 
+		bool rect_contain(const RgVec2& pos);
+
 		const static RgVec4 Zero;
 	};
 

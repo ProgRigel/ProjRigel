@@ -75,6 +75,8 @@ namespace rg {
 
 		RgGUIStateContextMenu stateContextMenu;
 
+		bool eventMouseLeftDown = false;
+		RgVec2 eventMousePos;
 
 		void Reset();
 

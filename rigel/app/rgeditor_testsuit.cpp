@@ -13,7 +13,6 @@ namespace editor {
 
 	void RgEditorWindowTestSuit::OnGUI(rg::RgGUIContext * ctx)
 	{
-		RgLogD() << "testsuit update";
 	}
 
 }

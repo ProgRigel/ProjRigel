@@ -9,6 +9,12 @@ namespace rg {
 		ss << "(" << x << "," << y << "," << z << "," << w << ")";
 		return ss.str();
 	}
+	bool RgVec4::rect_contain(const RgVec2 & pos)
+	{
+		if (pos.x < x || pos.x > x + z) return false;
+		if (pos.y < y || pos.y > y + w) return false;
+		return true;
+	}
 	std::string RgVec3::toStr() const
 	{
 		std::stringstream ss;

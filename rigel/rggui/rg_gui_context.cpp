@@ -74,6 +74,9 @@ namespace rg {
 			m_state.mouseLeftDown = true;
 		}
 
+		m_state.eventMouseLeftDown = e.Input->LButton;
+		m_state.eventMousePos = e.Input->MousePos;
+
 		m_stateWindow.ongui(m_state);
 	}
 	void RgGUIContext::EndGUI()
@@ -492,6 +495,7 @@ namespace rg {
 		RectZ = 1.0f;
 		
 		mouseLeftChecked = false;
+		eventMouseLeftDown = false;
 	}
 
 	void RgGUIState::RectZInc()
@@ -532,12 +536,34 @@ namespace rg {
 
 	void RgGUIStateWindow::ongui(const RgGUIState & state)
 	{
-		bool mousedown = state.mouseLeftDown;
+		bool mousedown = state.eventMouseLeftDown;
 		if (mousedown == false) {
-			for (auto pair : windowMap) {
-				pair.second->_mouseover = false;
-			}
 			return;
+		}
+		RgGUIWindow * focusedWin = nullptr;
+		long maxorder = 0;
+
+		for (auto pair : windowMap) {
+			auto win = pair.second;
+			maxorder = win->order > maxorder ? win->order : maxorder;
+			if (win->windowrect.rect_contain(state.eventMousePos)) {
+				if (focusedWin == nullptr) {
+					focusedWin = pair.second;
+					focusedWin->_mouseover = true;
+				}
+				else
+				{
+					if (focusedWin->order < win->order) {
+						focusedWin->_mouseover = false;
+						focusedWin = pair.second;
+						focusedWin->_mouseover = true;
+					}
+				}
+			}
+		}
+		if (focusedWin != nullptr) {
+			focusedWin->order = maxorder + 1;
+			RgLogW() << "focused win:" << focusedWin->winid;
 		}
 
 		
@@ -565,7 +591,8 @@ namespace rg {
 			RgLogE() << "window check focused error";
 			return false;
 		}
-		return false;
+
+		return (*iter).second->_mouseover;
 	}
 
 }
