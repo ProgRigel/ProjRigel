@@ -11,6 +11,31 @@ namespace rg {
 
 	};
 
+	class RgGUIIndicesBuffer {
+	public:
+		RgGUIIndicesBuffer();
+		~RgGUIIndicesBuffer();
+
+		unsigned int ExtenBuffer();
+		unsigned int * getptr();
+		unsigned int GetQuadSize();
+		size_t GetBufferSize();
+		size_t GetBufferSize(unsigned int quadcount);
+		size_t GetBufferBytes();
+		size_t GetBufferBytes(unsigned int quadcount);
+	private:
+		RgGUIIndicesBuffer(const RgGUIIndicesBuffer&) = delete;
+		RgGUIIndicesBuffer& operator=(const RgGUIIndicesBuffer&) = delete;
+
+		unsigned int * m_pIndicesBufferData = nullptr;
+		unsigned int m_indiceQuadSize = INDICES_QUAD_INIT_COUNT;
+
+		static const unsigned int INDICES_QUAD_INIT_COUNT = 128;
+		static const unsigned int INDICES_EXTEN_TIMES = 2;
+
+
+	};
+
 	class RgGUIDrawBuffer {
 
 	public:

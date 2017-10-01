@@ -36,8 +36,8 @@ namespace rg {
 
 	struct RgGUIStyle
 	{
-		RgVec4 ColorBg = RgGUIColors::MidnightBlue;
-		RgVec4 ColorFont = RgGUIColors::White;
+		RgVec4 colorBg = RgGUIColors::MidnightBlue;
+		RgVec4 colorFont = RgGUIColors::White;
 
 		RgFloat MenuBarHeight = 17.0f;
 		RgVec4 MenuBarBackgroudColor = RgGUIColors::BelizeHole;

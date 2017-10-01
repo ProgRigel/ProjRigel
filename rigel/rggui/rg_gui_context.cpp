@@ -58,45 +58,26 @@ namespace rg {
 #pragma endregion
 
 
-	void RgGUIContext::BeginGUI(const RgWindowEvent& e)
+	void RgGUIContext::gui_begin(const RgWindowEvent& e)
 	{
 		m_pWindowInput = e.Input;
+
+		m_state.ongui(m_pWindowInput);
+		m_stateWindow.ongui(m_state);
+
 		m_pDrawBuffer->ResetBuffer();
 		m_pTextBuffer->ResetBuffer();
-		m_state.Reset();
-		m_state.contextMenuReset();
-		m_state.WindowGroupRect.z = m_pWindowInput->WindowRect.z;
-		m_state.WindowGroupRect.w = m_pWindowInput->WindowRect.w;
 
-		//mouseclick check
-		m_state.mouseLeftClick = false;
-		if (m_pWindowInput->LButton && m_state.mouseLeftDown == false) {
-			m_state.mouseLeftDown = true;
+
+		static bool drawed = false;
+		if (drawed == false) {
+			drawed = true;
 		}
 
-		m_state.eventMouseLeftDown = e.Input->LButton;
-		m_state.eventMousePos = e.Input->MousePos;
-
-		m_stateWindow.ongui(m_state);
 	}
-	void RgGUIContext::EndGUI()
+	void RgGUIContext::gui_end()
 	{
 		SetDirty(true);
-
-		//contextmenu
-		{
-			if (!m_state.stateContextMenu.menuMap.empty()) {
-				auto pair = *m_state.stateContextMenu.menuMap.begin();
-
-				bool mousedown = m_state.mouseLeftDown;
-				if (mousedown && !m_state.stateContextMenu.newMenuContext) {
-					RgLogD() << "clear";
-					m_state.contextMenuClear();
-					return;
-				}
-				GUIRect(pair.second,RgGUIColors::Alizarin, false);
-			}
-		}
 
 		m_pDrawBuffer->ApplyBuffer();
 		m_pTextBuffer->ApplyBuffer();
@@ -104,11 +85,9 @@ namespace rg {
 
 	}
 
-
-
 	////////////////
 
-
+#pragma region TextDraw
 	void RgGUIContext::GUIText(std::string content, const RgVec4 & rect)
 	{
 		RgVec4 pos = rect;
@@ -116,17 +95,16 @@ namespace rg {
 			pos.x += GUIText(c, pos).x;
 			m_pTextBuffer->ExtendBufferCheck();
 		}
-		m_state.RectZInc();
+		m_state.rect_z_inc();
 	}
-
 	const RgVec2 RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
 	{
-		auto color = m_state.Color;
+		auto color = m_state.color;
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy(), m_state.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
 		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c,1), m_state.RectZ, 1.0);
+		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 1), m_state.RectZ, 1.0);
 		m_pTextBuffer->m_pPos->color = color;
 		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
 		m_pTextBuffer->m_pPos++;
@@ -141,11 +119,10 @@ namespace rg {
 
 		return m_pGlyph->GetCharPos(c, 2);
 	}
-
 	void RgGUIContext::GUITextDebug(const RgVec4 & rect)
 	{
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->uv = RgVec2(0,0);
+		m_pTextBuffer->m_pPos->uv = RgVec2(0, 0);
 		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
 		m_pTextBuffer->m_pPos++;
 		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
@@ -160,41 +137,39 @@ namespace rg {
 		m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
 		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
 		m_pTextBuffer->m_pPos++;
-		m_state.RectZInc();
+		m_state.rect_z_inc();
 	}
+#pragma endregion
 
-	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz)
-	{
-		GUIRect(lp, sz);
-		return (m_pWindowInput->LButton && UtilCheckMousePos(lp, sz));
-	}
+	
+
 
 	//draw with raw pos
 	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz, bool grouped)
 	{
 
-		RgVec4 rect(lp, sz);
-		if (grouped && UtilIsInGroup()) {
-			rect.setxy(lp + m_state.GroupRectStack.top().xy());
-			UtilClipRect(rect, m_state.GroupRectStack.top());
-		}
+		//RgVec4 rect(lp, sz);
+		//if (grouped && UtilIsInGroup()) {
+		//	rect.setxy(lp + m_state.GroupRectStack.top().xy());
+		//	UtilClipRect(rect, m_state.GroupRectStack.top());
+		//}
 
-		auto& color = m_state.Color;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(),m_state.RectZ, 1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
-		m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_state.RectZ, 1.0);
-		m_pDrawBuffer->m_pPos->color = color;
-		m_pDrawBuffer->m_pPos++;
+		//auto& color = m_state.color;
+		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
+		//m_pDrawBuffer->m_pPos->color = color;
+		//m_pDrawBuffer->m_pPos++;
+		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
+		//m_pDrawBuffer->m_pPos->color = color;
+		//m_pDrawBuffer->m_pPos++;
+		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(),m_state.RectZ, 1.0);
+		//m_pDrawBuffer->m_pPos->color = color;
+		//m_pDrawBuffer->m_pPos++;
+		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_state.RectZ, 1.0);
+		//m_pDrawBuffer->m_pPos->color = color;
+		//m_pDrawBuffer->m_pPos++;
 
-		m_pDrawBuffer->ExtendBufferCheck();
-		m_state.RectZInc();
+		//m_pDrawBuffer->ExtendBufferCheck();
+		//m_state.rect_z_inc();
 	}
 
 	void RgGUIContext::GUIRect(const RgVec4 & rect,bool grouped)
@@ -249,36 +224,37 @@ namespace rg {
 
 	void RgGUIContext::GUIMenuBarBegin(const RgVec4 & rect)
 	{
-		GUIGroupBegin(rect, m_style.MenuBarBackgroudColor);
-		m_state.guiMenuBar = true;
-		m_state.guiMenuBarOffset = 0;
-		m_state.guiMenuBarHeight = rect.w;
+		//GUIGroupBegin(rect, m_style.MenuBarBackgroudColor);
+		//m_state.guiMenuBar = true;
+		//m_state.guiMenuBarOffset = 0;
+		//m_state.guiMenuBarHeight = rect.w;
 	}
 
 	void RgGUIContext::GUIMenuBarEnd()
 	{
-		m_state.guiMenuBar = false;
-		GUIGroupEnd();
+		//m_state.guiMenuBar = false;
+		//GUIGroupEnd();
 		
 	}
 
 	bool RgGUIContext::GUIMenuItem(RgFloat width)
 	{
-		bool clicked = GUIButton(RgVec2(m_state.guiMenuBarOffset, 0.0f), RgVec2(width, m_state.guiMenuBarHeight));
-		m_state.guiMenuBarOffset += width;
-		return clicked;
+		//bool clicked = GUIButton(RgVec2(m_state.guiMenuBarOffset, 0.0f), RgVec2(width, m_state.guiMenuBarHeight));
+		//m_state.guiMenuBarOffset += width;
+		//return clicked;
+		return false;
 	}
 
 	void RgGUIContext::GUIMenuListBegin(RgStr label, RgFloat width)
 	{
-		bool clicked = GUIMenuItem(width);
-		if (clicked) {
-			SetColor(RgGUIColors::Alizarin);
+		//bool clicked = GUIMenuItem(width);
+		//if (clicked) {
+		//	SetColor(RgGUIColors::Alizarin);
 
-			RgVec4 rect(400, 400, 100, 200);
-			int ctxmenu = UtilGetHash(label, RgGUIControllerType::ContextMenu, rect);
-			m_state.contextMenuAdd(ctxmenu, rect);
-		}
+		//	RgVec4 rect(400, 400, 100, 200);
+		//	int ctxmenu = UtilGetHash(label, RgGUIControllerType::ContextMenu, rect);
+		//	m_state.contextMenuAdd(ctxmenu, rect);
+		//}
 	}
 
 	void RgGUIContext::GUIMenuListEnd()
@@ -312,29 +288,9 @@ namespace rg {
 
 	void RgGUIContext::SetColor(RgVec4 color)
 	{
-		m_state.Color = color;
+		m_state.color = color;
 	}
 
-	bool RgGUIContext::UtilCheckMousePos(const RgVec2 & lp, const RgVec2 & size,bool grouped)
-	{
-		if (m_pWindowInput == nullptr) return false;
-
-		if (m_state.mouseLeftChecked) return false; //hack optimize
-		
-		RgVec4 rect(lp, size);
-		const RgVec2& mousepos = m_pWindowInput->MousePos;
-		if (grouped && UtilIsInGroup()) {
-			rect.setxy(lp + m_state.GroupRectStack.top().xy());
-			if (!UtilClipRect(rect, m_state.GroupRectStack.top())) return false;
-		}
-
-		if (rect.x < mousepos.x && mousepos.x < rect.x + rect.z && rect.y < mousepos.y && mousepos.y < rect.y + rect.w) {
-			
-			m_state.SetMouseDownCheck(0,grouped? UtilGetOriginPos(lp):lp);// hack optimize. may cause bugs
-			return true;
-		}
-		return false;
-	}
 
 	const RgVec4 RgGUIContext::UtilGetOriginRect(const RgVec4 & rect) const
 	{
@@ -396,18 +352,18 @@ namespace rg {
 
 	void RgGUIContext::RestoreColor()
 	{
-		m_state.ColorRestored = m_state.Color;
+		m_state.colorRestored = m_state.color;
 	}
 
 	void RgGUIContext::RestoreColor(const RgVec4 & tempcolor)
 	{
 		RestoreColor();
-		m_state.Color = tempcolor;
+		m_state.color = tempcolor;
 	}
 
 	void RgGUIContext::DropColor()
 	{
-		m_state.Color = m_state.ColorRestored;
+		m_state.color = m_state.colorRestored;
 	}
 
 	bool RgGUIContext::_GroupClip(RgVec2 & pos, RgVec2 & sz) const
@@ -430,6 +386,10 @@ namespace rg {
 		return m_state.GroupRectStack.top();
 	}
 
+	void RgGUIContext::_drawRect(const RgVec2 & lp, const RgVec2 & sz)
+	{
+	}
+
 	bool RgGUIContext::GUIWindowBegin(RgGUIWindow* win)
 	{
 		if (win == nullptr) return false;
@@ -445,7 +405,7 @@ namespace rg {
 		}
 		
 		//do draw
-		GUIRect(win->windowrect,m_style.ColorBg);
+		GUIRect(win->windowrect,m_style.colorBg);
 		return true;
 	}
 
@@ -489,51 +449,29 @@ namespace rg {
 		Release();
 	}
 
-	void RgGUIState::Reset()
+
+#pragma region state
+	void RgGUIState::ongui(const RgWindowInput * input)
 	{
-		std::stack<RgVec4>().swap(GroupRectStack);
-		RectZ = 1.0f;
-		
-		mouseLeftChecked = false;
-		eventMouseLeftDown = false;
+		WindowGroupRect.z = input->WindowRect.z;
+		WindowGroupRect.w = input->WindowRect.w;
+
+		eventMouseLeftDown = input->LButton;
+		eventMousePos = input->MousePos;
+	}
+	void RgGUIState::reset()
+	{
 	}
 
-	void RgGUIState::RectZInc()
+	void RgGUIState::rect_z_inc()
 	{
 		RectZ += 1.0f;
 	}
 
-	void RgGUIState::SetMouseDownCheck(int uihash,const RgVec2& pos)
-	{
-		mouseLeftChecked = true;
-		mouseLeftCheckedPos = pos;
-	}
 
-	void RgGUIState::contextMenuReset()
-	{
-		stateContextMenu.newMenuContext = false;
-	}
+#pragma endregion
 
-	void RgGUIState::contextMenuAdd(const int & hash, const RgVec4 rect)
-	{
-		if (stateContextMenu.menuMap.find(hash) == stateContextMenu.menuMap.end()) {
-			std::unordered_map<int, RgVec4>().swap(stateContextMenu.menuMap);
-			stateContextMenu.menuMap.insert(std::make_pair(hash, rect));
-		}
-		else
-		{
-			stateContextMenu.menuMap[hash] = rect;
-		}
-
-		stateContextMenu.newMenuContext = true;
-	}
-
-	void RgGUIState::contextMenuClear()
-	{
-		std::unordered_map<int, RgVec4>().swap(stateContextMenu.menuMap);
-	}
-
-
+#pragma region stateWindow
 	void RgGUIStateWindow::ongui(const RgGUIState & state)
 	{
 		bool mousedown = state.eventMouseLeftDown;
@@ -549,14 +487,14 @@ namespace rg {
 			if (win->windowrect.rect_contain(state.eventMousePos)) {
 				if (focusedWin == nullptr) {
 					focusedWin = pair.second;
-					focusedWin->_mouseover = true;
+					focusedWin->_isfocused = true;
 				}
 				else
 				{
 					if (focusedWin->order < win->order) {
-						focusedWin->_mouseover = false;
+						focusedWin->_isfocused = false;
 						focusedWin = pair.second;
-						focusedWin->_mouseover = true;
+						focusedWin->_isfocused = true;
 					}
 				}
 			}
@@ -565,8 +503,6 @@ namespace rg {
 			focusedWin->order = maxorder + 1;
 			RgLogW() << "focused win:" << focusedWin->winid;
 		}
-
-		
 	}
 
 	void RgGUIStateWindow::register_win(RgGUIWindow* win)
@@ -578,10 +514,10 @@ namespace rg {
 		if (windowMap.size() > 0) {
 			auto iter = windowMap.end();
 			iter--;
-			ordernext = (*iter).second->order+1;
+			ordernext = (*iter).second->order + 1;
 		}
 		win->order = ordernext;
-		windowMap.insert(std::make_pair(win->winid,win));
+		windowMap.insert(std::make_pair(win->winid, win));
 	}
 
 	bool RgGUIStateWindow::verify_valid(long winid)
@@ -591,9 +527,11 @@ namespace rg {
 			RgLogE() << "window check focused error";
 			return false;
 		}
-
-		return (*iter).second->_mouseover;
+		return (*iter).second->_isfocused;
 	}
+#pragma endregion
+
+	
 
 }
 

@@ -52,10 +52,10 @@ namespace rg {
 	};
 
 	struct RgGUIState {
-		RgVec4 ColorBg;
-		RgVec4 ColorFont;
-		RgVec4 Color;
-		RgVec4 ColorRestored;
+		RgVec4 colorBg;
+		RgVec4 colorFont;
+		RgVec4 color;
+		RgVec4 colorRestored;
 		
 		//group lp,sz
 		std::stack<RgVec4> GroupRectStack;
@@ -68,24 +68,14 @@ namespace rg {
 		RgFloat guiMenuBarOffset = 0;
 		RgFloat guiMenuBarHeight = 0;
 
-		bool mouseLeftChecked = false;
-		bool mouseLeftClick = false;
-		bool mouseLeftDown = false;
-		RgVec2 mouseLeftCheckedPos;
-
-		RgGUIStateContextMenu stateContextMenu;
 
 		bool eventMouseLeftDown = false;
 		RgVec2 eventMousePos;
 
-		void Reset();
+		void ongui(const RgWindowInput* input);
+		void reset();
+		void rect_z_inc();
 
-		void RectZInc();
-		void SetMouseDownCheck(int uihash,const RgVec2& pos);
-
-		void contextMenuReset();
-		void contextMenuAdd(const int& hash, const RgVec4 rect);
-		void contextMenuClear();
 
 		//contextMenu
 	};
@@ -110,8 +100,8 @@ namespace rg {
 	public:
 
 		//logic
-		void BeginGUI(const RgWindowEvent&);
-		void EndGUI();
+		void gui_begin(const RgWindowEvent&);
+		void gui_end();
 		
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
@@ -125,7 +115,6 @@ namespace rg {
 		const RgVec2 GUIText(const char& c, const RgVec4& rect);
 		void GUITextDebug(const RgVec4& rect);
 
-		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
 		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
 		void GUIRect(const RgVec4& rect,bool grouped = true);
 		void GUIRect(const RgVec4& rect, const RgVec4& color,bool grouped = true);
@@ -149,7 +138,6 @@ namespace rg {
 		/////////////////////
 		bool UtilIsInGroup() const;
 		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
-		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true);
 		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
 		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
 		int UtilGetHash(RgStr label, const RgGUIControllerType type,const RgVec4& rect);
@@ -170,6 +158,7 @@ namespace rg {
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
+		void _drawRect(const RgVec2& lp, const RgVec2& sz);
 
 		
 
@@ -182,8 +171,11 @@ namespace rg {
 		RgGUIContext& operator=(const RgGUIContext&) = delete;
 
 		bool m_bDirty = false;
+
 		RgGUIState m_state;
 		RgGUIStateWindow m_stateWindow;
+		RgGUIStateContextMenu m_stateContxtMenu;
+
 		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
 		RgGUIDrawBuffer * m_pTextBuffer = nullptr;
 		const RgWindowInput * m_pWindowInput = nullptr;

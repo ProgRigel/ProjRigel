@@ -37,6 +37,10 @@ namespace rg {
 
 	//window
 
+	struct RgGUIWindowBufferDesc {
+
+	};
+
 	struct RgGUIWindow {
 		std::string title;
 		RgVec4 windowrect;
@@ -50,11 +54,13 @@ namespace rg {
 		int order = 0;
 
 		bool _initdraw = false;
-		bool _mouseover = false;
+		bool _isfocused = false;
 
 		void focused();
 		void lost_focuse();
 
 		RgGUIWindow();
+		RgGUIWindow(const RgGUIWindow&) = delete;
+		RgGUIWindow& operator=(const RgGUIWindow&) = delete;
 	};
 }
