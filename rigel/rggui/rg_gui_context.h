@@ -22,6 +22,10 @@ namespace rg {
 	class RgImage;
 	struct RgGUIWindow;
 	struct RgGUIState;
+	class RgGUIContext;
+
+	class RgGUIVertexBuffer;
+	class RgGUIIndicesBuffer;
 
 	struct RgGUISettings {
 		std::wstring Font;
@@ -40,13 +44,16 @@ namespace rg {
 	};
 
 	struct RgGUIStateWindow {
+		//current drawing window
+		RgGUIWindow * stateWindow = nullptr;
+
 		//focus
 		RgGUIWindow * windowFocused = nullptr;
 		RgGUIWindow * windowLastDrawed = nullptr;
 
 		std::map<long, RgGUIWindow *> windowMap;
 
-		void ongui(const RgGUIState& state);
+		void ongui(const RgGUIState& state,RgGUIContext * ctx);
 		void register_win(RgGUIWindow* win);
 		bool verify_valid(long winid);
 	};
@@ -149,16 +156,18 @@ namespace rg {
 		//state
 		void SetColor(RgVec4 color);
 
-		RgGUIDrawBuffer * GetDrawBuffer();
-		RgGUIDrawBuffer * GetTextBuffer();
 		RgImage * GetFontImage();
 
+		RgGUIVertexBuffer * GetVertexBufferPtr();
+		RgGUIVertexBuffer * GetTextBufferPtr();
+		RgGUIIndicesBuffer * GetIndicesBufferPtr();
 
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
 		void _drawRect(const RgVec2& lp, const RgVec2& sz);
+		
 
 		
 
@@ -176,8 +185,11 @@ namespace rg {
 		RgGUIStateWindow m_stateWindow;
 		RgGUIStateContextMenu m_stateContxtMenu;
 
-		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
-		RgGUIDrawBuffer * m_pTextBuffer = nullptr;
+
+		RgGUIVertexBuffer * m_pBufferVertex = nullptr;
+		RgGUIVertexBuffer * m_pBufferText = nullptr;
+		RgGUIIndicesBuffer * m_pBufferIndices = nullptr;
+
 		const RgWindowInput * m_pWindowInput = nullptr;
 
 		RgGUIStyle m_style;

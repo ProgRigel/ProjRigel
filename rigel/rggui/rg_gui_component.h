@@ -53,8 +53,17 @@ namespace rg {
 		long winid;
 		int order = 0;
 
-		bool _initdraw = false;
+		//1 not drawed
+		//2 init draw
+		//0 init draw done
+		unsigned char _initdraw = 1;
 		bool _isfocused = false;
+
+		unsigned int _buffer_vertex_begin = 0;
+		unsigned int _buffer_vertex_end = 0;
+		unsigned int _buffer_text_begin = 0;
+		unsigned int _buffer_text_end = 0;
+
 
 		void focused();
 		void lost_focuse();

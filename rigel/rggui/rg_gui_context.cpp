@@ -8,14 +8,17 @@
 namespace rg {
 	void RgGUIContext::Release()
 	{
-		if (m_pDrawBuffer != nullptr) {
-			delete m_pDrawBuffer;
-			m_pDrawBuffer = nullptr;
+		if (m_pBufferText != nullptr) {
+			delete m_pBufferText;
+			m_pBufferText = nullptr;
 		}
-
-		if (m_pTextBuffer != nullptr) {
-			delete m_pTextBuffer;
-			m_pTextBuffer = nullptr;
+		if (m_pBufferVertex != nullptr) {
+			delete m_pBufferVertex;
+			m_pBufferVertex = nullptr;
+		}
+		if (m_pBufferIndices != nullptr) {
+			delete m_pBufferIndices;
+			m_pBufferIndices = nullptr;
 		}
 
 		if (m_pGlyph != nullptr) {
@@ -27,8 +30,6 @@ namespace rg {
 	}
 	void RgGUIContext::Reset()
 	{
-		m_pDrawBuffer->ResetBuffer();
-		m_pTextBuffer->ResetBuffer();
 	}
 	void RgGUIContext::SetDirty(bool dirty)
 	{
@@ -62,12 +63,10 @@ namespace rg {
 	{
 		m_pWindowInput = e.Input;
 
+		//state process input
 		m_state.ongui(m_pWindowInput);
-		m_stateWindow.ongui(m_state);
-
-		m_pDrawBuffer->ResetBuffer();
-		m_pTextBuffer->ResetBuffer();
-
+		//proces window;
+		m_stateWindow.ongui(m_state,this);
 
 		static bool drawed = false;
 		if (drawed == false) {
@@ -79,10 +78,6 @@ namespace rg {
 	{
 		SetDirty(true);
 
-		m_pDrawBuffer->ApplyBuffer();
-		m_pTextBuffer->ApplyBuffer();
-
-
 	}
 
 	////////////////
@@ -90,54 +85,49 @@ namespace rg {
 #pragma region TextDraw
 	void RgGUIContext::GUIText(std::string content, const RgVec4 & rect)
 	{
-		RgVec4 pos = rect;
-		for (char c : content) {
-			pos.x += GUIText(c, pos).x;
-			m_pTextBuffer->ExtendBufferCheck();
-		}
-		m_state.rect_z_inc();
+
 	}
 	const RgVec2 RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
 	{
-		auto color = m_state.color;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy(), m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 1), m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 2), m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 3), m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->color = color;
-		m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
-		m_pTextBuffer->m_pPos++;
+		//auto color = m_state.color;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy(), m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->color = color;
+		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 1), m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->color = color;
+		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 2), m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->color = color;
+		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 3), m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->color = color;
+		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
+		//m_pTextBuffer->m_pPos++;
 
-		return m_pGlyph->GetCharPos(c, 2);
+		//return m_pGlyph->GetCharPos(c, 2);
 	}
 	void RgGUIContext::GUITextDebug(const RgVec4 & rect)
 	{
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->uv = RgVec2(0, 0);
-		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->uv = RgVec2(1, 0);
-		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->uv = RgVec2(1, 1);
-		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
-		m_pTextBuffer->m_pPos++;
-		m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_state.RectZ, 1.0);
-		m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
-		m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
-		m_pTextBuffer->m_pPos++;
-		m_state.rect_z_inc();
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->uv = RgVec2(0, 0);
+		//m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->uv = RgVec2(1, 0);
+		//m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(), m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->uv = RgVec2(1, 1);
+		//m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		//m_pTextBuffer->m_pPos++;
+		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_state.RectZ, 1.0);
+		//m_pTextBuffer->m_pPos->uv = RgVec2(0, 1);
+		//m_pTextBuffer->m_pPos->color = RgVec4(1.0f);
+		//m_pTextBuffer->m_pPos++;
+		//m_state.rect_z_inc();
 	}
 #pragma endregion
 
@@ -388,40 +378,98 @@ namespace rg {
 
 	void RgGUIContext::_drawRect(const RgVec2 & lp, const RgVec2 & sz)
 	{
+		m_pBufferVertex->ptrFloater->pos = RgVec4(lp, 1, 1);
+		m_pBufferVertex->ptrFloater++;
+		m_pBufferVertex->ptrFloater->pos = RgVec4(lp.x + sz.x, lp.y, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater++;
+		m_pBufferVertex->ptrFloater->pos = RgVec4(lp+sz, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater++;
+		m_pBufferVertex->ptrFloater->pos = RgVec4(lp.x, lp.y + sz.y, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater++;
+
+		m_pBufferText->ExtendVertexBufferCheck();
+	}
+
+	RgGUIVertexBuffer * RgGUIContext::GetVertexBufferPtr()
+	{
+		return m_pBufferVertex;
+	}
+
+	RgGUIVertexBuffer * RgGUIContext::GetTextBufferPtr()
+	{
+		return m_pBufferText;
+	}
+
+	RgGUIIndicesBuffer * RgGUIContext::GetIndicesBufferPtr()
+	{
+		return m_pBufferIndices;
 	}
 
 	bool RgGUIContext::GUIWindowBegin(RgGUIWindow* win)
 	{
 		if (win == nullptr) return false;
+		if (m_stateWindow.stateWindow != nullptr) {
+			RgLogE() << "invalid call: window begin";
+			return false;
+		}
+
+		m_stateWindow.stateWindow = win;
 
 		//check focus
-		if (win->_initdraw == false) {
+		if (win->_initdraw == 1) {
+			win->_initdraw = 2;
 			m_stateWindow.register_win(win);
-			win->_initdraw = true;
+			
+			//init draw
+			win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
+			RgLogW() << "init draw start" << win->title << win->_buffer_vertex_begin;
+			_drawRect(win->windowrect.xy(), win->windowrect.zw());
+			return true;
 		}
 		else {
 			if (win->enabled == false) return false;
 			if (m_stateWindow.verify_valid(win->winid) == false) return false;
 		}
 		
-		//do draw
-		GUIRect(win->windowrect,m_style.colorBg);
+		//focus draw
+		win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
+		RgLogW() << "focus draw start" << win->title << win->_buffer_vertex_begin;
+		_drawRect(win->windowrect.xy(), win->windowrect.zw());
+		
 		return true;
 	}
 
 	void RgGUIContext::GUIWindowEnd()
 	{
+		auto win = m_stateWindow.stateWindow;
+
+		if (win == nullptr) {
+			RgLogE() << "invalid call£º window end";
+			return;
+		}
+
+
+		if (win->_initdraw == 2) {
+			win->_initdraw = 0;
+			win->_buffer_text_end = m_pBufferVertex->GetVertexSize();
+			RgLogW() << "init draw end" << win->title << win->_buffer_text_end;
+
+			m_stateWindow.stateWindow = nullptr;
+			return;
+		}
+
+		if (m_stateWindow.verify_valid(win->winid)) {
+			win->_buffer_text_end = m_pBufferVertex->GetVertexSize();
+			RgLogW() << "focus draw end" << win->title << win->_buffer_text_end;
+			
+			m_stateWindow.stateWindow = nullptr;
+			return;
+		}
+
+		m_stateWindow.stateWindow = nullptr;
+		
 	}
 
-	RgGUIDrawBuffer * RgGUIContext::GetDrawBuffer()
-	{
-		return m_pDrawBuffer;
-	}
-
-	RgGUIDrawBuffer * RgGUIContext::GetTextBuffer()
-	{
-		return m_pTextBuffer;
-	}
 
 	RgImage * RgGUIContext::GetFontImage()
 	{
@@ -431,17 +479,18 @@ namespace rg {
 
 	RgGUIContext::RgGUIContext(const RgGUISettings & settings)
 	{
-		m_pDrawBuffer = new RgGUIDrawBuffer();
-		m_pTextBuffer = new RgGUIDrawBuffer();
 		m_style = settings.Style;
-		m_pGlyph = new RgGUIGlyph(settings.Font);
+
+		RgGUIContext();
 	}
 
 	RgGUIContext::RgGUIContext()
 	{
-		m_pDrawBuffer = new RgGUIDrawBuffer();
-		m_pTextBuffer = new RgGUIDrawBuffer();
 		m_pGlyph = new RgGUIGlyph();
+
+		m_pBufferIndices = new RgGUIIndicesBuffer();
+		m_pBufferText = new RgGUIVertexBuffer();
+		m_pBufferVertex = new RgGUIVertexBuffer();
 	}
 
 	RgGUIContext::~RgGUIContext()
@@ -472,16 +521,20 @@ namespace rg {
 #pragma endregion
 
 #pragma region stateWindow
-	void RgGUIStateWindow::ongui(const RgGUIState & state)
+	void RgGUIStateWindow::ongui(const RgGUIState & state,RgGUIContext * ctx)
 	{
+		stateWindow = nullptr;
+
 		bool mousedown = state.eventMouseLeftDown;
 		if (mousedown == false) {
+			//reuse buffer data
 			return;
 		}
 		RgGUIWindow * focusedWin = nullptr;
 		long maxorder = 0;
 
-		for (auto pair : windowMap) {
+		for (auto iter = windowMap.begin(); iter != windowMap.end(); iter++) {
+			auto pair = *iter;
 			auto win = pair.second;
 			maxorder = win->order > maxorder ? win->order : maxorder;
 			if (win->windowrect.rect_contain(state.eventMousePos)) {
@@ -503,6 +556,39 @@ namespace rg {
 			focusedWin->order = maxorder + 1;
 			RgLogW() << "focused win:" << focusedWin->winid;
 		}
+
+		//arrange buffers
+		if (focusedWin == nullptr) return;
+
+		unsigned int focusedWindVertexCount = focusedWin->_buffer_vertex_end - focusedWin->_buffer_vertex_end;
+		if (focusedWindVertexCount == 0) {
+
+			RgLogE() << "focused window vertex count 0";
+			return;
+		}
+
+		auto vertexbuf = ctx->GetVertexBufferPtr();
+		auto fwindbegin = vertexbuf->GetPtr() + focusedWin->_buffer_vertex_begin;
+		auto fwindend = fwindbegin + focusedWindVertexCount;
+
+		vertexbuf->SetDirty(true);
+
+		if (fwindend == vertexbuf->ptrFloater) {
+			//no buffer data move
+			RgLogD() << "focused window at tail";
+			vertexbuf->ptrFloater -= focusedWindVertexCount;
+			return;
+		}
+
+		//move buf
+		RgGUIVertex * tempbuf = new RgGUIVertex[focusedWindVertexCount];
+		memcpy(tempbuf, fwindbegin, focusedWindVertexCount * sizeof(RgGUIVertex));
+		unsigned int moveoffset = vertexbuf->ptrFloater - fwindend;
+		memmove(fwindbegin, fwindend, moveoffset);
+		vertexbuf->ptrFloater -= moveoffset;
+
+		RgLogD() << "mov buf" << vertexbuf->GetVertexSize();
+
 	}
 
 	void RgGUIStateWindow::register_win(RgGUIWindow* win)
