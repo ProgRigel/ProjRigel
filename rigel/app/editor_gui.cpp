@@ -46,6 +46,13 @@ namespace editor {
 			return;
 		}
 
+
+		static bool tst = true;
+		if (tst) {
+			tst = false;
+
+		}
+
 		static RgEditorWindowTestSuit testsuitwindow;
 		static RgEditorWindowDebugWindow debugwindow;
 

@@ -17,7 +17,7 @@ namespace rg {
 		~RgGUIIndicesBuffer();
 
 		unsigned int ExtenBuffer();
-		unsigned int * getptr();
+		unsigned int * GetPtr();
 		unsigned int GetQuadSize();
 		size_t GetBufferSize();
 		size_t GetBufferSize(unsigned int quadcount);
@@ -34,6 +34,37 @@ namespace rg {
 		static const unsigned int INDICES_EXTEN_TIMES = 2;
 
 
+	};
+
+	class RgGUIVertexBuffer {
+	public:
+		RgGUIVertexBuffer();
+		~RgGUIVertexBuffer();
+
+
+		unsigned int GetVertexSize();
+		unsigned int GetVertexBufferSize();
+		size_t GetVertexDataBytes();
+		size_t GetVertxBufferBytes();
+
+		RgGUIVertex * GetPtr();
+		RgGUIVertex * ptrFloater = nullptr;
+
+		bool ExtendVertexBufferCheck();
+
+	private:
+		RgGUIVertexBuffer(const RgGUIVertexBuffer&) = delete;
+		RgGUIVertexBuffer& operator=(const RgGUIVertexBuffer&) = delete;
+
+		
+		
+		static const unsigned int VERTEX_SIZE_INIT = 64;
+		static const unsigned int VERTEX_EXTEN_TIMES = 2;
+		static const unsigned int VERTEX_EXTEN_TOLERANCE = 32;
+		
+		unsigned int m_vertexBufferSize = VERTEX_SIZE_INIT;
+
+		RgGUIVertex * m_pVertexData = nullptr;
 	};
 
 	class RgGUIDrawBuffer {

@@ -168,7 +168,7 @@ namespace rg {
 
 		return m_indiceQuadSize;
 	}
-	unsigned int * RgGUIIndicesBuffer::getptr()
+	unsigned int * RgGUIIndicesBuffer::GetPtr()
 	{
 		return m_pIndicesBufferData;
 	}
@@ -196,6 +196,59 @@ namespace rg {
 #pragma endregion
 
 
+#pragma region RgGUIVertexBuffer
+	RgGUIVertexBuffer::RgGUIVertexBuffer()
+	{
+		m_pVertexData = new RgGUIVertex[m_vertexBufferSize];
+		ZeroMemory(m_pVertexData, GetVertxBufferBytes());
+
+		ptrFloater = m_pVertexData;
+	}
+	RgGUIVertexBuffer::~RgGUIVertexBuffer()
+	{
+		delete[] m_pVertexData;
+	}
+	unsigned int RgGUIVertexBuffer::GetVertexSize()
+	{
+		return (unsigned int)(ptrFloater - m_pVertexData);
+	}
+	unsigned int RgGUIVertexBuffer::GetVertexBufferSize()
+	{
+		return m_vertexBufferSize;
+	}
+	size_t RgGUIVertexBuffer::GetVertexDataBytes()
+	{
+		return (ptrFloater - m_pVertexData) * sizeof(RgGUIVertex);
+	}
+	size_t RgGUIVertexBuffer::GetVertxBufferBytes()
+	{
+		return m_vertexBufferSize * sizeof(RgGUIVertex);
+	}
+	RgGUIVertex * RgGUIVertexBuffer::GetPtr()
+	{
+		return m_pVertexData;
+	}
+	bool RgGUIVertexBuffer::ExtendVertexBufferCheck()
+	{
+		unsigned int vertexcount = (unsigned int)(ptrFloater - m_pVertexData);
+		unsigned int newsize = m_vertexBufferSize * VERTEX_EXTEN_TIMES;
+
+		if (((unsigned long long)vertexcount) < m_vertexBufferSize - VERTEX_EXTEN_TOLERANCE) return false;
+		RgGUIVertex * newbuffer = new RgGUIVertex[newsize];
+		ZeroMemory(newbuffer, m_vertexBufferSize * VERTEX_EXTEN_TIMES * sizeof(RgGUIVertex));
+		memcpy(newbuffer, m_pVertexData, GetVertxBufferBytes());
+
+		delete [] m_pVertexData;
+		m_pVertexData = newbuffer;
+
+		m_vertexBufferSize = newsize;
+		ptrFloater = m_pVertexData + vertexcount;
+		return true;
+	}
+#pragma endregion
+
+
+	
 
 }
 
