@@ -7,6 +7,7 @@
 #include <rggraphics\rg_rasterizer_state.h>
 #include <rggraphics\rg_depthstencil_state.h>
 #include <rggraphics\rg_sampler.h>
+#include <rggraphics\rg_blend_state.h>
 #include <memory>
 
 namespace rg {
@@ -55,6 +56,7 @@ namespace rg {
 
 		RgRasterizerState * m_pRasterState = nullptr;
 		RgDepthStencilState * m_pDepthStencilState = nullptr;
+		RgBlendState * m_pBlendState = nullptr;
 		
 		RgBuffer * m_pBufferVertex = nullptr;
 		RgBuffer * m_pBufferIndices = nullptr;

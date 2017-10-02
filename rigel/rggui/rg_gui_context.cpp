@@ -601,7 +601,7 @@ namespace rg {
 		//Header
 		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
 		//Header-Title
-		ctx->GUIText(window->title, RgVec4(0.0f, 0.0f, 200.0f, style.WindowHeaderHeight), style.WindowHeaderTitleColor);
+		ctx->GUIText(window->title, RgVec4(5.0f, 0.0f, 200.0f,30.0f), style.WindowHeaderTitleColor);
 
 
 		//content group

@@ -15,6 +15,8 @@
 #include "rg_render_target.h"
 #include "rg_texture_dx11.h"
 #include "rg_sampler_dx11.h"
+#include "rg_blend_state_dx11.h"
+
 namespace rg {
 	void RgRenderContextDX11::InputSetBuffer(RgBuffer* buffer, RgGraphicsPipelineStage tarstage)
 	{
@@ -88,6 +90,18 @@ namespace rg {
 		}
 		m_pDeviceContext->OMSetDepthStencilState(dxdss->m_state, 0);
 	}
+
+	void RgRenderContextDX11::SetBlendState(RgBlendState *bs)
+	{
+		RgBlendStateDX11 * dxbs = dynamic_cast<RgBlendStateDX11*>(bs);
+		RG_ASSERT(dxbs);
+		if (dxbs == nullptr) {
+			RgLogE() << "dxbs is null";
+			return;
+		}
+		m_pDeviceContext->OMSetBlendState(dxbs->m_ptr, nullptr, 0xffffffff);
+	}
+
 	void RgRenderContextDX11::SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage)
 	{
 		std::shared_ptr<RgTextureDX11> texdx11 = std::dynamic_pointer_cast<RgTextureDX11>(texture);

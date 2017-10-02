@@ -88,6 +88,7 @@ namespace rg {
 		m_pRenderCtx->InputSetShader(m_pShaderPixelText);
 		m_pRenderCtx->SetShaderTexture(m_pTextureFont, RgGraphicsPipelineStage::Pixel);
 		m_pRenderCtx->SetSampler(m_pSampler);
+		m_pRenderCtx->SetBlendState(m_pBlendState);
 
 		unsigned int textIndicesSize = m_pGUICtx->GetTextBufferPtr()->GetVertexSize() / 2 * 3;
 		unsigned int vertexoffset = m_pGUICtx->GetVertexBufferPtr()->GetVertexSize();
@@ -266,6 +267,15 @@ namespace rg {
 			m_pShaderPixelText = m_pGraphics->CompileShaderFromFile(fpath, shaderFont);
 		}
 
+		//blend state
+		{
+			RgBlendStateSettings blendsettings;
+			blendsettings.RenderTarget[0].BlendEnable = true;
+
+			m_pBlendState = m_pGraphics->CreateBlendState(blendsettings);
+			RG_ASSERT(m_pBlendState);
+		}
+
 		auto bufvertex = m_pGUICtx->GetVertexBufferPtr();
 		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), bufvertex->GetPtr(), bufvertex->GetVertexDataBytes());
 		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
@@ -346,6 +356,11 @@ namespace rg {
 		if (m_pSampler != nullptr) {
 			m_pSampler->Release();
 			m_pSampler = nullptr;
+		}
+
+		if (m_pBlendState != nullptr) {
+			m_pBlendState->Release();
+			m_pBlendState = nullptr;
 		}
 
 	}

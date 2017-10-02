@@ -29,6 +29,7 @@ namespace rg {
 
 		void SetRasterizerState(RgRasterizerState*);
 		void SetDepthStencilState(RgDepthStencilState *);
+		void SetBlendState(RgBlendState *);
 		
 		void SetShaderTexture(std::shared_ptr<RgTexture> texture, RgGraphicsPipelineStage stage);
 		void SetSampler(RgGraphicsSampler * sampler);

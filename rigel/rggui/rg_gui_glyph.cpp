@@ -10,7 +10,7 @@ namespace rg {
 	RgGUIGlyph::RgGUIGlyph()
 	{
 		RgLogD() << "init gui glyph";
-		auto ttfpath = GetWorkDirectory() + L"/Data/Res/droid_sans_mono.ttf";
+		auto ttfpath = GetWorkDirectory() + L"/Data/Res/arial.ttf";
 
 		auto font = RgFontManager::LoadFont(tostring(ttfpath));
 		if (font == nullptr || font->IsValid() == false) {
@@ -100,7 +100,7 @@ namespace rg {
 		unsigned int lineheight = 0;
 
 		unsigned int linemaxh = 0;
-		m_pfont->SetPixelSize(14);
+		m_pfont->SetPixelSize(15);
 
 		for (unsigned int i = 32; i < 128; i++) {
 			m_pfont->LoadGlyph(i);
