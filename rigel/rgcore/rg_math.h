@@ -67,7 +67,10 @@ namespace rg {
 		}
 
 		std::string toStr() const;
+
+		static const RgVec2 Zero;
 	};
+
 	inline const RgFloat abs(RgFloat s) {
 		return abs((float)s);
 	}
@@ -224,6 +227,8 @@ namespace rg {
 			z = zw.x;
 			w = zw.y;
 		}
+
+		bool rect_contain(const RgVec2& pos);
 
 		const static RgVec4 Zero;
 	};

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <wchar.h>
+#include "rg_log.h"
 
 #ifdef _DEBUG
 #include <assert.h>
@@ -8,6 +9,9 @@
 #else
 #define RG_ASSERT(x)
 #endif
+
+#define RG_CHECK(x,info) if(!(x)) RgLogW()<<info;
+#define RG_CHECK_RET(x,info,e) if(!(x)) {RgLogW()<<info; e}
 
 typedef int RgInt;
 typedef unsigned int RgUInt;

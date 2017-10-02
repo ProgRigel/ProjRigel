@@ -22,6 +22,10 @@ namespace rg {
 	class RgImage;
 	struct RgGUIWindow;
 	struct RgGUIState;
+	class RgGUIContext;
+
+	class RgGUIVertexBuffer;
+	class RgGUIIndicesBuffer;
 
 	struct RgGUISettings {
 		std::wstring Font;
@@ -40,52 +44,57 @@ namespace rg {
 	};
 
 	struct RgGUIStateWindow {
+
+		bool skipDraw = false;
+
+		//current drawing window
+		RgGUIWindow * stateWindow = nullptr;
 		//focus
 		RgGUIWindow * windowFocused = nullptr;
-		RgGUIWindow * windowLastDrawed = nullptr;
-
 		std::map<long, RgGUIWindow *> windowMap;
 
-		void ongui(const RgGUIState& state);
+		//draw relatex
+		float stateWindowOrder = 0;
+
+		RgGUIWindow * GetWindow(long winid);
+		void DrawWindow(RgGUIWindow * window,RgGUIContext * ctx);
+		void DrawWindowEnd(RgGUIWindow * window,RgGUIContext * ctx);
+
+		void GUIBegin(const RgGUIState& state,RgGUIContext * ctx);
+		void GUIEnd(const RgGUIState& state, RgGUIContext * ctx);
 		void register_win(RgGUIWindow* win);
 		bool verify_valid(long winid);
+
 	};
 
 	struct RgGUIState {
-		RgVec4 ColorBg;
-		RgVec4 ColorFont;
-		RgVec4 Color;
-		RgVec4 ColorRestored;
-		
-		//group lp,sz
-		std::stack<RgVec4> GroupRectStack;
-		RgFloat RectZ = 1.0f;
-		RgFloat GroupWidthMax;
-		RgVec4 WindowGroupRect = RgVec4::Zero;
+		void ongui(const RgWindowInput* input);
 
+		//colors
+		RgVec4 colorBg;
+		RgVec4 colorFont;
+		RgVec4 color;
+		RgVec4 colorRestored;
+		
+		//group
+		std::stack<RgVec4> GroupRectStack;			//group stack
+		RgVec4 WindowGroupRect = RgVec4::Zero;		//main window group rect
+
+		//menu
 		bool guiMenuBar = false;
 		bool guiMenuBarHorizontal = false;
 		RgFloat guiMenuBarOffset = 0;
 		RgFloat guiMenuBarHeight = 0;
 
-		bool mouseLeftChecked = false;
-		bool mouseLeftClick = false;
-		bool mouseLeftDown = false;
-		RgVec2 mouseLeftCheckedPos;
+		//events
+		bool eventMouseLeftDown = false;
+		RgVec2 eventMousePos;
 
-		RgGUIStateContextMenu stateContextMenu;
+		//draw order
+		float currentDrawOrder = 0;
+		void DrawOrderIncreae();
+		void ResetDrawOrder();
 
-
-		void Reset();
-
-		void RectZInc();
-		void SetMouseDownCheck(int uihash,const RgVec2& pos);
-
-		void contextMenuReset();
-		void contextMenuAdd(const int& hash, const RgVec4 rect);
-		void contextMenuClear();
-
-		//contextMenu
 	};
 
 	class RgGUIContext {
@@ -108,8 +117,8 @@ namespace rg {
 	public:
 
 		//logic
-		void BeginGUI(const RgWindowEvent&);
-		void EndGUI();
+		void gui_begin(const RgWindowEvent&);
+		void gui_end();
 		
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;
@@ -123,16 +132,6 @@ namespace rg {
 		const RgVec2 GUIText(const char& c, const RgVec4& rect);
 		void GUITextDebug(const RgVec4& rect);
 
-		bool GUIButton(const RgVec2& lp, const RgVec2& sz);
-		void GUIRect(const RgVec2& lp, const RgVec2& sz,bool grouped =true);
-		void GUIRect(const RgVec4& rect,bool grouped = true);
-		void GUIRect(const RgVec4& rect, const RgVec4& color,bool grouped = true);
-		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz);
-		void GUIGroupBegin(const RgVec4& rect);
-		void GUIGroupBegin(const RgVec4& rect,const RgVec4& color);
-		void GUIGroupBegin(const RgVec2&lp, const RgVec2& sz,const RgVec4& color);
-		void GUIGroupEnd();
-
 		void GUIMenuBarBegin(const RgVec4& rect);
 		void GUIMenuBarEnd();
 		bool GUIMenuItem(RgFloat width);
@@ -141,33 +140,49 @@ namespace rg {
 
 		void GUIMenuBar(const RgGUIGenericMenu * _menu, const RgVec4& _rect);
 
+		////////////////////////////////// new
 		bool GUIWindowBegin(RgGUIWindow* win);//return true if focused
 		void GUIWindowEnd();
 
-		/////////////////////
-		bool UtilIsInGroup() const;
-		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
-		bool UtilCheckMousePos(const RgVec2& lp, const RgVec2& size,bool grouped = true);
-		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
-		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
-		int UtilGetHash(RgStr label, const RgGUIControllerType type,const RgVec4& rect);
+		void GUIRect(const RgVec2&lp, const RgVec2&sz, const RgVec4& color);
 
-		bool UtilRectContain(const RgVec4& rect, const RgVec2& pos);
-		//////////////////
-		
+		const RgVec2 GUIChar(const char& c, const RgVec4& rect, const RgVec4& color);
+		void GUIText(std::string str, const RgVec4& rect, const RgVec4& color);
+
+		void GUIGroupBegin(const RgVec2&lp, const RgVec2&sz);
+		void GUIGroupEnd();
 
 		//state
 		void SetColor(RgVec4 color);
 
-		RgGUIDrawBuffer * GetDrawBuffer();
-		RgGUIDrawBuffer * GetTextBuffer();
 		RgImage * GetFontImage();
+
+		//buffer
+		RgGUIVertexBuffer * GetVertexBufferPtr();
+		RgGUIVertexBuffer * GetTextBufferPtr();
+		RgGUIIndicesBuffer * GetIndicesBufferPtr();
+
+		//utility
+		bool UtilIsInGroup() const;
+		bool UtilClipRect(RgVec4& content, const RgVec4& rect) const;		//return false is no need to draw
+		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
+		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
+		int UtilGetHash(RgStr label, const RgGUIControllerType type, const RgVec4& rect);
+		bool UtilRectContain(const RgVec4& rect, const RgVec2& pos);
 
 
 	private:
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
+		const RgFloat _GetDrawOrder();
+
+		void _DrawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color,RgFloat order);
+		void _GroupBegin(const RgVec2&lp, const RgVec2& sz);
+		void _GroupEnd();
+
+		const RgVec2 _DrawChar(const char& c, const RgVec4& rect, const RgVec4& color, RgFloat order);
+		void _DrawText(std::string content, const RgVec4& rect,const RgVec4& color,RgFloat order);
 
 		
 
@@ -180,10 +195,16 @@ namespace rg {
 		RgGUIContext& operator=(const RgGUIContext&) = delete;
 
 		bool m_bDirty = false;
+
 		RgGUIState m_state;
 		RgGUIStateWindow m_stateWindow;
-		RgGUIDrawBuffer * m_pDrawBuffer = nullptr;
-		RgGUIDrawBuffer * m_pTextBuffer = nullptr;
+		RgGUIStateContextMenu m_stateContxtMenu;
+
+
+		RgGUIVertexBuffer * m_pBufferVertex = nullptr;
+		RgGUIVertexBuffer * m_pBufferText = nullptr;
+		RgGUIIndicesBuffer * m_pBufferIndices = nullptr;
+
 		const RgWindowInput * m_pWindowInput = nullptr;
 
 		RgGUIStyle m_style;
@@ -191,5 +212,6 @@ namespace rg {
 
 	public:
 		friend class RgGUI;
+		friend struct RgGUIStateWindow;
 	};
 }

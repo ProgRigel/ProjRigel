@@ -43,8 +43,8 @@ namespace rg {
 
 	protected:
 
-		unsigned int m_uintVertexBufferSize = RgGUIDrawBuffer::BUFFER_SIZE_INIT;
-		unsigned int m_uintIndicesBufferSize = RgGUIDrawBuffer::BUFFER_SIZE_INIT * 2;
+		unsigned int m_uintVertexBufferSize = RgGUIVertexBuffer::VERTEX_SIZE_INIT;
+		unsigned int m_uintIndicesBufferSize = RgGUIIndicesBuffer::INDICES_QUAD_INIT_COUNT *6;
 
 		
 		RgGUIContext * m_pGUICtx = nullptr;
@@ -70,6 +70,10 @@ namespace rg {
 		std::shared_ptr<RgShader> m_pShaderPixelText = nullptr;
 
 		RgGUIConstantData constantData;
+
+		unsigned int m_vertexLastDrawCount = 0;
+		unsigned int m_textLastDrawCount = 0;
+		unsigned int m_indicesLastSize = 0;
 
 	};
 }

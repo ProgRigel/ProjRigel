@@ -46,15 +46,22 @@ namespace editor {
 			return;
 		}
 
+
+		static bool tst = true;
+		if (tst) {
+			tst = false;
+
+		}
+
 		static RgEditorWindowTestSuit testsuitwindow;
 		static RgEditorWindowDebugWindow debugwindow;
 
-		ctx->BeginGUI(e);
+		ctx->gui_begin(e);
 
 		testsuitwindow.InternalOnGUI(ctx);
 		debugwindow.InternalOnGUI(ctx);
 
-		ctx->EndGUI();
+		ctx->gui_end();
 
 	}
 	void EditorGUI::OnRender()

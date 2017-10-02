@@ -39,17 +39,12 @@ namespace rg {
 		if (m_pGUICtx->IsDirty()) {
 			m_pGUICtx->SetDirty(false);
 
-			//RgLogD() << "dirty";
-
-			//mapdata
-			auto guibuf = m_pGUICtx->GetDrawBuffer();
-			auto textbuf = m_pGUICtx->GetTextBuffer();
 			MapBufferData();
 
-			if (guibuf->IsIndicesChanged() || textbuf->IsIndicesChanged()) {
-
-				RgLogD() << "rebuild";
-
+			auto vertexbuffer = m_pGUICtx->GetVertexBufferPtr();
+			auto textbuffer = m_pGUICtx->GetTextBufferPtr();
+			if (vertexbuffer->GetVertexSize() != m_vertexLastDrawCount || textbuffer->GetVertexSize() != m_textLastDrawCount) {
+				RgLogD() << "rebuild commandlist";
 				ReBuildCommandList();
 			}
 		}
@@ -81,20 +76,21 @@ namespace rg {
 		m_pRenderCtx->InputSetBuffer(m_pBufferConst, RgGraphicsPipelineStage::Pixel);
 		m_pRenderCtx->InputSetBuffer(m_pBufferConst, RgGraphicsPipelineStage::Vertex);
 
+		//draw call:vertex
 		m_pRenderCtx->InputSetInputLayout(m_pInputLayout);
 		m_pRenderCtx->InputSetShader(m_pShaderVertex);
 		m_pRenderCtx->InputSetShader(m_pShaderPixel);
 
 		m_pRenderCtx->InputSetPrimitiveTopology();
-		m_pRenderCtx->DrawIndexed(m_pGUICtx->GetDrawBuffer()->GetIndicesSize());
+		m_pRenderCtx->DrawIndexed(m_pGUICtx->GetVertexBufferPtr()->GetVertexSize()/2*3);
 
-		//draw text
+		//draw call:text
 		m_pRenderCtx->InputSetShader(m_pShaderPixelText);
 		m_pRenderCtx->SetShaderTexture(m_pTextureFont, RgGraphicsPipelineStage::Pixel);
 		m_pRenderCtx->SetSampler(m_pSampler);
 
-		unsigned int textIndicesSize = m_pGUICtx->GetTextBuffer()->GetIndicesSize();
-		unsigned int vertexoffset = m_pGUICtx->GetDrawBuffer()->GetVertexCount();
+		unsigned int textIndicesSize = m_pGUICtx->GetTextBufferPtr()->GetVertexSize() / 2 * 3;
+		unsigned int vertexoffset = m_pGUICtx->GetVertexBufferPtr()->GetVertexSize();
 
 		m_pRenderCtx->DrawIndexed(textIndicesSize, 0, vertexoffset);
 
@@ -269,12 +265,11 @@ namespace rg {
 			fpath = fpath + L"/Data/Res/ps_font.hlsl";
 			m_pShaderPixelText = m_pGraphics->CompileShaderFromFile(fpath, shaderFont);
 		}
-		
-		auto guibuf = m_pGUICtx->GetDrawBuffer();
-		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
 
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), guibuf->GetIndicesPtr(), guibuf->GetIndicesSize() * sizeof(unsigned int));
-
+		auto bufvertex = m_pGUICtx->GetVertexBufferPtr();
+		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), bufvertex->GetPtr(), bufvertex->GetVertexDataBytes());
+		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), bufindices->GetBufferBytes());
 
 
 		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;
@@ -395,20 +390,39 @@ namespace rg {
 	}
 	void RgGUIBindGraphics::MapBufferData()
 	{
-		auto guibuf = m_pGUICtx->GetDrawBuffer();
-		auto textbuf = m_pGUICtx->GetTextBuffer();
 
-		void * buf[2]{ guibuf->GetDataPtr(),textbuf->GetDataPtr() };
-		unsigned int size[2];
-		size[0] = guibuf->GetVertexCount() * sizeof(RgGUIVertex);
-		size[1] = guibuf->GetVertexCount() * sizeof(RgGUIVertex);
+		auto bufvertex = m_pGUICtx->GetVertexBufferPtr();
+		auto buftext = m_pGUICtx->GetTextBufferPtr();
 
-		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), 2, &buf[0], &size[0]);
+		if (bufvertex->IsDirty() || m_vertexLastDrawCount != bufvertex->GetVertexSize() || buftext->IsDirty() || m_textLastDrawCount != buftext->GetVertexSize()) {
 
-		//m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), guibuf->GetDataPtr(), guibuf->GetVertexCount() * sizeof(RgGUIVertex));
+			void * dataptr[2];
+			dataptr[0] = bufvertex->GetPtr();
+			dataptr[1] = buftext->GetPtr();
 
-		auto indptr = guibuf->GetIndicesPtr();//???
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), indptr, guibuf->GetIndicesSize() * sizeof(unsigned int));
+			unsigned int datasize[2];
+			datasize[0] = bufvertex->GetVertexDataBytes();
+			datasize[1] = buftext->GetVertexDataBytes();
+
+			m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(),2,&dataptr[0], &datasize[0]);
+
+			bufvertex->SetDirty(false);
+			m_vertexLastDrawCount = bufvertex->GetVertexSize();
+			buftext->SetDirty(false);
+			m_textLastDrawCount = buftext->GetVertexSize();
+
+
+			RgLogD() << "size" << sizeof(RgGUIVertex) << bufvertex->GetVertexSize() << buftext->GetVertexSize();
+			RgLogD() << "map vertex buffer" << datasize[0] <<datasize[1];
+		}
+
+		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
+		if (bufindices->GetBufferSize() != m_indicesLastSize) {
+			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), bufindices->GetBufferBytes());
+			m_indicesLastSize = bufindices->GetBufferSize();
+
+			RgLogD() << " map indices buffer" << bufindices->GetQuadSize();
+		}
 	}
 }
 
