@@ -61,10 +61,12 @@ namespace rg {
 		void DrawWindowEnd(RgGUIWindow * window,RgGUIContext * ctx);
 
 		void GUIBegin(const RgGUIState& state,RgGUIContext * ctx);
-		void GUIEnd(const RgGUIState& state, RgGUIContext * ctx);
+		bool GUIEnd(const RgGUIState& state, RgGUIContext * ctx);
 		void register_win(RgGUIWindow* win);
 		bool verify_valid(long winid);
 
+
+		bool IsSkipUpdate(const RgGUIState& state) const;
 	};
 
 	struct RgGUIState {
@@ -87,8 +89,13 @@ namespace rg {
 		RgFloat guiMenuBarHeight = 0;
 
 		//events
-		bool eventMouseLeftDown = false;
+		RgWindowEventType eventType;
 		RgVec2 eventMousePos;
+		bool eventMouseLeftButton = false;
+		bool eventMouseLeftDown = false;
+		bool eventMouseLeftUp = false;
+		bool eventMouseLeftDrag = false;
+		bool eventUsed = false;
 
 		//draw order
 		float currentDrawOrder = 0;
@@ -117,8 +124,8 @@ namespace rg {
 	public:
 
 		//logic
-		void gui_begin(const RgWindowEvent&);
-		void gui_end();
+		void GUIBegin(const RgWindowEvent&);
+		void GUIEnd();
 		
 
 		bool Clip(const RgVec4& rect, RgVec2& pos, RgVec2& sz) const;

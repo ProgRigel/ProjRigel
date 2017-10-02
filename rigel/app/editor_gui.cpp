@@ -56,12 +56,12 @@ namespace editor {
 		static RgEditorWindowTestSuit testsuitwindow;
 		static RgEditorWindowDebugWindow debugwindow;
 
-		ctx->gui_begin(e);
+		ctx->GUIBegin(e);
 
 		testsuitwindow.InternalOnGUI(ctx);
 		debugwindow.InternalOnGUI(ctx);
 
-		ctx->gui_end();
+		ctx->GUIEnd();
 
 	}
 	void EditorGUI::OnRender()

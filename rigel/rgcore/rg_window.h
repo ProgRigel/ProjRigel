@@ -16,6 +16,7 @@ namespace rg {
 		Focus,
 		LostFocus,
 		MouseEvent,
+		MouseMove,
 		MouseWheelEvent,
 		KeyEvent,
 		BeginDrag,

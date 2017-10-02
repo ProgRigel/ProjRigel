@@ -59,27 +59,21 @@ namespace rg {
 #pragma endregion
 
 
-	void RgGUIContext::gui_begin(const RgWindowEvent& e)
+	void RgGUIContext::GUIBegin(const RgWindowEvent& e)
 	{
-		RgLogW() << "------------------------------";
 		m_pWindowInput = e.Input;
 
 		//state process input
+		m_state.eventType = e.Type;
 		m_state.ongui(m_pWindowInput);
 		//proces window;
 		m_stateWindow.GUIBegin(m_state,this);
 
-		static bool drawed = false;
-		if (drawed == false) {
-			drawed = true;
-		}
-
 	}
-	void RgGUIContext::gui_end()
+	void RgGUIContext::GUIEnd()
 	{
-		m_stateWindow.GUIEnd(m_state, this);
-
-		SetDirty(true);
+		bool dirty = m_stateWindow.GUIEnd(m_state, this);
+		SetDirty(dirty);
 
 	}
 
@@ -567,8 +561,26 @@ namespace rg {
 		WindowGroupRect.z = input->WindowRect.z;
 		WindowGroupRect.w = input->WindowRect.w;
 
-		eventMouseLeftDown = input->LButton;
+		//events
+		eventMouseLeftDown = false;
+		eventMouseLeftUp = false;
+
+		//mousedown
+		if (eventMouseLeftButton == false && input->LButton) {
+			eventMouseLeftDown = true;
+		}
+		//mouseup
+		if (eventMouseLeftButton == true && !input->LButton) {
+			eventMouseLeftUp = true;
+		}
+
+		//drag
+		eventMouseLeftDrag = (eventType == RgWindowEventType::MouseMove && eventMouseLeftButton);
+		
+
 		eventMousePos = input->MousePos;
+		eventMouseLeftButton = input->LButton;
+		eventUsed = false;
 	}
 	void RgGUIState::DrawOrderIncreae()
 	{
@@ -600,16 +612,35 @@ namespace rg {
 
 		auto& winrect = window->windowrect;
 		auto& style = ctx->m_style;
-		
+		auto& state = ctx->m_state;
 		
 		ctx->GUIGroupBegin(winrect.xy(), winrect.zw());
 		//--------- begin window frame draw ---------//
+
+		//event
+		RgVec2 winpos = winrect.xy();
+		RgVec4 headerrect = RgVec4(winpos, RgVec2(winrect.z, style.WindowHeaderHeight));
+		if (headerrect.rect_contain(state.eventMousePos) && state.eventMouseLeftDown) {
+			window->_dragStartPos = state.eventMousePos;
+			window->_dragOn = true;
+			window->_windowrectNext = winrect;
+		}
+		else if (state.eventMouseLeftDrag) {
+			if (window->_dragOn) {
+				window->_windowrectNext.setxy(winpos + state.eventMousePos - window->_dragStartPos);
+				window->_dragStartPos = state.eventMousePos;
+			}
+		}
+
+
 		//Background
 		ctx->GUIRect(RgVec2::Zero, winrect.zw(), style.WindowBackgroundColor);
 		//Header
+		
 		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
 		//Header-Title
 		ctx->GUIText(window->title, RgVec4(5.0f, 0.0f, 200.0f,30.0f), style.WindowHeaderTitleColor);
+
 
 
 
@@ -624,6 +655,15 @@ namespace rg {
 		ctx->GUIGroupEnd();		//end window group
 		ctx->_DrawBorder(window->windowrect.xy(), window->windowrect.zw(), ctx->m_style.WindowBorderColor, 1.0f, ctx->_GetDrawOrder());	//drawborder
 
+		//event
+		if (window->_dragOn) {
+			window->windowrect = window->_windowrectNext;
+		}
+		
+		if (ctx->m_state.eventMouseLeftUp) {
+			window->_dragOn = false;
+		}
+
 		window->_ondraw = false;
 		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();
 		window->_buffer_text_end = ctx->GetTextBufferPtr()->GetVertexSize();
@@ -632,12 +672,11 @@ namespace rg {
 	{
 		//check whether to skip draw
 		skipDraw = false;
-		bool mousedown = state.eventMouseLeftDown;
-		if (mousedown == false) {
+
+		if (IsSkipUpdate(state)) {
 			skipDraw = true;
 			return;
 		}
-
 		//caculate focused window;
 		RgGUIWindow * newfocusedWin = nullptr;
 		long maxorder_focused = -1;		//maxorder of current mouseovered window
@@ -645,7 +684,7 @@ namespace rg {
 		for (auto pair : windowMap) {
 			auto win = pair.second;
 			maxorder_window = (win->order > maxorder_window ? win->order : maxorder_window);
-			if (win->windowrect.rect_contain(state.eventMousePos) == false) continue;
+			if (!state.eventMouseLeftDown || win->windowrect.rect_contain(state.eventMousePos) == false) continue;
 			if (win->order <= maxorder_focused) continue;
 			maxorder_focused = win->order;
 			win->_isfocused = true;
@@ -656,10 +695,11 @@ namespace rg {
 		}
 
 		if (newfocusedWin == nullptr) {
-			if (windowFocused != nullptr) {
-				windowFocused->_isfocused = false;
-				windowFocused = nullptr;
-			}
+			//skip unfocus any window
+			//if (windowFocused != nullptr) {
+			//	windowFocused->_isfocused = false;
+			//	windowFocused = nullptr;
+			//}
 		}
 		else {
 			if (windowFocused != nullptr) {
@@ -680,10 +720,8 @@ namespace rg {
 		}
 
 		if (windowFocused == nullptr) {
-			RgLogW() << "focused window null";
 			return;
 		}
-		RgLogW() << ">> focused window:" << windowFocused->title;
 
 		// every frame will draw focused window and new window
 		// so remove lastfocusedWindows's buffer data and
@@ -719,7 +757,7 @@ namespace rg {
 			}
 
 			bufferPtr_vertex->ptrFloater -= windowFocusedSize_vertex;
-			RgLogD() << "buffersize" << bufferPtr_vertex->GetVertexSize();
+			//RgLogD() << "buffersize" << bufferPtr_vertex->GetVertexSize();
 		}
 
 		//buffer text
@@ -744,20 +782,16 @@ namespace rg {
 			}
 
 			bufferPtr_text->ptrFloater -= windowFocusedSize_text;
-			RgLogD() << "buffersize" << bufferPtr_text->GetVertexSize();
 		}
 	}
 
-	void RgGUIStateWindow::GUIEnd(const RgGUIState & state, RgGUIContext * ctx)
+	bool RgGUIStateWindow::GUIEnd(const RgGUIState & state, RgGUIContext * ctx)
 	{
 		if (skipDraw) {
-			return;
+			return false;
 		}
 
-		//for (auto pair : windowMap) {
-		//	auto win = pair.second;
-		//	RgLogD() << "order" << win->title << win->order;
-		//}
+		return true;
 	}
 
 	void RgGUIStateWindow::register_win(RgGUIWindow* win)
@@ -784,6 +818,13 @@ namespace rg {
 			return false;
 		}
 		return (*iter).second->_isfocused;
+	}
+	bool RgGUIStateWindow::IsSkipUpdate(const RgGUIState & state) const
+	{
+		if (state.eventMouseLeftDown || state.eventMouseLeftUp || state.eventMouseLeftDrag) {
+			return false;
+		}
+		return true;
 	}
 #pragma endregion
 

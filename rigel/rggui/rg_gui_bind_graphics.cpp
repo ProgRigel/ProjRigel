@@ -427,8 +427,8 @@ namespace rg {
 			m_textLastDrawCount = buftext->GetVertexSize();
 
 
-			RgLogD() << "size" << sizeof(RgGUIVertex) << bufvertex->GetVertexSize() << buftext->GetVertexSize();
-			RgLogD() << "map vertex buffer" << datasize[0] <<datasize[1];
+			//RgLogD() << "size" << sizeof(RgGUIVertex) << bufvertex->GetVertexSize() << buftext->GetVertexSize();
+			//RgLogD() << "map vertex buffer" << datasize[0] <<datasize[1];
 		}
 
 		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
@@ -436,7 +436,7 @@ namespace rg {
 			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), bufindices->GetBufferBytes());
 			m_indicesLastSize = bufindices->GetBufferSize();
 
-			RgLogD() << " map indices buffer" << bufindices->GetQuadSize();
+			//RgLogD() << " map indices buffer" << bufindices->GetQuadSize();
 		}
 	}
 }

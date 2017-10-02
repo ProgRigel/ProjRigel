@@ -67,6 +67,14 @@ namespace rg {
 			return sqrt(this->dot(*this));
 		}
 
+		inline bool operator==(const RgVec2& v) {
+			if (v.x == x && v.y == y) return true;
+			return false;
+		}
+		inline bool operator!=(const RgVec2& v) {
+			return (v.x != x || v.y != y);
+		}
+
 		std::string toStr() const;
 
 		static const RgVec2 Zero;

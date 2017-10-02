@@ -9,7 +9,6 @@ namespace rg {
 		subitems.push_back(item);
 	}
 
-
 	void RgGUIWindow::focused()
 	{
 		RgLogD() << "guiwin focused " << winid;

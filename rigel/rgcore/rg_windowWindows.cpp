@@ -136,7 +136,7 @@ namespace rg {
 			int mousey = GET_Y_LPARAM(lParam);
 			EventOnMouseMove.emit(mousex,mousey );
 			m_windowInput.MousePos = RgVec2((float)mousex, (float)mousey);
-
+			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::MouseMove,&m_windowInput });
 		}
 
 		switch (uMsg) {

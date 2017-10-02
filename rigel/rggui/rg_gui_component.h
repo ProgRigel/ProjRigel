@@ -64,11 +64,18 @@ namespace rg {
 		bool _isreused = false;
 		bool _ondraw = false;
 
+		//event
+		RgVec2 _dragStartPos;
+		bool _dragOn = false;
+		RgVec4 _windowrectNext;
+
+		//buffer
 		unsigned int _buffer_vertex_begin = 0;
 		unsigned int _buffer_vertex_end = 0;
 		unsigned int _buffer_text_begin = 0;
 		unsigned int _buffer_text_end = 0;
 
+		void SetWindowRect(const RgVec4& r);
 
 		void focused();
 		void lost_focuse();
