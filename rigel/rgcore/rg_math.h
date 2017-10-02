@@ -67,7 +67,10 @@ namespace rg {
 		}
 
 		std::string toStr() const;
+
+		static const RgVec2 Zero;
 	};
+
 	inline const RgFloat abs(RgFloat s) {
 		return abs((float)s);
 	}

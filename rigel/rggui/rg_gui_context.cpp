@@ -523,16 +523,27 @@ namespace rg {
 		window->_ondraw = true;
 		stateWindowOrder = (float)window->order;
 
+		auto& winrect = window->windowrect;
+		auto& style = ctx->m_style;
 		
-		ctx->GUIGroupBegin(window->windowrect.xy(), window->windowrect.zw());
+		ctx->GUIGroupBegin(winrect.xy(), winrect.zw());
+
 		//--------- begin window frame draw ---------//
-		ctx->GUIRect(RgVec2(0, 0), window->windowrect.zw(), window->windowColor);
+		//Background
+		ctx->GUIRect(RgVec2::Zero, winrect.zw(), window->windowColor);
+		//Header
+		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
+		
+		//content group
+		ctx->GUIGroupBegin(RgVec2(0.0f, style.WindowHeaderHeight), RgVec2(winrect.z, winrect.w - style.WindowHeaderHeight));
 
 		//--------- end window frame draw ---------//
 	}
 	void RgGUIStateWindow::DrawWindowEnd(RgGUIWindow * window, RgGUIContext * ctx)
 	{
-		ctx->GUIGroupEnd();
+		ctx->GUIGroupEnd();		//end content group
+		ctx->GUIGroupEnd();		//end window group
+
 		window->_ondraw = false;
 		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();
 		//RgLogD() << "drawwindow end" << window->title << window->_buffer_vertex_end;

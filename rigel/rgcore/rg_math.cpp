@@ -3,6 +3,9 @@
 #include "rg_math.h"
 
 namespace rg {
+
+	const RgVec2 RgVec2::Zero = RgVec2(0, 0);
+
 	std::string RgVec4::toStr() const
 	{
 		std::stringstream ss;
