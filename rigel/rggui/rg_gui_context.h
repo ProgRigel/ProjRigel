@@ -60,8 +60,8 @@ namespace rg {
 		void DrawWindow(RgGUIWindow * window,RgGUIContext * ctx);
 		void DrawWindowEnd(RgGUIWindow * window,RgGUIContext * ctx);
 
-		void ongui(const RgGUIState& state,RgGUIContext * ctx);
-		void endgui(const RgGUIState& state, RgGUIContext * ctx);
+		void GUIBegin(const RgGUIState& state,RgGUIContext * ctx);
+		void GUIEnd(const RgGUIState& state, RgGUIContext * ctx);
 		void register_win(RgGUIWindow* win);
 		bool verify_valid(long winid);
 
@@ -146,6 +146,8 @@ namespace rg {
 
 		void GUIRect(const RgVec2&lp, const RgVec2&sz, const RgVec4& color);
 
+		void GUIChar(const char& c, const RgVec4& rect, const RgVec4& color);
+
 		void GUIGroupBegin(const RgVec2&lp, const RgVec2&sz);
 		void GUIGroupEnd();
 
@@ -177,6 +179,9 @@ namespace rg {
 		void _DrawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color,RgFloat order);
 		void _GroupBegin(const RgVec2&lp, const RgVec2& sz);
 		void _GroupEnd();
+
+		void _DrawChar(const char& c, const RgVec4& rect, const RgVec4& color, RgFloat order);
+		void _DrawText(std::string content, const RgVec4& rect,const RgVec4& color,RgFloat order);
 
 		
 

@@ -72,6 +72,7 @@ namespace rg {
 		RgGUIConstantData constantData;
 
 		unsigned int m_vertexLastDrawCount = 0;
+		unsigned int m_textLastDrawCount = 0;
 		unsigned int m_indicesLastSize = 0;
 
 	};
