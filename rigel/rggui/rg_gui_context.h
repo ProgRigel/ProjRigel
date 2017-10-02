@@ -44,18 +44,26 @@ namespace rg {
 	};
 
 	struct RgGUIStateWindow {
+
+		bool skipDraw = false;
+
 		//current drawing window
 		RgGUIWindow * stateWindow = nullptr;
 
 		//focus
 		RgGUIWindow * windowFocused = nullptr;
-		RgGUIWindow * windowLastDrawed = nullptr;
 
 		std::map<long, RgGUIWindow *> windowMap;
 
+		RgGUIWindow * GetWindow(long winid);
+		void DrawWindow(RgGUIWindow * window,RgGUIContext * ctx);
+		void DrawWindowEnd(RgGUIWindow * window,RgGUIContext * ctx);
+
 		void ongui(const RgGUIState& state,RgGUIContext * ctx);
+		void endgui(const RgGUIState& state, RgGUIContext * ctx);
 		void register_win(RgGUIWindow* win);
 		bool verify_valid(long winid);
+
 	};
 
 	struct RgGUIState {
@@ -166,8 +174,7 @@ namespace rg {
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
-		void _drawRect(const RgVec2& lp, const RgVec2& sz);
-		
+		void _drawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color);
 
 		
 
@@ -197,5 +204,6 @@ namespace rg {
 
 	public:
 		friend class RgGUI;
+		friend struct RgGUIStateWindow;
 	};
 }

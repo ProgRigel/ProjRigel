@@ -44,6 +44,7 @@ namespace rg {
 	struct RgGUIWindow {
 		std::string title;
 		RgVec4 windowrect;
+		RgVec4 windowColor;
 
 		bool enabled = true;
 		bool resizeable = true;
@@ -58,6 +59,8 @@ namespace rg {
 		//0 init draw done
 		unsigned char _initdraw = 1;
 		bool _isfocused = false;
+		bool _isreused = false;
+		bool _ondraw = false;
 
 		unsigned int _buffer_vertex_begin = 0;
 		unsigned int _buffer_vertex_end = 0;

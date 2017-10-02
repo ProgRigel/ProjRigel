@@ -61,6 +61,7 @@ namespace rg {
 
 	void RgGUIContext::gui_begin(const RgWindowEvent& e)
 	{
+		RgLogW() << "------------------------------";
 		m_pWindowInput = e.Input;
 
 		//state process input
@@ -76,6 +77,8 @@ namespace rg {
 	}
 	void RgGUIContext::gui_end()
 	{
+		m_stateWindow.endgui(m_state, this);
+
 		SetDirty(true);
 
 	}
@@ -376,15 +379,20 @@ namespace rg {
 		return m_state.GroupRectStack.top();
 	}
 
-	void RgGUIContext::_drawRect(const RgVec2 & lp, const RgVec2 & sz)
+
+	void RgGUIContext::_drawRect(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color)
 	{
 		m_pBufferVertex->ptrFloater->pos = RgVec4(lp, 1, 1);
+		m_pBufferVertex->ptrFloater->color = color;
 		m_pBufferVertex->ptrFloater++;
 		m_pBufferVertex->ptrFloater->pos = RgVec4(lp.x + sz.x, lp.y, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater->color = color;
 		m_pBufferVertex->ptrFloater++;
-		m_pBufferVertex->ptrFloater->pos = RgVec4(lp+sz, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater->pos = RgVec4(lp + sz, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater->color = color;
 		m_pBufferVertex->ptrFloater++;
 		m_pBufferVertex->ptrFloater->pos = RgVec4(lp.x, lp.y + sz.y, 1.0f, 1.0f);
+		m_pBufferVertex->ptrFloater->color = color;
 		m_pBufferVertex->ptrFloater++;
 
 		m_pBufferText->ExtendVertexBufferCheck();
@@ -407,41 +415,91 @@ namespace rg {
 
 	bool RgGUIContext::GUIWindowBegin(RgGUIWindow* win)
 	{
-		if (win == nullptr) return false;
+		//check
+		assert(win != nullptr);
 		if (m_stateWindow.stateWindow != nullptr) {
 			RgLogE() << "invalid call: window begin";
 			return false;
 		}
 
 		m_stateWindow.stateWindow = win;
-
-		//check focus
-		if (win->_initdraw == 1) {
-			win->_initdraw = 2;
+		
+		//init draw
+		if (m_stateWindow.GetWindow(win->winid) == nullptr) {
 			m_stateWindow.register_win(win);
-			
-			//init draw
-			win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
-			RgLogW() << "init draw start" << win->title << win->_buffer_vertex_begin;
-			_drawRect(win->windowrect.xy(), win->windowrect.zw());
+			RgLogD() << "init draw" << win->title;
+			m_stateWindow.DrawWindow(win, this);
 			return true;
 		}
-		else {
-			if (win->enabled == false) return false;
-			if (m_stateWindow.verify_valid(win->winid) == false) return false;
+
+		//skip draw
+		if (m_stateWindow.skipDraw) {
+			RgLogD() << "skip draw" << win->title;
+			return false;
 		}
-		
-		//focus draw
-		win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
-		RgLogW() << "focus draw start" << win->title << win->_buffer_vertex_begin;
-		_drawRect(win->windowrect.xy(), win->windowrect.zw());
-		
+
+		//focused draw
+		if (win->_isfocused) {
+			m_stateWindow.DrawWindow(win, this);
+			return true;
+		}
+		RgLogD() << "win not focused" << win->title;
+
+		return false;
+
+
+		//if (win == nullptr) return false;
+		//if (m_stateWindow.stateWindow != nullptr) {
+		//	RgLogE() << "invalid call: window begin";
+		//	return false;
+		//}
+		//m_stateWindow.stateWindow = win;
+
+		////check focus
+		//if (win->_initdraw == 1) {
+		//	win->_initdraw = 2;
+		//	m_stateWindow.register_win(win);
+		//	
+		//	//init draw
+		//	win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
+		//	RgLogW() << "init draw start" << win->title << win->_buffer_vertex_begin;
+		//	_drawRect(win->windowrect.xy(), win->windowrect.zw());
+		//	return true;
+		//}
+		//else {
+		//	if (win->enabled == false) return false;
+		//	if (m_stateWindow.skipDraw) return false;
+		//	if (m_stateWindow.verify_valid(win->winid) == false) return false;
+		//}
+		//
+		////focus draw
+		//win->_buffer_vertex_begin = m_pBufferVertex->GetVertexSize();
+		//RgLogW() << "focus draw start" << win->title << win->_buffer_vertex_begin;
+		//_drawRect(win->windowrect.xy(), win->windowrect.zw());
+		//
 		return true;
 	}
 
 	void RgGUIContext::GUIWindowEnd()
 	{
 		auto win = m_stateWindow.stateWindow;
+		if (win == nullptr) {
+			RgLogE() << "invalid call£º window end";
+			return;
+		}
+		m_stateWindow.stateWindow = nullptr;
+
+		if (win->_ondraw) {
+			m_stateWindow.DrawWindowEnd(win,this);
+			return;
+		}
+
+		if (m_stateWindow.skipDraw) {
+			return;
+		}
+
+
+		/*auto win = m_stateWindow.stateWindow;
 
 		if (win == nullptr) {
 			RgLogE() << "invalid call£º window end";
@@ -451,22 +509,22 @@ namespace rg {
 
 		if (win->_initdraw == 2) {
 			win->_initdraw = 0;
-			win->_buffer_text_end = m_pBufferVertex->GetVertexSize();
-			RgLogW() << "init draw end" << win->title << win->_buffer_text_end;
+			win->_buffer_vertex_end = m_pBufferVertex->GetVertexSize();
+			RgLogW() << "init draw end" << win->title << win->_buffer_vertex_end;
 
 			m_stateWindow.stateWindow = nullptr;
 			return;
 		}
 
 		if (m_stateWindow.verify_valid(win->winid)) {
-			win->_buffer_text_end = m_pBufferVertex->GetVertexSize();
-			RgLogW() << "focus draw end" << win->title << win->_buffer_text_end;
+			win->_buffer_vertex_end = m_pBufferVertex->GetVertexSize();
+			RgLogW() << "focus draw end" << win->title << win->_buffer_vertex_end;
 			
 			m_stateWindow.stateWindow = nullptr;
 			return;
 		}
 
-		m_stateWindow.stateWindow = nullptr;
+		m_stateWindow.stateWindow = nullptr;*/
 		
 	}
 
@@ -521,74 +579,214 @@ namespace rg {
 #pragma endregion
 
 #pragma region stateWindow
+	RgGUIWindow * RgGUIStateWindow::GetWindow(long winid)
+	{
+		auto iter = windowMap.find(winid);
+		if (iter == windowMap.end()) return nullptr;
+		return (*iter).second;
+	}
+	void RgGUIStateWindow::DrawWindow(RgGUIWindow * window, RgGUIContext * ctx)
+	{
+		window->_buffer_vertex_begin = ctx->GetVertexBufferPtr()->GetVertexSize();
+
+		RgLogD() << "drawwindow" << window->title << window->_buffer_vertex_begin;
+		window->_ondraw = true;
+
+		ctx->_drawRect(window->windowrect.xy(), window->windowrect.zw(),window->windowColor);
+	}
+	void RgGUIStateWindow::DrawWindowEnd(RgGUIWindow * window, RgGUIContext * ctx)
+	{
+		window->_ondraw = false;
+		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();
+		RgLogD() << "drawwindow end" << window->title << window->_buffer_vertex_end;
+	}
 	void RgGUIStateWindow::ongui(const RgGUIState & state,RgGUIContext * ctx)
 	{
-		stateWindow = nullptr;
-
+		//check whether to skip draw
+		skipDraw = false;
 		bool mousedown = state.eventMouseLeftDown;
 		if (mousedown == false) {
-			//reuse buffer data
+			skipDraw = true;
 			return;
 		}
-		RgGUIWindow * focusedWin = nullptr;
-		long maxorder = 0;
 
-		for (auto iter = windowMap.begin(); iter != windowMap.end(); iter++) {
-			auto pair = *iter;
+		//caculate focused window;
+		RgGUIWindow * newfocusedWin = nullptr;
+		long maxorder = -1;
+		for (auto pair : windowMap) {
 			auto win = pair.second;
-			maxorder = win->order > maxorder ? win->order : maxorder;
-			if (win->windowrect.rect_contain(state.eventMousePos)) {
-				if (focusedWin == nullptr) {
-					focusedWin = pair.second;
-					focusedWin->_isfocused = true;
-				}
-				else
-				{
-					if (focusedWin->order < win->order) {
-						focusedWin->_isfocused = false;
-						focusedWin = pair.second;
-						focusedWin->_isfocused = true;
-					}
-				}
+			if (win->windowrect.rect_contain(state.eventMousePos) == false) continue;
+			if (win->order <= maxorder) continue;
+			maxorder = win->order;
+			win->_isfocused = true;
+			if (newfocusedWin != nullptr) {
+				newfocusedWin->_isfocused = false;
+			}
+			newfocusedWin = win;
+		}
+
+		RgLogD() << "new focused window" << (newfocusedWin == nullptr ? "null" : newfocusedWin->title);
+
+		if (newfocusedWin == nullptr) {
+			if (windowFocused != nullptr) {
+				windowFocused->_isfocused = false;
+				windowFocused = nullptr;
 			}
 		}
-		if (focusedWin != nullptr) {
-			focusedWin->order = maxorder + 1;
-			RgLogW() << "focused win:" << focusedWin->winid;
+		else {
+			if (windowFocused != nullptr) {
+				windowFocused->_isfocused = false;
+
+				if (newfocusedWin->order < windowFocused->order) {
+					newfocusedWin->order = windowFocused->order + 1;
+				}
+				windowFocused = newfocusedWin;
+				windowFocused->_isfocused = true;
+			}
+			else
+			{
+				windowFocused = newfocusedWin;
+				windowFocused->_isfocused = true;
+			}
 		}
 
-		//arrange buffers
-		if (focusedWin == nullptr) return;
+		if (windowFocused == nullptr) {
+			RgLogW() << "focused window null";
+			return;
+		}
+		RgLogW() << ">> focused window:" << windowFocused->title;
 
-		unsigned int focusedWindVertexCount = focusedWin->_buffer_vertex_end - focusedWin->_buffer_vertex_end;
-		if (focusedWindVertexCount == 0) {
+		// every frame will draw focused window and new window
+		// so remove lastfocusedWindows's buffer data and
+		// set the PtrFloater to the end of the vertex buffer
 
-			RgLogE() << "focused window vertex count 0";
+		auto windowFocusedSize = windowFocused->_buffer_vertex_end - windowFocused->_buffer_vertex_begin;
+		RgLogW() << "focused window size" <<  windowFocusedSize;
+		
+		auto moveBufferOffset = ctx->GetVertexBufferPtr()->GetVertexSize() - windowFocused->_buffer_vertex_end;
+		RgLogW() << "move buffer offset" << moveBufferOffset << "|" << ctx->GetVertexBufferPtr()->GetVertexSize() << windowFocused->_buffer_vertex_end;
+
+		if (moveBufferOffset == 0) {
+			//no buffer move
+			ctx->GetVertexBufferPtr()->ptrFloater -= windowFocusedSize;
+
+			RgLogD() << "buffersize" << ctx->GetVertexBufferPtr()->GetVertexSize();
 			return;
 		}
 
-		auto vertexbuf = ctx->GetVertexBufferPtr();
-		auto fwindbegin = vertexbuf->GetPtr() + focusedWin->_buffer_vertex_begin;
-		auto fwindend = fwindbegin + focusedWindVertexCount;
+		auto movebufferBegin = ctx->GetVertexBufferPtr()->GetPtr() + windowFocused->_buffer_vertex_begin;
+		auto movebufferEnd = ctx->GetVertexBufferPtr()->GetPtr() + windowFocused->_buffer_vertex_end;
+		memmove(movebufferBegin, movebufferEnd, moveBufferOffset * sizeof(RgGUIVertex));
 
-		vertexbuf->SetDirty(true);
+		//reset all window bufferpos
+		for (auto pair : windowMap) {
+			auto win = pair.second;
+			if (win == nullptr) {
+				RgLogE() << "window null";
+				continue;
+			}
+			if (win->_buffer_vertex_begin > windowFocused->_buffer_text_end) {
+				win->_buffer_vertex_begin -= windowFocusedSize;
+				win->_buffer_vertex_end -= windowFocusedSize;
 
-		if (fwindend == vertexbuf->ptrFloater) {
-			//no buffer data move
-			RgLogD() << "focused window at tail";
-			vertexbuf->ptrFloater -= focusedWindVertexCount;
-			return;
+				RgLogW() << "move window bufferpos" << win->title;
+			}
 		}
+		ctx->GetVertexBufferPtr()->ptrFloater -= windowFocusedSize;
 
-		//move buf
-		RgGUIVertex * tempbuf = new RgGUIVertex[focusedWindVertexCount];
-		memcpy(tempbuf, fwindbegin, focusedWindVertexCount * sizeof(RgGUIVertex));
-		unsigned int moveoffset = vertexbuf->ptrFloater - fwindend;
-		memmove(fwindbegin, fwindend, moveoffset);
-		vertexbuf->ptrFloater -= moveoffset;
+		RgLogD() << "buffersize" << ctx->GetVertexBufferPtr()->GetVertexSize();
 
-		RgLogD() << "mov buf" << vertexbuf->GetVertexSize();
 
+		//stateWindow = nullptr;
+		//skipDraw = false;
+
+		//bool mousedown = state.eventMouseLeftDown;
+		//if (mousedown == false) {
+		//	//reuse buffer data
+		//	skipDraw = true;
+		//	return;
+		//}
+		//RgGUIWindow * focusedWin = nullptr;
+		//long maxorder = 0;
+
+		//for (auto iter = windowMap.begin(); iter != windowMap.end(); iter++) {
+		//	auto pair = *iter;
+		//	auto win = pair.second;
+		//	maxorder = win->order > maxorder ? win->order : maxorder;
+		//	if (win->windowrect.rect_contain(state.eventMousePos)) {
+		//		if (focusedWin == nullptr) {
+		//			focusedWin = pair.second;
+		//			focusedWin->_isfocused = true;
+		//		}
+		//		else
+		//		{
+		//			if (focusedWin->order < win->order) {
+		//				focusedWin->_isfocused = false;
+		//				focusedWin = pair.second;
+		//				focusedWin->_isfocused = true;
+		//			}
+		//		}
+		//	}
+		//}
+		//if (focusedWin != nullptr) {
+		//	focusedWin->order = maxorder + 1;
+		//	RgLogW() << "focused win:" << focusedWin->winid;
+		//}
+
+		////arrange buffers
+		//if (focusedWin == nullptr) {
+		//	RgLogD() << "no focused window";
+		//	return;
+		//}
+
+		//unsigned int focusedWindVertexCount = focusedWin->_buffer_vertex_end - focusedWin->_buffer_vertex_begin;
+		//if (focusedWindVertexCount == 0) {
+
+		//	RgLogE() << "focused window vertex count 0";
+		//	return;
+		//}
+
+		//auto vertexbuf = ctx->GetVertexBufferPtr();
+		//auto fwindbegin = vertexbuf->GetPtr() + focusedWin->_buffer_vertex_begin;
+		//auto fwindend = fwindbegin + focusedWindVertexCount;
+
+		//vertexbuf->SetDirty(true);
+
+		//RgLogW() << ">>>>>>>>focus wind" << focusedWin->title << focusedWin->_buffer_vertex_begin << focusedWin->_buffer_vertex_end;
+
+		//if (fwindend == vertexbuf->ptrFloater) {
+		//	//no buffer data move
+		//	RgLogD() << "focused window at tail : no buffer data move" << focusedWindVertexCount;
+		//	vertexbuf->ptrFloater -= focusedWindVertexCount;
+
+		//	RgLogW() << "<<<<<<focus wind" << focusedWin->title << focusedWin->_buffer_vertex_begin << focusedWin->_buffer_vertex_end;
+		//	return;
+		//}
+
+		//unsigned int movelen = vertexbuf->ptrFloater - fwindend;
+		//memmove(fwindbegin, fwindend, movelen);
+
+		////reset win buffer pos
+		//for (auto iter = windowMap.begin(); iter != windowMap.end(); iter++) {
+		//	auto pair = *iter;
+
+		//	if (pair.second->_buffer_vertex_begin > focusedWin->_buffer_vertex_begin)
+		//	{
+		//		pair.second->_buffer_vertex_begin -= focusedWindVertexCount;
+		//		pair.second->_buffer_vertex_end -= focusedWindVertexCount;
+		//	}
+		//}
+		//vertexbuf->ptrFloater -= focusedWindVertexCount;
+		////reset focus win buffer pos
+		//focusedWin->_buffer_vertex_begin = vertexbuf->GetVertexSize();
+		//focusedWin->_buffer_vertex_end = focusedWin->_buffer_vertex_begin;
+
+		//RgLogW() << "<<<<<<focus wind" << focusedWin->title << focusedWin->_buffer_vertex_begin << focusedWin->_buffer_vertex_end;
+
+	}
+
+	void RgGUIStateWindow::endgui(const RgGUIState & state, RgGUIContext * ctx)
+	{
 	}
 
 	void RgGUIStateWindow::register_win(RgGUIWindow* win)
@@ -608,6 +806,7 @@ namespace rg {
 
 	bool RgGUIStateWindow::verify_valid(long winid)
 	{
+		if (skipDraw) return false;
 		auto iter = windowMap.find(winid);
 		if (iter == windowMap.end()) {
 			RgLogE() << "window check focused error";
