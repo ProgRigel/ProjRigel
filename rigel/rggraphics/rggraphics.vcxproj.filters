@@ -70,6 +70,12 @@
     <ClInclude Include="rg_sampler_dx11.h">
       <Filter>dx11</Filter>
     </ClInclude>
+    <ClInclude Include="rg_blend_state.h">
+      <Filter>struct</Filter>
+    </ClInclude>
+    <ClInclude Include="rg_blend_state_dx11.h">
+      <Filter>dx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_graphicsAPI.cpp" />
@@ -132,6 +138,12 @@
       <Filter>struct</Filter>
     </ClCompile>
     <ClCompile Include="rg_sampler_dx11.cpp">
+      <Filter>dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_blend_state.cpp">
+      <Filter>struct</Filter>
+    </ClCompile>
+    <ClCompile Include="rg_blend_state_dx11.cpp">
       <Filter>dx11</Filter>
     </ClCompile>
   </ItemGroup>

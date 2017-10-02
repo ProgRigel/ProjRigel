@@ -7,7 +7,7 @@ namespace rg {
 
 	public:
 		~RgRasterizerStateDX11();
-		void Release();
+		 virtual void Release();
 
 	private:
 		RgRasterizerStateDX11(const RgRasterizerSettings& settings):RgRasterizerState(settings){}

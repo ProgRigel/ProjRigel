@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="rggraphics.h" />
     <ClInclude Include="rggraphics_inc.h" />
+    <ClInclude Include="rg_blend_state.h" />
+    <ClInclude Include="rg_blend_state_dx11.h" />
     <ClInclude Include="rg_buffer.h" />
     <ClInclude Include="rg_bufferDX11.h" />
     <ClInclude Include="rg_command_list.h" />
@@ -52,6 +54,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="rg_blend_state.cpp" />
+    <ClCompile Include="rg_blend_state_dx11.cpp" />
     <ClCompile Include="rg_buffer.cpp" />
     <ClCompile Include="rg_bufferDX11.cpp" />
     <ClCompile Include="rg_command_list.cpp" />

@@ -11,6 +11,7 @@
 #include "rg_render_target.h"
 #include "rg_texture_dx11.h"
 #include "rg_sampler_dx11.h"
+#include "rg_blend_state_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
 
@@ -94,7 +95,7 @@ namespace rg {
 			RgLogD() << "create dx11 device fail";
 			return E_FAIL;
 		}
-		//test::cnm
+
 		return S_OK;
 	}
 	void RgGraphicsContextDX11::releaseDeviceAndContext()
@@ -463,6 +464,24 @@ namespace rg {
 		m_vDepthStencilState.push_back(dss);
 		return dss;
 	}
+	RgBlendState * RgGraphicsContextDX11::CreateBlendState(const RgBlendStateSettings & settings)
+	{
+		auto blendstate = new RgBlendStateDX11(settings);
+		D3D11_BLEND_DESC desc;
+		directx::ConvertBlendState(settings, desc);
+
+		ID3D11BlendState * dxblendstate = nullptr;
+		HRESULT hr = m_pD3D11Device->CreateBlendState(&desc, &dxblendstate);
+		HR_CEHCK(hr);
+		if (hr != S_OK) {
+			RgLogE() << "create blend state dx error:" << HR_CODE(hr);
+		}
+		RG_ASSERT(dxblendstate);
+		blendstate->m_ptr = dxblendstate;
+
+		m_vBlendState.push_back(blendstate);
+		return blendstate;
+	}
 	RgGraphicsSampler * RgGraphicsContextDX11::CreateSampler(const RgGraphicsSamplerSettings &)
 	{
 		RgGraphicsSamplerSettings settings;
@@ -626,6 +645,44 @@ D3D11_TEXTURE_ADDRESS_MODE rg::directx::MapTextureAddressMode(RgGraphicsTextureA
 
 	return map[addressmode];
 }
+D3D11_RENDER_TARGET_BLEND_DESC rg::directx::MpaRenderTargetBlend(RgRenderTargetBlendSetting rts)
+{
+	return D3D11_RENDER_TARGET_BLEND_DESC();
+}
+D3D11_BLEND_OP rg::directx::MapBlendOp(RgBlendOp op)
+{
+	static std::unordered_map<RgBlendOp, D3D11_BLEND_OP> map = {
+		{RgBlendOp::Add,			D3D11_BLEND_OP_ADD},
+		{RgBlendOp::Subtract,		D3D11_BLEND_OP_SUBTRACT},
+		{RgBlendOp::RevSubtract,	D3D11_BLEND_OP_REV_SUBTRACT},
+		{RgBlendOp::Max,			D3D11_BLEND_OP_MAX},
+		{RgBlendOp::Min,			D3D11_BLEND_OP_MIN}
+	};
+	return map[op];
+}
+D3D11_BLEND rg::directx::MapBlend(RgBlend blend)
+{
+	static std::unordered_map<RgBlend, D3D11_BLEND> map = {
+		{ RgBlend::Zero,				D3D11_BLEND_ZERO },
+		{ RgBlend::One,					D3D11_BLEND_ONE},
+		{ RgBlend::Src1Color,			D3D11_BLEND_SRC_COLOR },
+		{ RgBlend::InvSrcColor,			D3D11_BLEND_INV_SRC_COLOR },
+		{ RgBlend::SrcAlpha,			D3D11_BLEND_SRC_ALPHA},
+		{ RgBlend::InvSrc1Alpha,		D3D11_BLEND_INV_SRC_ALPHA},
+		{ RgBlend::DstAlpha,			D3D11_BLEND_DEST_ALPHA },
+		{ RgBlend::InvDstAlpha,			D3D11_BLEND_INV_DEST_ALPHA },
+		{ RgBlend::DstColor,			D3D11_BLEND_DEST_COLOR },
+		{ RgBlend::InvDstColor,			D3D11_BLEND_INV_DEST_COLOR },
+		{ RgBlend::SrcAlphaSat,			D3D11_BLEND_SRC_ALPHA_SAT },
+		{ RgBlend::BlendFactor,			D3D11_BLEND_BLEND_FACTOR },
+		{ RgBlend::InvBlendFactor,		D3D11_BLEND_INV_BLEND_FACTOR},
+		{ RgBlend::Src1Color,			D3D11_BLEND_SRC1_COLOR},
+		{ RgBlend::InvSrc1Color,		D3D11_BLEND_INV_SRC1_COLOR},
+		{ RgBlend::Scr1Alpha,			D3D11_BLEND_SRC1_ALPHA },
+		{ RgBlend::InvSrc1Alpha,		D3D11_BLEND_INV_SRC1_ALPHA}
+	};
+	return map[blend];
+}
 void rg::directx::ConvertDepthStencilState(const RgDepthStencilSettings & settings, D3D11_DEPTH_STENCIL_DESC & desc)
 {
 	desc.DepthEnable = settings.DepthEnable;
@@ -658,6 +715,30 @@ void rg::directx::ConvertRasterizerState(const RgRasterizerSettings & settings, 
 	desc.ScissorEnable = settings.ScissorEnable;
 	desc.SlopeScaledDepthBias = settings.SlopeScaledDepthBias;
 	desc.FrontCounterClockwise = settings.FrontCounterClockwise;
+}
+void rg::directx::ConvertBlendState(const RgBlendStateSettings & settings, D3D11_BLEND_DESC & desc)
+{
+	desc.AlphaToCoverageEnable = settings.DX_AlpahToConverageEnable;
+	desc.IndependentBlendEnable = settings.DX_IndependentBlendEnable;
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[0], desc.RenderTarget[0]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[1], desc.RenderTarget[1]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[2], desc.RenderTarget[2]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[3], desc.RenderTarget[3]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[4], desc.RenderTarget[4]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[5], desc.RenderTarget[5]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[6], desc.RenderTarget[6]);
+	directx::ConvertRenderTargetBlendState(settings.RenderTarget[7], desc.RenderTarget[7]);
+}
+void rg::directx::ConvertRenderTargetBlendState(const RgRenderTargetBlendSetting & settings, D3D11_RENDER_TARGET_BLEND_DESC & desc)
+{
+	desc.BlendEnable = settings.BlendEnable;
+	desc.BlendOp = MapBlendOp(settings.BlendOp);
+	desc.BlendOpAlpha = MapBlendOp(settings.BlendOpAlpha);
+	desc.DestBlend = MapBlend(settings.DstBlend);
+	desc.DestBlendAlpha = MapBlend(settings.DstBlendAlpha);
+	desc.SrcBlend = MapBlend(settings.SrcBlend);
+	desc.SrcBlendAlpha = MapBlend(settings.SrcBlend);
+	desc.RenderTargetWriteMask = settings.RenderTargetWriteMask;
 }
 void rg::directx::ConvertTexture(const RgTextureSettings & settings, D3D11_TEXTURE2D_DESC & desc)
 {

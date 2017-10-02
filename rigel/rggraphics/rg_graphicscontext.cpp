@@ -7,6 +7,8 @@
 #include "rg_material.h"
 #include "rg_rasterizer_state.h"
 #include "rg_sampler.h"
+#include "rg_blend_state.h"
+#include "rg_depthstencil_state.h"
 
 namespace rg {
 	RgGraphicsContext::RgGraphicsContext()
@@ -59,6 +61,10 @@ namespace rg {
 	{
 		return nullptr;
 	}
+	RgBlendState * RgGraphicsContext::CreateBlendState(const RgBlendStateSettings &)
+	{
+		return nullptr;
+	}
 	RgGraphicsSampler * RgGraphicsContext::CreateSampler(const RgGraphicsSamplerSettings &)
 	{
 		return nullptr;
@@ -81,6 +87,7 @@ namespace rg {
 	}
 	void RgGraphicsContext::release()
 	{
+		//raster state
 		for (auto rs : m_vRasterState) {
 			if (rs != nullptr) {
 				rs->Release();
@@ -89,6 +96,7 @@ namespace rg {
 			}
 		}
 
+		//buffer
 		for each (auto buffer in m_vBuffers)
 		{
 			if (buffer) {
@@ -97,6 +105,7 @@ namespace rg {
 			}
 		}
 
+		//render context
 		for each (auto ctx in m_vRenderContexts)
 		{
 			ctx->Release();
@@ -104,6 +113,22 @@ namespace rg {
 			ctx = nullptr;
 		}
 		std::vector<RgRenderContext*>().swap(m_vRenderContexts);
+
+		//blend state
+		for each (auto bs in m_vBlendState)
+		{
+			bs->Release();
+			delete bs;
+			bs = nullptr;
+		}
+
+		//depth state
+		for each (auto ds in m_vDepthStencilState)
+		{
+			ds->Release();
+			delete ds;
+			ds = nullptr;
+		}
 
 
 		for (auto tex : m_vTexture) {

@@ -3,6 +3,7 @@
 #include "rg_graphicscontext.h"
 #include "rg_rasterizer_state.h"
 #include "rg_depthstencil_state.h"
+#include "rg_blend_state.h"
 #include "rg_graphicsAPI.h"
 
 #include <d3d11.h>
@@ -37,6 +38,8 @@ namespace rg {
 		RgRenderContext * CreateDeferredContext();
 		RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
 		RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
+		RgBlendState * CreateBlendState(const RgBlendStateSettings&);
+		void * CreateBlendState();
 		RgGraphicsSampler* CreateSampler(const RgGraphicsSamplerSettings&);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
@@ -84,8 +87,14 @@ namespace rg {
 		D3D11_FILTER MapFilter(RgGraphicsFilter filter);
 		D3D11_TEXTURE_ADDRESS_MODE MapTextureAddressMode(RgGraphicsTextureAddressMode addressmode);
 
+		D3D11_RENDER_TARGET_BLEND_DESC MpaRenderTargetBlend(RgRenderTargetBlendSetting rts);
+		D3D11_BLEND_OP MapBlendOp(RgBlendOp op);
+		D3D11_BLEND MapBlend(RgBlend blend);
+
 		void ConvertDepthStencilState(const RgDepthStencilSettings& settings, D3D11_DEPTH_STENCIL_DESC& desc);
 		void ConvertRasterizerState(const RgRasterizerSettings& settings, D3D11_RASTERIZER_DESC& desc);
+		void ConvertBlendState(const RgBlendStateSettings& settings, D3D11_BLEND_DESC& desc);
+		void ConvertRenderTargetBlendState(const RgRenderTargetBlendSetting& settings, D3D11_RENDER_TARGET_BLEND_DESC&desc);
 
 		void ConvertTexture(const RgTextureSettings& settings, D3D11_TEXTURE2D_DESC& desc);
 		void ConvertSampler(const RgGraphicsSamplerSettings& settings, D3D11_SAMPLER_DESC& desc);
