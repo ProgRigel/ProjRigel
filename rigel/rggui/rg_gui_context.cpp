@@ -83,7 +83,23 @@ namespace rg {
 
 	}
 
-	////////////////
+#pragma region Buffers
+	RgGUIVertexBuffer * RgGUIContext::GetVertexBufferPtr()
+	{
+		return m_pBufferVertex;
+	}
+
+	RgGUIVertexBuffer * RgGUIContext::GetTextBufferPtr()
+	{
+		return m_pBufferText;
+	}
+
+	RgGUIIndicesBuffer * RgGUIContext::GetIndicesBufferPtr()
+	{
+		return m_pBufferIndices;
+	}
+#pragma endregion
+
 
 #pragma region TextDraw
 	void RgGUIContext::GUIText(std::string content, const RgVec4 & rect)
@@ -134,86 +150,6 @@ namespace rg {
 	}
 #pragma endregion
 
-	
-
-
-	//draw with raw pos
-	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz, bool grouped)
-	{
-
-		//RgVec4 rect(lp, sz);
-		//if (grouped && UtilIsInGroup()) {
-		//	rect.setxy(lp + m_state.GroupRectStack.top().xy());
-		//	UtilClipRect(rect, m_state.GroupRectStack.top());
-		//}
-
-		//auto& color = m_state.color;
-		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y, m_state.RectZ, 1.0);
-		//m_pDrawBuffer->m_pPos->color = color;
-		//m_pDrawBuffer->m_pPos++;
-		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x + rect.z, rect.y, m_state.RectZ, 1.0);
-		//m_pDrawBuffer->m_pPos->color = color;
-		//m_pDrawBuffer->m_pPos++;
-		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.xy() + rect.zw(),m_state.RectZ, 1.0);
-		//m_pDrawBuffer->m_pPos->color = color;
-		//m_pDrawBuffer->m_pPos++;
-		//m_pDrawBuffer->m_pPos->pos = RgVec4(rect.x, rect.y + rect.w, m_state.RectZ, 1.0);
-		//m_pDrawBuffer->m_pPos->color = color;
-		//m_pDrawBuffer->m_pPos++;
-
-		//m_pDrawBuffer->ExtendBufferCheck();
-		//m_state.rect_z_inc();
-	}
-
-	void RgGUIContext::GUIRect(const RgVec4 & rect,bool grouped)
-	{
-		GUIRect(rect.xy(), rect.zw(), grouped);
-	}
-
-	void RgGUIContext::GUIRect(const RgVec4 & rect, const RgVec4 & color, bool grouped)
-	{
-		RestoreColor(color);
-		GUIRect(rect,grouped);
-		DropColor();
-	}
-
-	void RgGUIContext::GUIGroupBegin(const RgVec2 & lp, const RgVec2 & sz)
-	{
-		auto&stack = m_state.GroupRectStack;
-		if (stack.empty()) {
-			stack.push(RgVec4(lp, sz));
-		}
-		else {
-			RgVec4 rect = stack.top();
-			rect.setxy(rect.xy() + lp);
-			rect.setzw(min(lp + sz, rect.zw()) - lp);
-
-			stack.push(rect);
-		}
-	}
-
-	void RgGUIContext::GUIGroupBegin(const RgVec4 & rect)
-	{
-		GUIGroupBegin(rect.xy(), rect.zw());
-	}
-
-	void RgGUIContext::GUIGroupBegin(const RgVec4 & rect, const RgVec4 & color)
-	{
-		GUIGroupBegin(rect.xy(), rect.zw(), color);
-	}
-
-	void RgGUIContext::GUIGroupBegin(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color)
-	{
-		GUIGroupBegin(lp,sz);
-		RestoreColor(color);
-		GUIRect(m_state.GroupRectStack.top(),false);
-		DropColor();
-	}
-
-	void RgGUIContext::GUIGroupEnd()
-	{
-		if (!m_state.GroupRectStack.empty()) m_state.GroupRectStack.pop();
-	}
 
 	void RgGUIContext::GUIMenuBarBegin(const RgVec4 & rect)
 	{
@@ -259,6 +195,7 @@ namespace rg {
 
 	}
 
+#pragma region Utility
 	bool RgGUIContext::UtilIsInGroup() const
 	{
 		return !m_state.GroupRectStack.empty();
@@ -279,12 +216,6 @@ namespace rg {
 		return true;
 	}
 
-	void RgGUIContext::SetColor(RgVec4 color)
-	{
-		m_state.color = color;
-	}
-
-
 	const RgVec4 RgGUIContext::UtilGetOriginRect(const RgVec4 & rect) const
 	{
 		if (!UtilIsInGroup()) return rect;
@@ -302,15 +233,15 @@ namespace rg {
 		return lp + m_state.GroupRectStack.top().xy();
 	}
 
-	int RgGUIContext::UtilGetHash(RgStr label,const RgGUIControllerType type, const RgVec4 & rect)
+	int RgGUIContext::UtilGetHash(RgStr label, const RgGUIControllerType type, const RgVec4 & rect)
 	{
 		byte data[64];
 		byte* data_ptr = &data[0];
 		ZeroMemory(data_ptr, 64);
-		size_t labelt = label.size() > 32?32: label.size();
+		size_t labelt = label.size() > 32 ? 32 : label.size();
 		memcpy(data_ptr, label.data(), labelt);
 		data_ptr += 32;
-		
+
 		memcpy(data_ptr, &rect, sizeof(RgVec4));
 		data_ptr += 16;
 		byte t = (unsigned char)type;
@@ -326,6 +257,17 @@ namespace rg {
 		}
 		return false;
 	}
+#pragma endregion
+
+	
+
+	void RgGUIContext::SetColor(RgVec4 color)
+	{
+		m_state.color = color;
+	}
+
+
+	
 
 	//pos sz in related to group root
 	bool RgGUIContext::Clip(const RgVec4 & rect, RgVec2 & pos, RgVec2 & sz) const
@@ -359,11 +301,12 @@ namespace rg {
 		m_state.color = m_state.colorRestored;
 	}
 
+#pragma region internal
 	bool RgGUIContext::_GroupClip(RgVec2 & pos, RgVec2 & sz) const
 	{
 		if (m_state.GroupRectStack.empty()) return true;
-		
-		return Clip(m_state.GroupRectStack.top(),pos,sz);
+
+		return Clip(m_state.GroupRectStack.top(), pos, sz);
 
 	}
 
@@ -379,9 +322,15 @@ namespace rg {
 		return m_state.GroupRectStack.top();
 	}
 
-
-	void RgGUIContext::_drawRect(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color, RgFloat order)
+	const RgFloat RgGUIContext::_GetDrawOrder()
 	{
+		return m_stateWindow.stateWindowOrder + m_state.currentDrawOrder;
+	}
+
+
+	void RgGUIContext::_DrawRect(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color, RgFloat order)
+	{
+
 		m_pBufferVertex->ptrFloater->pos = RgVec4(lp, order, 1.0f);
 		m_pBufferVertex->ptrFloater->color = color;
 		m_pBufferVertex->ptrFloater++;
@@ -400,21 +349,30 @@ namespace rg {
 		m_pBufferVertex->SetDirty(true);
 	}
 
-	RgGUIVertexBuffer * RgGUIContext::GetVertexBufferPtr()
+	void RgGUIContext::_GroupBegin(const RgVec2 & lp, const RgVec2 & sz)
 	{
-		return m_pBufferVertex;
-	}
+		auto&stack = m_state.GroupRectStack;
+		if (stack.empty()) {
+			stack.push(RgVec4(lp, sz));
+		}
+		else {
+			RgVec4 rect = stack.top();
+			rect.setxy(rect.xy() + lp);
+			rect.setzw(min(lp + sz, rect.zw()) - lp);
 
-	RgGUIVertexBuffer * RgGUIContext::GetTextBufferPtr()
+			stack.push(rect);
+		}
+	}
+	void RgGUIContext::_GroupEnd()
 	{
-		return m_pBufferText;
+		if (!m_state.GroupRectStack.empty()) m_state.GroupRectStack.pop();
 	}
+#pragma endregion
+	
 
-	RgGUIIndicesBuffer * RgGUIContext::GetIndicesBufferPtr()
-	{
-		return m_pBufferIndices;
-	}
+	
 
+#pragma region GUIWindow
 	bool RgGUIContext::GUIWindowBegin(RgGUIWindow* win)
 	{
 		//check
@@ -425,11 +383,12 @@ namespace rg {
 		}
 
 		m_stateWindow.stateWindow = win;
-		
+
 		//init draw
 		if (m_stateWindow.GetWindow(win->winid) == nullptr) {
 			m_stateWindow.register_win(win);
 			RgLogD() << "init draw" << win->title;
+			m_state.ResetDrawOrder();
 			m_stateWindow.DrawWindow(win, this);
 			return true;
 		}
@@ -460,13 +419,42 @@ namespace rg {
 		m_stateWindow.stateWindow = nullptr;
 
 		if (win->_ondraw) {
-			m_stateWindow.DrawWindowEnd(win,this);
+			m_stateWindow.DrawWindowEnd(win, this);
 			return;
 		}
 
 		if (m_stateWindow.skipDraw) {
 			return;
 		}
+	}
+#pragma endregion
+
+
+
+
+	void RgGUIContext::GUIRect(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color)
+	{
+		//caculate group
+		bool ingroup = UtilIsInGroup();
+		if (ingroup == false) {
+			_DrawRect(lp, sz, color, _GetDrawOrder());
+		}
+		else {
+			auto& grouprect = m_state.GroupRectStack.top();
+			RgVec4 contentrect(lp + grouprect.xy(), sz);
+			bool iscliped = UtilClipRect(contentrect, grouprect);
+			_DrawRect(contentrect.xy(), contentrect.zw(), color, _GetDrawOrder());
+		}
+	}
+
+	void RgGUIContext::GUIGroupBegin(const RgVec2 & lp, const RgVec2 & sz)
+	{
+		_GroupBegin(lp, sz);
+	}
+
+	void RgGUIContext::GUIGroupEnd()
+	{
+		_GroupEnd();
 	}
 
 
@@ -507,13 +495,14 @@ namespace rg {
 		eventMouseLeftDown = input->LButton;
 		eventMousePos = input->MousePos;
 	}
-	void RgGUIState::reset()
+	void RgGUIState::DrawOrderIncreae()
 	{
+		currentDrawOrder += 0.0001f;
 	}
 
-	void RgGUIState::rect_z_inc()
+	void RgGUIState::ResetDrawOrder()
 	{
-		RectZ += 1.0f;
+		currentDrawOrder = 0.0f;
 	}
 
 
@@ -532,11 +521,18 @@ namespace rg {
 
 		//RgLogD() << "drawwindow" << window->title << window->_buffer_vertex_begin;
 		window->_ondraw = true;
+		stateWindowOrder = (float)window->order;
 
-		ctx->_drawRect(window->windowrect.xy(), window->windowrect.zw(), window->windowColor, (RgFloat)window->order);
+		
+		ctx->GUIGroupBegin(window->windowrect.xy(), window->windowrect.zw());
+		//--------- begin window frame draw ---------//
+		ctx->GUIRect(RgVec2(0, 0), window->windowrect.zw(), window->windowColor);
+
+		//--------- end window frame draw ---------//
 	}
 	void RgGUIStateWindow::DrawWindowEnd(RgGUIWindow * window, RgGUIContext * ctx)
 	{
+		ctx->GUIGroupEnd();
 		window->_ondraw = false;
 		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();
 		//RgLogD() << "drawwindow end" << window->title << window->_buffer_vertex_end;
@@ -647,10 +643,10 @@ namespace rg {
 			return;
 		}
 
-		for (auto pair : windowMap) {
-			auto win = pair.second;
-			RgLogD() << "order" << win->title << win->order;
-		}
+		//for (auto pair : windowMap) {
+		//	auto win = pair.second;
+		//	RgLogD() << "order" << win->title << win->order;
+		//}
 	}
 
 	void RgGUIStateWindow::register_win(RgGUIWindow* win)

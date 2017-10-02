@@ -15,6 +15,7 @@ namespace editor {
 
 	void RgEditorWindowDebugWindow::OnGUI(rg::RgGUIContext * ctx)
 	{
+		ctx->GUIRect(rg::RgVec2(10,200), rg::RgVec2(120, 120), rg::RgGUIColors::MidnightBlue);
 	}
 
 }
