@@ -47,5 +47,6 @@ namespace rg {
 		//guiwindow
 		RgFloat WindowHeaderHeight = 20.0f;
 		RgVec4 WindowHeaderColor = RgGUIColors::BelizeHole;
+		RgVec4 WindowHeaderTitleColor = RgGUIColors::White;
 	};
 }

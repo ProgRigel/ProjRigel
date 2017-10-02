@@ -367,7 +367,7 @@ namespace rg {
 	{
 		if (!m_state.GroupRectStack.empty()) m_state.GroupRectStack.pop();
 	}
-	void RgGUIContext::_DrawChar(const char & c, const RgVec4 & rect, const RgVec4 & color, RgFloat order)
+	const RgVec2 RgGUIContext::_DrawChar(const char & c, const RgVec4 & rect, const RgVec4 & color, RgFloat order)
 	{
 		m_pBufferText->ptrFloater->pos = RgVec4(rect.xy(), order, 1.0);
 		m_pBufferText->ptrFloater->color = color;
@@ -388,6 +388,8 @@ namespace rg {
 
 		m_pBufferText->ExtendVertexBufferCheck();
 		m_pBufferText->SetDirty(true);
+
+		return m_pGlyph->GetCharPos(c, 2);
 	}
 	void RgGUIContext::_DrawText(std::string content, const RgVec4 & rect, const RgVec4 & color,RgFloat order)
 	{
@@ -487,17 +489,28 @@ namespace rg {
 		}
 	}
 
-	void RgGUIContext::GUIChar(const char & c, const RgVec4 & rect, const RgVec4 & color)
+	const RgVec2 RgGUIContext::GUIChar(const char & c, const RgVec4 & rect, const RgVec4 & color)
 	{
 		bool ingroup = UtilIsInGroup();
 		if (ingroup == false) {
-			_DrawChar(c, rect, color, _GetDrawOrder());
+			return _DrawChar(c, rect, color, _GetDrawOrder());
 		}
 		else {
 			auto& grouprect = m_state.GroupRectStack.top();
 			RgVec4 contentrect(rect.xy() + grouprect.xy(), rect.zw());
 			bool iscliped = UtilClipRect(contentrect, grouprect);
-			_DrawChar(c,contentrect, color, _GetDrawOrder());
+			return _DrawChar(c,contentrect, color, _GetDrawOrder());
+		}
+	}
+
+	void RgGUIContext::GUIText(std::string str, const RgVec4 & rect, const RgVec4 & color)
+	{
+		RgVec4 drawrect = rect;
+		RgVec2 charsize;
+		for (auto iter = str.begin(); iter != str.end(); iter++) {
+			charsize = GUIChar(*iter, drawrect, color);
+			drawrect.x += charsize.x;
+			drawrect.z -= charsize.x;
 		}
 	}
 
@@ -587,7 +600,10 @@ namespace rg {
 		ctx->GUIRect(RgVec2::Zero, winrect.zw(), window->windowColor);
 		//Header
 		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
-		
+		//Header-Title
+		ctx->GUIText(window->title, RgVec4(0.0f, 0.0f, 200.0f, style.WindowHeaderHeight), style.WindowHeaderTitleColor);
+
+
 		//content group
 		ctx->GUIGroupBegin(RgVec2(0.0f, style.WindowHeaderHeight), RgVec2(winrect.z, winrect.w - style.WindowHeaderHeight));
 
