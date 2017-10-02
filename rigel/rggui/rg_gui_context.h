@@ -174,7 +174,7 @@ namespace rg {
 		bool _GroupClip(RgVec2& pos, RgVec2& sz) const;
 		const RgVec2 _GetWindowSize() const;
 		const RgVec4 _GetGroupRect() const;
-		void _drawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color);
+		void _drawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color,RgFloat order);
 
 		
 
