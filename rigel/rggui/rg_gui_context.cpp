@@ -393,24 +393,32 @@ namespace rg {
 	}
 	void RgGUIContext::_DrawText(std::string content, const RgVec4 & rect, const RgVec4 & color,RgFloat order)
 	{
-		//c->m_pPos->pos = RgVec4(rect.xy(), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 1), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 2), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 3), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
-		//m_pTextBuffer->m_pPos++;
-
-		//return m_pGlyph->GetCharPos(c, 2);
+	}
+	void RgGUIContext::_DrawLineAxis(const RgVec2 & from, const RgVec2 & to, const RgVec4 & color, RgFloat width,RgFloat order)
+	{
+		RgVec2 off = to - from;
+		RgVec2 start = from;
+		bool hor = off.y < RgEpsilon;
+		if (hor) {
+			start.y -= width*0.5f;
+			off.y = width;
+		}
+		else
+		{
+			start.x -= width *0.5f;
+			off.x = width;
+		}
+		_DrawRect(start, off, color, order);
+	}
+	void RgGUIContext::_DrawBorder(const RgVec2 & lp, const RgVec2 & sz, const RgVec4 & color,RgFloat width, RgFloat order)
+	{
+		RgVec2 rt(lp.x + sz.x, lp.y);
+		RgVec2 lb(lp.x, lp.y + sz.y);
+		RgVec2 rb = lp + sz;
+		_DrawLineAxis(lp, rt, color, width, order);
+		_DrawLineAxis(rt, rb, color, width, order);
+		_DrawLineAxis(lp, lb, color, width, order);
+		_DrawLineAxis(lb, rb, color, width, order);
 	}
 #pragma endregion
 	
@@ -593,15 +601,16 @@ namespace rg {
 		auto& winrect = window->windowrect;
 		auto& style = ctx->m_style;
 		
+		
 		ctx->GUIGroupBegin(winrect.xy(), winrect.zw());
-
 		//--------- begin window frame draw ---------//
 		//Background
-		ctx->GUIRect(RgVec2::Zero, winrect.zw(), window->windowColor);
+		ctx->GUIRect(RgVec2::Zero, winrect.zw(), style.WindowBackgroundColor);
 		//Header
 		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
 		//Header-Title
 		ctx->GUIText(window->title, RgVec4(5.0f, 0.0f, 200.0f,30.0f), style.WindowHeaderTitleColor);
+
 
 
 		//content group
@@ -613,6 +622,7 @@ namespace rg {
 	{
 		ctx->GUIGroupEnd();		//end content group
 		ctx->GUIGroupEnd();		//end window group
+		ctx->_DrawBorder(window->windowrect.xy(), window->windowrect.zw(), ctx->m_style.WindowBorderColor, 1.0f, ctx->_GetDrawOrder());	//drawborder
 
 		window->_ondraw = false;
 		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();

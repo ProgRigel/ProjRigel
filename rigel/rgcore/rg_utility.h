@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "rg_math.h"
 
 namespace rg {
 	const std::wstring GetWorkDirectory();
@@ -13,5 +14,7 @@ namespace rg {
 
 	std::wstring towstring(const std::string& str);
 	std::string tostring(const std::wstring& wstr);
+
+	RgVec4 ColorRGB(byte r,byte g,byte b,byte a);
 
 }

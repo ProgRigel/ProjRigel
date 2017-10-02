@@ -183,6 +183,8 @@ namespace rg {
 
 		const RgVec2 _DrawChar(const char& c, const RgVec4& rect, const RgVec4& color, RgFloat order);
 		void _DrawText(std::string content, const RgVec4& rect,const RgVec4& color,RgFloat order);
+		void _DrawLineAxis(const RgVec2& from, const RgVec2& to, const RgVec4& color, RgFloat width,RgFloat order);
+		void _DrawBorder(const RgVec2& lp, const RgVec2& sz, const RgVec4& color,RgFloat width, RgFloat order);
 
 		
 

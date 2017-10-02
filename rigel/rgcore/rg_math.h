@@ -6,6 +6,7 @@
 #undef max
 #endif
 #include <math.h>
+#include <limits>
 namespace rg {
 	typedef float RgFloat;
 	struct RgVec2{
@@ -278,4 +279,5 @@ namespace rg {
 		RgVec4 m4;
 	};
 
+	const RgFloat RgEpsilon = std::numeric_limits<float>::epsilon();
 }

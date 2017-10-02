@@ -86,6 +86,11 @@ namespace rg {
 		return std::string(wstr.begin(), wstr.end());
 	}
 
+	RgVec4 ColorRGB(byte r, byte g, byte b, byte a)
+	{
+		return RgVec4(r/256.0f,g/256.0f,b/256.0f,a/256.0f);
+	}
+
 }
 
 

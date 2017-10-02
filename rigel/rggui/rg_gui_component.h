@@ -7,6 +7,8 @@
 
 namespace rg {
 
+	class RgGUIContext;
+
 	//menu related
 	struct RgGUIMenuItem{
 		std::string label;
@@ -74,5 +76,6 @@ namespace rg {
 		RgGUIWindow();
 		RgGUIWindow(const RgGUIWindow&) = delete;
 		RgGUIWindow& operator=(const RgGUIWindow&) = delete;
+
 	};
 }

@@ -45,8 +45,10 @@ namespace rg {
 		RgFloat MenuBarItemWdith = 40.0f;
 
 		//guiwindow
+		RgVec4 WindowBackgroundColor = RgVec4(0.15f);
+		RgVec4 WindowBorderColor = ColorRGB(80, 80, 80,0);
 		RgFloat WindowHeaderHeight = 20.0f;
-		RgVec4 WindowHeaderColor = RgGUIColors::BelizeHole;
+		RgVec4 WindowHeaderColor = ColorRGB(80, 80, 80, 0);
 		RgVec4 WindowHeaderTitleColor = RgGUIColors::White;
 	};
 }
