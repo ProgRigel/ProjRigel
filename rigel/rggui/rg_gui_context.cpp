@@ -65,7 +65,7 @@ namespace rg {
 
 		//state process input
 		m_state.eventType = e.Type;
-		m_state.ongui(m_pWindowInput);
+		m_state.PorcessEvent(m_pWindowInput);
 		//proces window;
 		m_stateWindow.GUIBegin(m_state,this);
 
@@ -102,25 +102,6 @@ namespace rg {
 	}
 	const RgVec2 RgGUIContext::GUIText(const char & c, const RgVec4 & rect)
 	{
-		//auto color = m_state.color;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy(), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 0);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 1), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 1);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 2), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 2);
-		//m_pTextBuffer->m_pPos++;
-		//m_pTextBuffer->m_pPos->pos = RgVec4(rect.xy() + m_pGlyph->GetCharPos(c, 3), m_state.RectZ, 1.0);
-		//m_pTextBuffer->m_pPos->color = color;
-		//m_pTextBuffer->m_pPos->uv = m_pGlyph->GetCharUV(c, 3);
-		//m_pTextBuffer->m_pPos++;
-
-		//return m_pGlyph->GetCharPos(c, 2);
 	}
 	void RgGUIContext::GUITextDebug(const RgVec4 & rect)
 	{
@@ -250,6 +231,35 @@ namespace rg {
 			return true;
 		}
 		return false;
+	}
+	bool RgGUIContext::UtilRectContain(const RgVec2 & lp, const RgVec2 & sz, const RgVec2 & pos)
+	{
+		if (pos.x > lp.x && pos.y > lp.y && pos.x < lp.x + sz.x && pos.y < lp.y + sz.y) {
+			return true;
+		}
+		return false;
+	}
+	unsigned char RgGUIContext::UtilMouseDrag(const RgVec2 & lp, const RgVec2 & sz)
+	{
+		if (m_state.eventUsed) return 0;
+		if (m_state.eventDragState == 0) return 0;
+		if (UtilRectContain(lp, sz, m_state.evemtDragStartPos)) {
+			return m_state.eventDragState;
+		}
+		return 0;
+	}
+	unsigned char RgGUIContext::UtilMouseDrag(const RgVec4 & rect)
+	{
+		if (m_state.eventUsed) return 0;
+		if (m_state.eventDragState == 0) return 0;
+		if (UtilRectContain(rect, m_state.evemtDragStartPos)) {
+			return m_state.eventDragState;
+		}
+		return 0;
+	}
+	void RgGUIContext::UtilEventUse()
+	{
+		m_state.eventUsed = true;
 	}
 #pragma endregion
 
@@ -553,282 +563,6 @@ namespace rg {
 	{
 		Release();
 	}
-
-
-#pragma region state
-	void RgGUIState::ongui(const RgWindowInput * input)
-	{
-		WindowGroupRect.z = input->WindowRect.z;
-		WindowGroupRect.w = input->WindowRect.w;
-
-		//events
-		eventMouseLeftDown = false;
-		eventMouseLeftUp = false;
-
-		//mousedown
-		if (eventMouseLeftButton == false && input->LButton) {
-			eventMouseLeftDown = true;
-		}
-		//mouseup
-		if (eventMouseLeftButton == true && !input->LButton) {
-			eventMouseLeftUp = true;
-		}
-
-		//drag
-		eventMouseLeftDrag = (eventType == RgWindowEventType::MouseMove && eventMouseLeftButton);
-		
-
-		eventMousePos = input->MousePos;
-		eventMouseLeftButton = input->LButton;
-		eventUsed = false;
-	}
-	void RgGUIState::DrawOrderIncreae()
-	{
-		currentDrawOrder += 0.0001f;
-	}
-
-	void RgGUIState::ResetDrawOrder()
-	{
-		currentDrawOrder = 0.0f;
-	}
-
-
-#pragma endregion
-
-#pragma region stateWindow
-	RgGUIWindow * RgGUIStateWindow::GetWindow(long winid)
-	{
-		auto iter = windowMap.find(winid);
-		if (iter == windowMap.end()) return nullptr;
-		return (*iter).second;
-	}
-	void RgGUIStateWindow::DrawWindow(RgGUIWindow * window, RgGUIContext * ctx)
-	{
-		window->_buffer_vertex_begin = ctx->GetVertexBufferPtr()->GetVertexSize();
-		window->_buffer_text_begin = ctx->GetTextBufferPtr()->GetVertexSize();
-
-		window->_ondraw = true;
-		stateWindowOrder = (float)window->order;
-
-		auto& winrect = window->windowrect;
-		auto& style = ctx->m_style;
-		auto& state = ctx->m_state;
-		
-		ctx->GUIGroupBegin(winrect.xy(), winrect.zw());
-		//--------- begin window frame draw ---------//
-
-		//event
-		RgVec2 winpos = winrect.xy();
-		RgVec4 headerrect = RgVec4(winpos, RgVec2(winrect.z, style.WindowHeaderHeight));
-		if (headerrect.rect_contain(state.eventMousePos) && state.eventMouseLeftDown) {
-			window->_dragStartPos = state.eventMousePos;
-			window->_dragOn = true;
-			window->_windowrectNext = winrect;
-		}
-		else if (state.eventMouseLeftDrag) {
-			if (window->_dragOn) {
-				window->_windowrectNext.setxy(winpos + state.eventMousePos - window->_dragStartPos);
-				window->_dragStartPos = state.eventMousePos;
-			}
-		}
-
-
-		//Background
-		ctx->GUIRect(RgVec2::Zero, winrect.zw(), style.WindowBackgroundColor);
-		//Header
-		
-		ctx->GUIRect(RgVec2::Zero, RgVec2(winrect.z, style.WindowHeaderHeight),style.WindowHeaderColor);
-		//Header-Title
-		ctx->GUIText(window->title, RgVec4(5.0f, 0.0f, 200.0f,30.0f), style.WindowHeaderTitleColor);
-
-
-
-
-		//content group
-		ctx->GUIGroupBegin(RgVec2(0.0f, style.WindowHeaderHeight), RgVec2(winrect.z, winrect.w - style.WindowHeaderHeight));
-
-		//--------- end window frame draw ---------//
-	}
-	void RgGUIStateWindow::DrawWindowEnd(RgGUIWindow * window, RgGUIContext * ctx)
-	{
-		ctx->GUIGroupEnd();		//end content group
-		ctx->GUIGroupEnd();		//end window group
-		ctx->_DrawBorder(window->windowrect.xy(), window->windowrect.zw(), ctx->m_style.WindowBorderColor, 1.0f, ctx->_GetDrawOrder());	//drawborder
-
-		//event
-		if (window->_dragOn) {
-			window->windowrect = window->_windowrectNext;
-		}
-		
-		if (ctx->m_state.eventMouseLeftUp) {
-			window->_dragOn = false;
-		}
-
-		window->_ondraw = false;
-		window->_buffer_vertex_end = ctx->GetVertexBufferPtr()->GetVertexSize();
-		window->_buffer_text_end = ctx->GetTextBufferPtr()->GetVertexSize();
-	}
-	void RgGUIStateWindow::GUIBegin(const RgGUIState & state,RgGUIContext * ctx)
-	{
-		//check whether to skip draw
-		skipDraw = false;
-
-		if (IsSkipUpdate(state)) {
-			skipDraw = true;
-			return;
-		}
-		//caculate focused window;
-		RgGUIWindow * newfocusedWin = nullptr;
-		long maxorder_focused = -1;		//maxorder of current mouseovered window
-		long maxorder_window = -1;		//maxorder of all windows
-		for (auto pair : windowMap) {
-			auto win = pair.second;
-			maxorder_window = (win->order > maxorder_window ? win->order : maxorder_window);
-			if (!state.eventMouseLeftDown || win->windowrect.rect_contain(state.eventMousePos) == false) continue;
-			if (win->order <= maxorder_focused) continue;
-			maxorder_focused = win->order;
-			win->_isfocused = true;
-			if (newfocusedWin != nullptr) {
-				newfocusedWin->_isfocused = false;
-			}
-			newfocusedWin = win;
-		}
-
-		if (newfocusedWin == nullptr) {
-			//skip unfocus any window
-			//if (windowFocused != nullptr) {
-			//	windowFocused->_isfocused = false;
-			//	windowFocused = nullptr;
-			//}
-		}
-		else {
-			if (windowFocused != nullptr) {
-				windowFocused->_isfocused = false;
-
-				if (newfocusedWin->order < windowFocused->order) {
-					newfocusedWin->order = windowFocused->order + 1;
-				}
-				windowFocused = newfocusedWin;
-				windowFocused->_isfocused = true;
-			}
-			else
-			{
-				windowFocused = newfocusedWin;
-				windowFocused->_isfocused = true;
-				windowFocused->order = maxorder_window + 1;
-			}
-		}
-
-		if (windowFocused == nullptr) {
-			return;
-		}
-
-		// every frame will draw focused window and new window
-		// so remove lastfocusedWindows's buffer data and
-		// set the PtrFloater to the end of the vertex buffer
-
-		auto bufferPtr_vertex = ctx->GetVertexBufferPtr();
-		auto windowFocusedSize_vertex = windowFocused->_buffer_vertex_end - windowFocused->_buffer_vertex_begin;
-		auto moveBufferOffset_vertex = bufferPtr_vertex->GetVertexSize() - windowFocused->_buffer_vertex_end;
-
-		auto bufferPtr_text = ctx->GetTextBufferPtr();
-		auto windowFocusedSize_text = windowFocused->_buffer_text_end - windowFocused->_buffer_text_begin;
-		auto moveBufferOffset_text = bufferPtr_text->GetVertexSize() - windowFocused->_buffer_text_end;
-
-		//buffer vertex
-		{
-			if (moveBufferOffset_vertex > 0){
-				auto movebufferBegin = bufferPtr_vertex->GetPtr() + windowFocused->_buffer_vertex_begin;
-				auto movebufferEnd = bufferPtr_vertex->GetPtr() + windowFocused->_buffer_vertex_end;
-				memmove(movebufferBegin, movebufferEnd, moveBufferOffset_vertex * sizeof(RgGUIVertex));
-
-				//reset all window bufferpos
-				for (auto pair : windowMap) {
-					auto win = pair.second;
-					if (win == nullptr) {
-						RgLogE() << "window null";
-						continue;
-					}
-					if (win->_buffer_vertex_begin >= windowFocused->_buffer_vertex_end) {
-						win->_buffer_vertex_begin -= windowFocusedSize_vertex;
-						win->_buffer_vertex_end -= windowFocusedSize_vertex;
-					}
-				}
-			}
-
-			bufferPtr_vertex->ptrFloater -= windowFocusedSize_vertex;
-			//RgLogD() << "buffersize" << bufferPtr_vertex->GetVertexSize();
-		}
-
-		//buffer text
-		{
-			if (moveBufferOffset_text > 0) {
-				auto movebufferBegin = bufferPtr_text->GetPtr() + windowFocused->_buffer_text_begin;
-				auto movebufferEnd = bufferPtr_text->GetPtr() + windowFocused->_buffer_text_end;
-				memmove(movebufferBegin, movebufferEnd, moveBufferOffset_text * sizeof(RgGUIVertex));
-
-				//reset all window bufferpos
-				for (auto pair : windowMap) {
-					auto win = pair.second;
-					if (win == nullptr) {
-						RgLogE() << "window null";
-						continue;
-					}
-					if (win->_buffer_text_begin >= windowFocused->_buffer_text_end) {
-						win->_buffer_text_begin -= windowFocusedSize_text;
-						win->_buffer_text_end -= windowFocusedSize_text;
-					}
-				}
-			}
-
-			bufferPtr_text->ptrFloater -= windowFocusedSize_text;
-		}
-	}
-
-	bool RgGUIStateWindow::GUIEnd(const RgGUIState & state, RgGUIContext * ctx)
-	{
-		if (skipDraw) {
-			return false;
-		}
-
-		return true;
-	}
-
-	void RgGUIStateWindow::register_win(RgGUIWindow* win)
-	{
-		if (win == nullptr) return;
-
-		int ordernext = 0;
-
-		if (windowMap.size() > 0) {
-			auto iter = windowMap.end();
-			iter--;
-			ordernext = (*iter).second->order + 1;
-		}
-		win->order = ordernext;
-		windowMap.insert(std::make_pair(win->winid, win));
-	}
-
-	bool RgGUIStateWindow::verify_valid(long winid)
-	{
-		if (skipDraw) return false;
-		auto iter = windowMap.find(winid);
-		if (iter == windowMap.end()) {
-			RgLogE() << "window check focused error";
-			return false;
-		}
-		return (*iter).second->_isfocused;
-	}
-	bool RgGUIStateWindow::IsSkipUpdate(const RgGUIState & state) const
-	{
-		if (state.eventMouseLeftDown || state.eventMouseLeftUp || state.eventMouseLeftDrag) {
-			return false;
-		}
-		return true;
-	}
-#pragma endregion
-
-	
 
 }
 

@@ -25,6 +25,9 @@
     <ClInclude Include="rggui.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="rg_gui_state.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rg_gui.cpp" />
@@ -35,6 +38,9 @@
     <ClCompile Include="rg_gui_style.cpp" />
     <ClCompile Include="rg_gui_component.cpp" />
     <ClCompile Include="rg_gui_glyph.cpp" />
+    <ClCompile Include="rg_gui_state.cpp">
+      <Filter>header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="header">

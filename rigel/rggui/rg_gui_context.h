@@ -9,6 +9,8 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+
+#include "rg_gui_state.h"
 namespace rg {
 
 #define RG_PARAM_RECT const RgVec2&lp,const RgVec2& size
@@ -23,85 +25,12 @@ namespace rg {
 	struct RgGUIWindow;
 	struct RgGUIState;
 	class RgGUIContext;
-
 	class RgGUIVertexBuffer;
 	class RgGUIIndicesBuffer;
 
 	struct RgGUISettings {
 		std::wstring Font;
 		RgGUIStyle Style;
-	};
-
-	enum class RgGUIControllerType {
-		ContextMenu,
-		TextInput,
-	};
-
-	struct RgGUIStateContextMenu {
-		std::vector<int> menuHashs;
-		std::unordered_map<int, RgVec4> menuMap;
-		bool newMenuContext = false;
-	};
-
-	struct RgGUIStateWindow {
-
-		bool skipDraw = false;
-
-		//current drawing window
-		RgGUIWindow * stateWindow = nullptr;
-		//focus
-		RgGUIWindow * windowFocused = nullptr;
-		std::map<long, RgGUIWindow *> windowMap;
-
-		//draw relatex
-		float stateWindowOrder = 0;
-
-		RgGUIWindow * GetWindow(long winid);
-		void DrawWindow(RgGUIWindow * window,RgGUIContext * ctx);
-		void DrawWindowEnd(RgGUIWindow * window,RgGUIContext * ctx);
-
-		void GUIBegin(const RgGUIState& state,RgGUIContext * ctx);
-		bool GUIEnd(const RgGUIState& state, RgGUIContext * ctx);
-		void register_win(RgGUIWindow* win);
-		bool verify_valid(long winid);
-
-
-		bool IsSkipUpdate(const RgGUIState& state) const;
-	};
-
-	struct RgGUIState {
-		void ongui(const RgWindowInput* input);
-
-		//colors
-		RgVec4 colorBg;
-		RgVec4 colorFont;
-		RgVec4 color;
-		RgVec4 colorRestored;
-		
-		//group
-		std::stack<RgVec4> GroupRectStack;			//group stack
-		RgVec4 WindowGroupRect = RgVec4::Zero;		//main window group rect
-
-		//menu
-		bool guiMenuBar = false;
-		bool guiMenuBarHorizontal = false;
-		RgFloat guiMenuBarOffset = 0;
-		RgFloat guiMenuBarHeight = 0;
-
-		//events
-		RgWindowEventType eventType;
-		RgVec2 eventMousePos;
-		bool eventMouseLeftButton = false;
-		bool eventMouseLeftDown = false;
-		bool eventMouseLeftUp = false;
-		bool eventMouseLeftDrag = false;
-		bool eventUsed = false;
-
-		//draw order
-		float currentDrawOrder = 0;
-		void DrawOrderIncreae();
-		void ResetDrawOrder();
-
 	};
 
 	class RgGUIContext {
@@ -175,7 +104,14 @@ namespace rg {
 		const RgVec4 UtilGetOriginRect(const RgVec4& rect) const;
 		const RgVec2 UtilGetOriginPos(const RgVec2& lp) const;
 		int UtilGetHash(RgStr label, const RgGUIControllerType type, const RgVec4& rect);
+
 		bool UtilRectContain(const RgVec4& rect, const RgVec2& pos);
+		bool UtilRectContain(const RgVec2& lp, const RgVec2&sz, const RgVec2& pos);
+		
+		unsigned char UtilMouseDrag(const RgVec2& lp, const RgVec2& sz);
+		unsigned char UtilMouseDrag(const RgVec4& rect);
+
+		void UtilEventUse();
 
 
 	private:

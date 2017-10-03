@@ -288,4 +288,8 @@ namespace rg {
 	};
 
 	const RgFloat RgEpsilon = std::numeric_limits<float>::epsilon();
+
+	inline const RgFloat RgMathClampMin(float v, float min) {
+		return v < min ? min : v;
+	}
 }

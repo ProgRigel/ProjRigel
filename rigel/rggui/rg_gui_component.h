@@ -7,6 +7,11 @@
 
 namespace rg {
 
+	enum class RgGUIControllerType {
+		ContextMenu,
+		TextInput,
+	};
+
 	class RgGUIContext;
 
 	//menu related
@@ -56,6 +61,9 @@ namespace rg {
 		long winid;
 		int order = 0;
 
+		RgFloat windowMinWidth = 50;
+		RgFloat windowMinHeight = 40;
+
 		//1 not drawed
 		//2 init draw
 		//0 init draw done
@@ -64,9 +72,17 @@ namespace rg {
 		bool _isreused = false;
 		bool _ondraw = false;
 
-		//event
-		RgVec2 _dragStartPos;
-		bool _dragOn = false;
+		//-----events-----
+
+		//move
+		bool _onWindowMove = false;
+		RgVec4 _onWindowMoveRectStart;
+		//resize
+		bool _onWindowResize = false;
+		unsigned int _onWindowResizeMode = 0; //0:width/height 1:height 2:width
+
+		//-----events end-----
+
 		RgVec4 _windowrectNext;
 
 		//buffer
@@ -76,6 +92,11 @@ namespace rg {
 		unsigned int _buffer_text_end = 0;
 
 		void SetWindowRect(const RgVec4& r);
+
+		void RestrictWindow() {
+			windowrect.z = windowrect.z < windowMinWidth ? windowMinWidth : windowrect.z;
+			windowrect.w = windowrect.w < windowMinHeight ? windowMinHeight : windowrect.w;
+		}
 
 		void focused();
 		void lost_focuse();
