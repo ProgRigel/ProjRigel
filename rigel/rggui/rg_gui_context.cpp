@@ -261,6 +261,10 @@ namespace rg {
 	{
 		m_state.eventUsed = true;
 	}
+	bool RgGUIContext::UtilIsEventUsed() const
+	{
+		return m_state.eventUsed;
+	}
 #pragma endregion
 
 	

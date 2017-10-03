@@ -61,7 +61,7 @@ namespace rg {
 		long winid;
 		int order = 0;
 
-		RgFloat windowMinWidth = 50;
+		RgFloat windowMinWidth = 120;
 		RgFloat windowMinHeight = 40;
 
 		//1 not drawed
@@ -79,7 +79,7 @@ namespace rg {
 		RgVec4 _onWindowMoveRectStart;
 		//resize
 		bool _onWindowResize = false;
-		unsigned int _onWindowResizeMode = 0; //0:width/height 1:height 2:width
+		unsigned char _onWindowResizeMode = 0; //3:width/height 1:height 2:width
 
 		//-----events end-----
 

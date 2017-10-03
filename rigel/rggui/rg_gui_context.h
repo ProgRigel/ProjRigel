@@ -112,6 +112,7 @@ namespace rg {
 		unsigned char UtilMouseDrag(const RgVec4& rect);
 
 		void UtilEventUse();
+		bool UtilIsEventUsed() const;
 
 
 	private:

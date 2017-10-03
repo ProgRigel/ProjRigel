@@ -28,9 +28,6 @@ namespace rg {
 			eventMouseLeftDown = input->LButton;
 			eventMouseLeftUp = !input->LButton;
 
-			if (eventMouseLeftDown) RgLogD() << "mouse down";
-			if (eventMouseLeftUp) RgLogD() << "mouse up";
-
 			break;
 		case rg::RgWindowEventType::MouseMove:
 			switch (eventDragState)
@@ -43,17 +40,14 @@ namespace rg {
 				break;
 			case 1:
 				eventDragState = 2;
-				//RgLogD() << "drag start";
 				break;
 			case 2:
 				if (!input->LButton) {
 					eventDragState = 3;
 					eventDragEndPos = input->MousePos;
-					//RgLogD() << "drag end";
 					break;
 				}
 				eventDragOffsetPos = input->MousePos - eventMousePos;
-				//RgLogD() << "drag move";
 				break;
 			case 3:
 				eventDragState = 0;
@@ -96,9 +90,6 @@ namespace rg {
 
 #pragma endregion
 
-
-
-
 #pragma region stateWindow
 	RgGUIWindow * RgGUIStateWindow::GetWindow(long winid)
 	{
@@ -140,7 +131,6 @@ namespace rg {
 		else {
 			RgVec4 windowMoveStartRect = RgVec4(winpos, RgVec2(winrect.z, style.WindowHeaderHeight));
 			if (ctx->UtilMouseDrag(windowMoveStartRect)) {
-				RgLogD() << "drag";
 				window->_onWindowMove = true;
 				window->_onWindowMoveRectStart = windowMoveStartRect;
 
@@ -151,26 +141,35 @@ namespace rg {
 		//windowResize
 		if (window->_onWindowResize) {
 			if (state.eventDragState == 2) {
-				RgLogD() << "resize";
-				window->_windowrectNext.w +=state.eventDragOffsetPos.y;
+				unsigned char mode = window->_onWindowResizeMode;
+				if (mode & 1)window->_windowrectNext.w += state.eventDragOffsetPos.y;
+				if (mode & 2) window->_windowrectNext.z += state.eventDragOffsetPos.x;
 			}
 			else if (state.eventDragState == 3) {
 				window->_onWindowResize = false;
-				RgLogD() << "resize end";
 			}
 			ctx->UtilEventUse();
 		}
-		else
+		else if(!ctx->UtilIsEventUsed())
 		{
-			RgVec4 resizerect = winrect;
-			resizerect.y += winrect.w - 5;
-			resizerect.w = 9;
-			if (ctx->UtilMouseDrag(resizerect)) {
+			RgVec4 resizerectVertical(winrect.x, winrect.y + winrect.w - 5, winrect.z-5, 9.0f);
+			RgVec4 resizerectHorizontal(winrect.x + winrect.z - 5, winrect.y, 9.0f, winrect.w-5);
+			RgVec4 resizerectBoth(resizerectHorizontal.x, resizerectVertical.y, 9.0f, 9.0f);
+			if (ctx->UtilMouseDrag(resizerectVertical)) {
 				window->_onWindowResize = true;
 				window->_onWindowResizeMode = 1;
-				RgLogD() << "on resize";
+				ctx->UtilEventUse();
 			}
-			ctx->UtilEventUse();
+			else if (ctx->UtilMouseDrag(resizerectHorizontal)) {
+				window->_onWindowResize = true;
+				window->_onWindowResizeMode = 2;
+				ctx->UtilEventUse();
+			}
+			else if (ctx->UtilMouseDrag(resizerectBoth)) {
+				window->_onWindowResize = true;
+				window->_onWindowResizeMode = 3;
+				ctx->UtilEventUse();
+			}
 		}
 
 		//Background
@@ -182,8 +181,6 @@ namespace rg {
 		ctx->GUIText(window->title, RgVec4(5.0f, 0.0f, 200.0f, 30.0f), style.WindowHeaderTitleColor);
 
 
-
-
 		//content group
 		ctx->GUIGroupBegin(RgVec2(0.0f, style.WindowHeaderHeight), RgVec2(winrect.z, winrect.w - style.WindowHeaderHeight));
 
@@ -193,9 +190,9 @@ namespace rg {
 	{
 		ctx->GUIGroupEnd();		//end content group
 		ctx->GUIGroupEnd();		//end window group
-		ctx->_DrawBorder(window->windowrect.xy(), window->windowrect.zw(), ctx->m_style.WindowBorderColor, 1.0f, ctx->_GetDrawOrder());	//drawborder
-
-																								//event
+		ctx->_DrawBorder(window->windowrect.xy(), window->windowrect.zw(), ctx->m_style.WindowBorderColor, 1.0f, ctx->_GetDrawOrder());
+		
+		//event
 		window->windowrect = window->_windowrectNext;
 		window->RestrictWindow();
 
