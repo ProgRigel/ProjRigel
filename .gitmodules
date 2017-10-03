@@ -1,0 +1,3 @@
+[submodule "Rigel/thirdpart"]
+	path = Rigel/thirdpart
+	url = git@github.com:ProgRigel/ProjRigel_ThirdPart.git
