@@ -376,6 +376,14 @@ namespace rg {
 	{
 		if (!m_state.GroupRectStack.empty()) m_state.GroupRectStack.pop();
 	}
+	bool RgGUIContext::_Button(const RgVec2 & lp, const RgVec2 & sz, std::string label, const RgVec4 & color, RgFloat order)
+	{
+		_DrawRect(lp, sz, color, order);
+
+		if (UtilIsEventUsed()) return false;
+		if (!m_state.eventMouseLeftDown || !UtilRectContain(lp, sz, m_state.eventMousePos)) return false;
+		return true;
+	}
 	const RgVec2 RgGUIContext::_DrawChar(const char & c, const RgVec4 & rect, const RgVec4 & color, RgFloat order)
 	{
 		m_pBufferText->ptrFloater->pos = RgVec4(rect.xy(), order, 1.0);
@@ -503,6 +511,20 @@ namespace rg {
 			RgVec4 contentrect(lp + grouprect.xy(), sz);
 			bool iscliped = UtilClipRect(contentrect, grouprect);
 			_DrawRect(contentrect.xy(), contentrect.zw(), color, _GetDrawOrder());
+		}
+	}
+
+	bool RgGUIContext::GUIButton(const RgVec2 & lp, const RgVec2 & sz, std::string label, const RgVec4 & color)
+	{
+		bool ingroup = UtilIsInGroup();
+		if (ingroup == false) {
+			return _Button(lp, sz, label, color, _GetDrawOrder());
+		}
+		else {
+			auto& grouprect = m_state.GroupRectStack.top();
+			RgVec4 contentrect(lp + grouprect.xy(), sz);
+			bool iscliped = UtilClipRect(contentrect, grouprect);
+			return _Button(contentrect.xy(), contentrect.zw(), label, color, _GetDrawOrder());
 		}
 	}
 

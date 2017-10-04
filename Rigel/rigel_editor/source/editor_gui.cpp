@@ -6,6 +6,7 @@
 #include "rgeditor_window.h"
 #include "rgeditor_testsuit.h"
 #include "rgeditor_debugwindow.h"
+#include "rgeditor_enginerunner.h"
 
 using namespace rg;
 
@@ -55,11 +56,13 @@ namespace editor {
 
 		static RgEditorWindowTestSuit testsuitwindow;
 		static RgEditorWindowDebugWindow debugwindow;
+		static RgEditorEngineRunnerWindow engineRunnerWindow;
 
 		ctx->GUIBegin(e);
 
 		testsuitwindow.InternalOnGUI(ctx);
 		debugwindow.InternalOnGUI(ctx);
+		engineRunnerWindow.InternalOnGUI(ctx);
 
 		ctx->GUIEnd();
 

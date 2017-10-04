@@ -81,6 +81,7 @@ namespace rg {
 		void GUIWindowEnd();
 
 		void GUIRect(const RgVec2&lp, const RgVec2&sz, const RgVec4& color);
+		bool GUIButton(const RgVec2&lp, const RgVec2&sz, std::string label, const RgVec4& color);
 
 		const RgVec2 GUIChar(const char& c, const RgVec4& rect, const RgVec4& color);
 		void GUIText(std::string str, const RgVec4& rect, const RgVec4& color);
@@ -124,6 +125,8 @@ namespace rg {
 		void _DrawRect(const RgVec2& lp, const RgVec2& sz,const RgVec4& color,RgFloat order);
 		void _GroupBegin(const RgVec2&lp, const RgVec2& sz);
 		void _GroupEnd();
+
+		bool _Button(const RgVec2& lp, const RgVec2& sz, std::string label, const RgVec4& color,RgFloat order);
 
 		const RgVec2 _DrawChar(const char& c, const RgVec4& rect, const RgVec4& color, RgFloat order);
 		void _DrawText(std::string content, const RgVec4& rect,const RgVec4& color,RgFloat order);
