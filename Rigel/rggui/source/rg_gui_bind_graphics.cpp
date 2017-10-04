@@ -277,9 +277,9 @@ namespace rg {
 		}
 
 		auto bufvertex = m_pGUICtx->GetVertexBufferPtr();
-		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), bufvertex->GetPtr(), bufvertex->GetVertexDataBytes());
+		m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(), bufvertex->GetPtr(), (RgUInt)bufvertex->GetVertexDataBytes());
 		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
-		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), bufindices->GetBufferBytes());
+		m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), (RgUInt)bufindices->GetBufferBytes());
 
 
 		float bwidth =2.0f /m_pGraphics->GetRenderTarget()->BufferWidth;
@@ -416,8 +416,8 @@ namespace rg {
 			dataptr[1] = buftext->GetPtr();
 
 			unsigned int datasize[2];
-			datasize[0] = bufvertex->GetVertexDataBytes();
-			datasize[1] = buftext->GetVertexDataBytes();
+			datasize[0] = (RgUInt)bufvertex->GetVertexDataBytes();
+			datasize[1] = (RgUInt)buftext->GetVertexDataBytes();
 
 			m_pBufferVertex->SetData(m_pGraphics->GetRenderContext(),2,&dataptr[0], &datasize[0]);
 
@@ -433,8 +433,8 @@ namespace rg {
 
 		auto bufindices = m_pGUICtx->GetIndicesBufferPtr();
 		if (bufindices->GetBufferSize() != m_indicesLastSize) {
-			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), bufindices->GetBufferBytes());
-			m_indicesLastSize = bufindices->GetBufferSize();
+			m_pBufferIndices->SetData(m_pGraphics->GetRenderContext(), bufindices->GetPtr(), (RgUInt)bufindices->GetBufferBytes());
+			m_indicesLastSize = (RgUInt)bufindices->GetBufferSize();
 
 			//RgLogD() << " map indices buffer" << bufindices->GetQuadSize();
 		}
