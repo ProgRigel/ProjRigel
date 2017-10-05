@@ -18,6 +18,8 @@ namespace rg {
 		void SetCharUV(const char c, RgVec2& uv, unsigned int vi) const;
 		const RgVec2& GetCharUV(const char c, unsigned int vi) const;
 		const RgVec2& GetCharPos(const char c, unsigned int vi) const;
+
+		float GetTextWidth(std::string str) const;
 	private:
 		RgGUIGlyph(const RgGUIGlyph&) = delete;
 		RgGUIGlyph& operator=(const RgGUIGlyph&) = delete;

@@ -380,6 +380,9 @@ namespace rg {
 	{
 		_DrawRect(lp, sz, color, order);
 
+		float textstart = 0.5f*(sz.x - m_pGlyph->GetTextWidth(label));
+		_DrawText(label, RgVec4(lp + RgVec2(textstart,0.0f), sz), RgGUIColors::Black, order);
+
 		if (UtilIsEventUsed()) return false;
 		if (!m_state.eventMouseLeftDown || !UtilRectContain(lp, sz, m_state.eventMousePos)) return false;
 		return true;
@@ -410,6 +413,13 @@ namespace rg {
 	}
 	void RgGUIContext::_DrawText(std::string content, const RgVec4 & rect, const RgVec4 & color,RgFloat order)
 	{
+		RgVec4 drawrect = rect;
+		RgVec2 charsize;
+		for (auto iter = content.begin(); iter != content.end(); iter++) {
+			charsize = _DrawChar(*iter, drawrect, color,order);
+			drawrect.x += charsize.x;
+			drawrect.z -= charsize.x;
+		}
 	}
 	void RgGUIContext::_DrawLineAxis(const RgVec2 & from, const RgVec2 & to, const RgVec4 & color, RgFloat width,RgFloat order)
 	{

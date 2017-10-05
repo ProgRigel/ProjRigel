@@ -12,11 +12,13 @@ namespace editor {
 	}
 	void RgEditorEngineRunnerWindow::OnGUI(rg::RgGUIContext * ctx)
 	{
-		//ctx->GUIText("this is engine render result", rg::RgVec4(10, 10, 100, 20));
-		if (ctx->GUIButton(rg::RgVec2::Zero, rg::RgVec2(100, 20), "Run", rg::RgGUIColors::Carrot)) {
+		if (ctx->GUIButton(rg::RgVec2::Zero, rg::RgVec2(50, 20), "Run", rg::RgGUIColors::GreenSea)) {
 			RgLogD() << "run engine";
 		}
 
+		if (ctx->GUIButton(rg::RgVec2(50,0), rg::RgVec2(50, 20), "Stop", rg::RgGUIColors::Emerald)) {
+			RgLogD() << "stop engine";
+		}
 	}
 
 }

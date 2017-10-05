@@ -91,6 +91,15 @@ namespace rg {
 		return m_charpos[c * 4 + vi];
 	}
 
+	float RgGUIGlyph::GetTextWidth(std::string str) const
+	{
+		float width = 0;
+		for (auto iter = str.begin(); iter != str.end(); iter++) {
+			width += m_charrect[(unsigned char)*iter].z;
+		}
+		return width;
+	}
+
 	void RgGUIGlyph::GenFontImage()
 	{
 		m_pimg = RgImage::Craete(256, 256, RgImageFormat::R8G8B8A8);
