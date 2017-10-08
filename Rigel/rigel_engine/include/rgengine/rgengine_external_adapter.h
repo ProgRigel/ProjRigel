@@ -5,6 +5,6 @@ namespace rg::rgengine {
 
 	struct RgEngineExternalAdapter {
 		bool bEditorMode = false;
-		rg::RgGraphicsContext * pGraphicsContext = nullptr;
+		RgGraphicsContext * pGraphicsContext = nullptr;
 	};
 }

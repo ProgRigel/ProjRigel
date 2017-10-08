@@ -2,12 +2,20 @@
 #include <rgengine\rgengine_application.h>
 #include <rgengine\rgengine_external_adapter.h>
 
-int main(){
-	rg::rgengine::RgEngineApplication application;
+using namespace rg::rgengine;
 
-	rg::rgengine::RgEngineExternalAdapter adapter;
+int main(){
+
+	RgEngineExternalAdapter adapter;
 	adapter.bEditorMode = false;
 
-	application.Run(adapter);
+	RgEngineApplication * application = RgEngineApplication::InitEngine(adapter);
+
+	application->Run();
+
+	RgEngineApplication::ReleaseApplication(application);
+
+	getchar();
+
     return 0;
 }
