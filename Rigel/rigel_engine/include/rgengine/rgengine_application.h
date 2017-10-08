@@ -1,8 +1,9 @@
-
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
 #include <thread>
+
+#include "rgengine_window.h"
 
 namespace rg::rgengine{
 
@@ -23,6 +24,11 @@ namespace rg::rgengine{
 		void Run();
 		void Release();
 
+		void ProcessWndMsg();
+
+	private:
+		RgEngineWindow * m_pWindow = nullptr;
+
 	private:
 		static RgEngineApplication* m_pApplication;
 
@@ -34,6 +40,8 @@ namespace rg::rgengine{
 		bool m_bToLogic = false;
 
 		void ThreadLogicProc();
+
+		
 
 		void ProcessRender();
 		void ProcessLogic();
