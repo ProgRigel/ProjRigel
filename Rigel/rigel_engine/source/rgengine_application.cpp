@@ -14,12 +14,16 @@ namespace rg::rgengine{
 
 		m_pWindow = RgEngineWindow::GetInstance();
 		m_pWindow->Init(adapter);
+
+		m_pGraphics = RgEngineGraphics::GetInstance();
+		m_pGraphics->Init(adapter);
 	}
 
 
 	void RgEngineApplication::Release()
 	{
-		if (m_pWindow != nullptr) { delete m_pWindow; m_pWindow = nullptr; }
+		m_pGraphics = RgEngineGraphics::Release(m_pGraphics);
+		m_pWindow = RgEngineWindow::Release(m_pWindow);
 	}
 
 	RgEngineApplication * RgEngineApplication::GetInstance()
@@ -59,15 +63,19 @@ namespace rg::rgengine{
 		//enter render runloop
 		m_pWindow->EnterRunLoop([this]() { this->ProcessWndMsg(); });
 
+		//finish logic thread
+		m_bThreadExit = true;
+		m_bToLogic = true;
+		m_cvLogic.notify_one();
+
 		//wait logic thread
 		threadLogic.join();
-		RgLogD() << "thread:logic end";
 	}
 
 
 	void RgEngineApplication::ThreadLogicProc()
 	{
-		while (true)
+		while (!m_bThreadExit)
 		{
 			std::unique_lock<std::mutex> lk(m_mutexLogic);
 			m_cvLogic.wait(lk, [this]() {return m_bToLogic; });
@@ -78,6 +86,8 @@ namespace rg::rgengine{
 
 			ProcessLogic();
 		}
+		
+		RgLogW() << "logic thread finished";
 		
 	}
 

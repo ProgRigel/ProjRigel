@@ -12,13 +12,16 @@ namespace rg ::rgengine {
 	public:
 		static RgEngineWindow* GetInstance();
 		bool Init(const RgEngineExternalAdapter& adapter);
-		void Release();
-		~RgEngineWindow();
-
+		static RgEngineWindow* Release(RgEngineWindow*);
+		
 		void EnterRunLoop(std::function<void(void)> onframe);
 
+		rg::RgWindow *  InternalGetWindow();
+
 	private:
+		~RgEngineWindow();
 		RgEngineWindow();
+		void Release();
 		RgEngineWindow(const RgEngineWindow&) = delete;
 		RgEngineWindow& operator=(RgEngineWindow const&) = delete;
 

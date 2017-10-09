@@ -29,6 +29,14 @@ namespace rg::rgengine {
 			return true;
 		}
 	}
+	RgEngineWindow * RgEngineWindow::Release(RgEngineWindow * window)
+	{
+		if (window != nullptr) {
+			delete window;
+			window = nullptr;
+		}
+		return window;
+	}
 	void RgEngineWindow::Release()
 	{
 		auto& mgr = RgWindowManager::getInstance();
@@ -39,6 +47,8 @@ namespace rg::rgengine {
 	{
 		Release();
 		m_pInstance = nullptr;
+
+		RgLogW() << "release RgEngineWindow";
 	}
 	void RgEngineWindow::EnterRunLoop(std::function<void(void)> onframe)
 	{
@@ -47,6 +57,12 @@ namespace rg::rgengine {
 		m_pRgWindow->EventOnFrame.connect<RgEngineWindow, &RgEngineWindow::OnFrame>(this);
 		auto& mgr = RgWindowManager::getInstance();
 		mgr.enterMainLoop();
+
+		RgLogW() << "window runloop exit";
+	}
+	rg::RgWindow * RgEngineWindow::InternalGetWindow()
+	{
+		return m_pRgWindow;
 	}
 	RgEngineWindow::RgEngineWindow()
 	{

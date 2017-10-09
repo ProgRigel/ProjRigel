@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "rgengine_window.h"
+#include "rgengine_graphics.h"
 
 namespace rg::rgengine{
 
@@ -28,7 +29,7 @@ namespace rg::rgengine{
 
 	private:
 		RgEngineWindow * m_pWindow = nullptr;
-
+		RgEngineGraphics * m_pGraphics = nullptr;
 	private:
 		static RgEngineApplication* m_pApplication;
 
@@ -38,6 +39,7 @@ namespace rg::rgengine{
 
 		bool m_bToRender = false;
 		bool m_bToLogic = false;
+		bool m_bThreadExit = false;
 
 		void ThreadLogicProc();
 

@@ -58,7 +58,6 @@ namespace rg {
 
 			//Sleep(10);
 		}
-
 		return 0;
 	}
 	RgWindowManager::RgWindowManager()
