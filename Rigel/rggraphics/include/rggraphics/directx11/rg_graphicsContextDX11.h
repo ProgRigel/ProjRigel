@@ -39,8 +39,9 @@ namespace rg {
 		RgRasterizerState * CreateRasterizerState(const RgRasterizerSettings);
 		RgDepthStencilState* CreateDepthStencilState(const RgDepthStencilSettings&);
 		RgBlendState * CreateBlendState(const RgBlendStateSettings&);
-		void * CreateBlendState();
 		RgGraphicsSampler* CreateSampler(const RgGraphicsSamplerSettings&);
+
+		void SetFullScreen(bool fullscreen);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
 		void render();

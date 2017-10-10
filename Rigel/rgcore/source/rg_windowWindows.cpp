@@ -150,6 +150,7 @@ namespace rg {
 			m_windowInput.WindowRect.w = static_cast<float>(m_height);
 			EventOnResize.emit(m_width, m_height);
 			EventOnGUI.emit(RgWindowEvent{RgWindowEventType::Resize,&m_windowInput });
+
 			break;
 		case WM_ENTERSIZEMOVE:
 			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::ResizeEnter,&m_windowInput });

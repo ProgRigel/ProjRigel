@@ -20,6 +20,9 @@ namespace editor {
 		void Init(rg::RgWindow *window);
 		void Render();
 
+
+		void SetFullScreen(bool fullscreen) const;
+
 	private:
 		void OnEventResize(unsigned int width, unsigned int height);
 		void onEventExitResize();

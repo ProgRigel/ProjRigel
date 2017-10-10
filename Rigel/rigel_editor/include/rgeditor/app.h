@@ -23,6 +23,9 @@ namespace editor {
 		RgWindow *m_pWindow = nullptr;
 		RigelAppGraphics * m_pAppGraphics = nullptr;
 		EditorGUI * m_pEditorGUI = nullptr;
+
+		RigelApp(const RigelApp&) = delete;
+		RigelApp& operator=(const RigelApp&) = delete;
 	public:
 		RigelApp();
 		~RigelApp();
@@ -31,8 +34,11 @@ namespace editor {
 		void onRegisterWindow();
 		void onRender();
 
-	private:
+		RigelAppGraphics * GetGraphics() const;
 
+		static RigelApp * GetInstance();
+	private:
+		static RigelApp* m_pInstance;
 
 	};
 }

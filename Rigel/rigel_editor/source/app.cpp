@@ -7,6 +7,8 @@
 
 namespace editor {
 
+	RigelApp* RigelApp::m_pInstance = nullptr;
+
 	RigelApp::RigelApp()
 	{
 		RgWindowSettings settings;
@@ -19,6 +21,7 @@ namespace editor {
 		windowmgr.registerWindow(m_pWindow);
 		m_pWindow->showWindow();
 
+		m_pInstance = this;
 		
 	}
 
@@ -59,6 +62,16 @@ namespace editor {
 		m_pEditorGUI->OnRender();
 
 		ctx->render();
+	}
+
+	RigelAppGraphics * RigelApp::GetGraphics() const
+	{
+		return m_pAppGraphics;
+	}
+
+	RigelApp * RigelApp::GetInstance()
+	{
+		return m_pInstance;
 	}
 
 }

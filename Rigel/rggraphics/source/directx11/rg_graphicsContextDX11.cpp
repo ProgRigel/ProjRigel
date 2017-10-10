@@ -99,6 +99,8 @@ namespace rg {
 
 		return S_OK;
 	}
+
+
 	void RgGraphicsContextDX11::releaseDeviceAndContext()
 	{
 		if (m_pSwapChain) {
@@ -518,12 +520,21 @@ namespace rg {
 
 		return rgsampler;
 	}
+	void RgGraphicsContextDX11::SetFullScreen(bool fullscreen)
+	{
+		HRESULT result = m_pSwapChain->SetFullscreenState(fullscreen, nullptr);
+		if (result != S_OK) {
+			RgLogE() << "dx11 setfullscreen error:" << HrToMessage(result);
+		}
+		
+	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
 
 		if (m_pD3D11Device == nullptr) return;
 
 		EventBeforeResize.emit();
+
 
 		clearRenderTarget();
 		HRESULT hr = m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);

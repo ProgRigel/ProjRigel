@@ -49,6 +49,8 @@ namespace rg {
 		virtual RgBlendState * CreateBlendState(const RgBlendStateSettings&);
 		virtual RgGraphicsSampler* CreateSampler(const RgGraphicsSamplerSettings&);
 
+		virtual void SetFullScreen(bool fullscreen) = 0;
+
 		RgRenderTarget * GetRenderTarget();
 		RgRenderContext* GetRenderContext();
 		virtual const RgViewPort* GetViewPortDefault();

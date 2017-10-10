@@ -48,19 +48,22 @@ namespace editor {
 	{
 	}
 
+	void RigelAppGraphics::SetFullScreen(bool fullscreen) const
+	{
+		m_pRgGraphicsCtx->SetFullScreen(fullscreen);
+	}
+
 	void RigelAppGraphics::OnEventResize(unsigned int width, unsigned int height)
 	{
 		m_bNeedResize = true;
 		m_uResizeWidth = width;
 		m_uResizeHeight = height;
+
+		m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
 	}
 
 	void RigelAppGraphics::onEventExitResize()
 	{
-		if (m_bNeedResize) {
-			m_bNeedResize = false;
-			m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
-		}
 	}
 
 
