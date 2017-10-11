@@ -56,7 +56,7 @@ namespace rg {
 
 			if (m_pWindow != nullptr) m_pWindow->onFrame();
 
-			//Sleep(10);
+			Sleep(10);
 		}
 		return 0;
 	}

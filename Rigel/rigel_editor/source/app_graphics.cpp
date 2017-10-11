@@ -41,7 +41,7 @@ namespace editor {
 		//register callback
 		window->EventOnResize.connect<RigelAppGraphics, &RigelAppGraphics::OnEventResize>(this);
 		window->EventOnExitSizeMove.connect<RigelAppGraphics, &RigelAppGraphics::onEventExitResize>(this);
-
+		window->EventOnEnterSizeMove.connect<RigelAppGraphics, &RigelAppGraphics::OnEventEnterResize>(this);
 	}
 
 	void RigelAppGraphics::Render()
@@ -55,15 +55,25 @@ namespace editor {
 
 	void RigelAppGraphics::OnEventResize(unsigned int width, unsigned int height)
 	{
-		m_bNeedResize = true;
 		m_uResizeWidth = width;
 		m_uResizeHeight = height;
 
-		m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
+		if (!m_bOnDragResize) {
+			m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
+		}
 	}
 
 	void RigelAppGraphics::onEventExitResize()
 	{
+		if (m_bOnDragResize) {
+			m_pRgGraphicsCtx->resizeBuffer(m_uResizeWidth, m_uResizeHeight);
+			m_bOnDragResize = false;
+		}
+	}
+
+	void RigelAppGraphics::OnEventEnterResize()
+	{
+		m_bOnDragResize = true;
 	}
 
 

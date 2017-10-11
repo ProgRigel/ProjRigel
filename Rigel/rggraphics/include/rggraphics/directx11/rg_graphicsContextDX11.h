@@ -71,6 +71,7 @@ namespace rg {
 		void releaseSwapChain();
 
 		HRESULT createRenderTarget();
+		HRESULT createRenderTarget(ID3D11Texture2D * pBuffer,unsigned int width,unsigned int height);
 		HRESULT clearRenderTarget();
 
 	private:

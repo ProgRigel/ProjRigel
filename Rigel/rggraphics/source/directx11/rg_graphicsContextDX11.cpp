@@ -64,6 +64,11 @@ namespace rg {
 			}
 		}
 
+		if (m_depthStencilBuffer != nullptr) {
+			m_depthStencilBuffer->Release();
+			m_depthStencilBuffer = nullptr;
+		}
+
 		clearRenderTarget();
 		releaseSwapChain();
 		releaseDeviceAndContext();
@@ -188,13 +193,36 @@ namespace rg {
 	{
 		HRESULT hr;
 
+		//RTV
+		DXGI_SWAP_CHAIN_DESC swapchainDesc;
+		m_pSwapChain->GetDesc(&swapchainDesc);
+
+		ID3D11Texture2D *pBackBuffer;
+		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+		ZeroMemory(&rtvDesc, sizeof(rtvDesc));
+		rtvDesc.Format = swapchainDesc.BufferDesc.Format;
+		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+
+		hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+		ID3D11RenderTargetView *m_pRenderTargetView;
+		hr = m_pD3D11Device->CreateRenderTargetView(pBackBuffer, &rtvDesc, &m_pRenderTargetView);
+		HR_CEHCK(hr);
+
+		pBackBuffer->Release();
+
+		D3D11_TEXTURE2D_DESC bufferdesc;
+		pBackBuffer->GetDesc(&bufferdesc);
+
+		auto width = bufferdesc.Width;
+		auto height = bufferdesc.Height;
+
 		//DEPTH STENCIL BUFFER
 		D3D11_TEXTURE2D_DESC depthBufferDesc;
 		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
 		RgTextureSettings settings;
-		settings.Width = m_settings.BufferWidth;
-		settings.Height = m_settings.BufferHeight;
+		settings.Width = width;
+		settings.Height = height;
 		settings.MipLevels = 1;
 		settings.ArraySize = 1;
 		settings.Format = RgGraphicsFormat::D24_UNORM_S8_UINT;
@@ -222,45 +250,36 @@ namespace rg {
 		hr = m_pD3D11Device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_pdepthStencilView);
 		HR_CEHCK(hr);
 
-		//RTV
-		DXGI_SWAP_CHAIN_DESC swapchainDesc;
-		m_pSwapChain->GetDesc(&swapchainDesc);
-
-		ID3D11Texture2D *pBackBuffer;
-		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
-		ZeroMemory(&rtvDesc, sizeof(rtvDesc));
-		rtvDesc.Format = swapchainDesc.BufferDesc.Format;
-		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-
-		hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-		ID3D11RenderTargetView *m_pRenderTargetView;
-		hr = m_pD3D11Device->CreateRenderTargetView(pBackBuffer, &rtvDesc, &m_pRenderTargetView);
-		HR_CEHCK(hr);
+		
 
 		m_pD3D11DeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pdepthStencilView);
 
-		pBackBuffer->Release();
+		
 
 		m_pRenderTarget = new RgRenderTarget();
 		m_pRenderTarget->SetColorBufferPtr(m_pRenderTargetView);
 		m_pRenderTarget->SetDepthBufferPtr(m_pdepthStencilView);
-		m_pRenderTarget->BufferWidth = m_settings.BufferWidth;
-		m_pRenderTarget->BufferHeight = m_settings.BufferHeight;
+		m_pRenderTarget->BufferWidth = width;
+		m_pRenderTarget->BufferHeight = height;
 
 		//VIEW PORT
 		D3D11_VIEWPORT viewport;
-		viewport.Width = (float)m_settings.BufferWidth;
-		viewport.Height = (float)m_settings.BufferHeight;
+		viewport.Width = (float)width;
+		viewport.Height = (float)height;
 
 		viewport.MaxDepth = 1.0f;
 		viewport.MinDepth = 0.0f;
 		viewport.TopLeftX = 0.0f;
 		viewport.TopLeftY = 0.0f;
 		m_sViewPort = viewport;
+
+		m_settings.BufferWidth = width;
+		m_settings.BufferHeight = height;
 		
 
 		return S_OK;
 	}
+
 	HRESULT RgGraphicsContextDX11::clearRenderTarget()
 	{
 		if (m_pRenderTarget != nullptr) {
@@ -277,7 +296,6 @@ namespace rg {
 			delete m_pRenderTarget;
 			m_pRenderTarget = nullptr;
 		}
-
 
 		if (m_depthStencilBuffer) {
 			m_depthStencilBuffer->Release();
@@ -578,7 +596,6 @@ namespace rg {
 		result = adapterOutput->FindClosestMatchingMode(&mode, &closestMatchMode,nullptr);
 		if (result != S_OK) {
 			RgLogE() << HrToMessage(result);
-
 		}
 
 
@@ -601,25 +618,19 @@ namespace rg {
 	}
 	void RgGraphicsContextDX11::resizeBuffer(unsigned int width, unsigned int height)
 	{
-
 		if (m_pD3D11Device == nullptr) return;
 
 		EventBeforeResize.emit();
 
 
 		clearRenderTarget();
-		HRESULT hr = m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+		//Automatically choose the width and height to match the client rect for HWNDs.
+		HRESULT hr = m_pSwapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 		HR_CEHCK(hr);
 
-		m_settings.BufferWidth = width;
-		m_settings.BufferHeight = height;
-
-
 		createRenderTarget();
-		m_pRenderTarget->BufferWidth = width;
-		m_pRenderTarget->BufferHeight = height;
 
-		EventAfterResize.emit(width,height);
+		EventAfterResize.emit(m_settings.BufferWidth, m_settings.BufferHeight);
 	}
 
 	float color[4] = { 0.1f,0.4f,0.3f,1.0f };
