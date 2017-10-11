@@ -15,6 +15,7 @@
 #include "directx11\rg_render_context_dx11.h"
 
 #define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
+#define RELEASE_COM(h) if(h!= nullptr) h->Release(); h = nullptr;
 
 namespace rg {
 	RgGraphicsContextDX11::RgGraphicsContextDX11()
@@ -28,6 +29,7 @@ namespace rg {
 		m_settings = *settings;
 		std::cout << "init dx11 api" << std::endl;
 		createDeviceAndContext();
+		GetDisplayModeList();
 		createSwapChain();
 		createRenderTarget();
 
@@ -77,6 +79,12 @@ namespace rg {
 	}
 	HRESULT RgGraphicsContextDX11::createDeviceAndContext()
 	{
+		unsigned int creationFlag = 0;
+#ifdef  _DEBUG
+		creationFlag |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // DEBUG || _DEBUG
+
+
 		D3D_FEATURE_LEVEL featureLevel;
 		CONST D3D_FEATURE_LEVEL featureLevelArray[1] = {
 			D3D_FEATURE_LEVEL_11_0 };
@@ -84,7 +92,7 @@ namespace rg {
 			NULL,
 			D3D_DRIVER_TYPE_HARDWARE,
 			NULL,
-			0,
+			creationFlag,
 			featureLevelArray,
 			1,
 			D3D11_SDK_VERSION,
@@ -519,6 +527,69 @@ namespace rg {
 		m_vSampler.push_back(rgsampler);
 
 		return rgsampler;
+	}
+	void RgGraphicsContextDX11::GetDisplayModeList()
+	{
+		if (m_pD3D11Device == nullptr) return;
+
+		IDXGIDevice * pDXGIDevice = nullptr;
+		HRESULT result = m_pD3D11Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&pDXGIDevice);
+		if (result != S_OK) {
+			RgLogE() << GetLastError();
+		}
+		IDXGIAdapter * pDXGIAdapter = nullptr;
+		result = pDXGIDevice->GetAdapter(&pDXGIAdapter);
+		if (result != S_OK) {
+			RgLogE() << GetLastError();
+		}
+
+		IDXGIOutput * adapterOutput;
+		unsigned int numModes = 0;
+		pDXGIAdapter->EnumOutputs(0, &adapterOutput);
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr);
+		if (result != S_OK) {
+			RgLogE() << HrToMessage(result);
+		}
+
+		RgLogW() << "get mode done!" << numModes;
+
+		if (numModes == 0) return;
+
+		DXGI_MODE_DESC * modelist = new DXGI_MODE_DESC[numModes];
+		
+		result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, modelist);
+		if (result != S_OK) {
+			RgLogE() << HrToMessage(result);
+		}
+
+		for (unsigned int i = 0; i < numModes; i++) {
+			//RgLogD() << "mode:" << modelist[i].Width << modelist[i].Height << modelist[i].RefreshRate.Denominator << modelist[i].RefreshRate.Numerator;
+		}
+
+		DXGI_MODE_DESC closestMatchMode;
+		DXGI_MODE_DESC mode;
+		mode.Width = 1920;
+		mode.Height = 1080;
+		mode.RefreshRate.Denominator = 0;
+		mode.RefreshRate.Numerator = 0;
+		mode.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		mode.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		mode.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		result = adapterOutput->FindClosestMatchingMode(&mode, &closestMatchMode,nullptr);
+		if (result != S_OK) {
+			RgLogE() << HrToMessage(result);
+
+		}
+
+
+		RgLogD() << "closestMatchMode:" << closestMatchMode.Width << closestMatchMode.Height << closestMatchMode.RefreshRate.Denominator << closestMatchMode.RefreshRate.Numerator;
+		
+
+		delete[] modelist;
+
+		RELEASE_COM(pDXGIDevice);
+		RELEASE_COM(pDXGIAdapter);
+		RELEASE_COM(adapterOutput);
 	}
 	void RgGraphicsContextDX11::SetFullScreen(bool fullscreen)
 	{

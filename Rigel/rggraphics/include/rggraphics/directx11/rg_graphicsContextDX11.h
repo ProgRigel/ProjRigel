@@ -41,6 +41,8 @@ namespace rg {
 		RgBlendState * CreateBlendState(const RgBlendStateSettings&);
 		RgGraphicsSampler* CreateSampler(const RgGraphicsSamplerSettings&);
 
+		void GetDisplayModeList();
+
 		void SetFullScreen(bool fullscreen);
 
 		void resizeBuffer(unsigned int width, unsigned int height);
