@@ -571,8 +571,6 @@ namespace rg {
 			RgLogE() << HrToMessage(result);
 		}
 
-		RgLogW() << "get mode done!" << numModes;
-
 		if (numModes == 0) return;
 
 		DXGI_MODE_DESC * modelist = new DXGI_MODE_DESC[numModes];

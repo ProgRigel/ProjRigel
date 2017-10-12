@@ -26,9 +26,8 @@ namespace rg::rgengine {
 	private:
 		void InternalProcessWindowResize(unsigned int width, unsigned int height);
 		void InternalProcessWindowExitResize();
-		unsigned int m_uWindowResizeWidth = 0;
-		unsigned int m_uWindowResizeHeight = 0;
-		bool m_bWindowSizeChanged = false;
+		void InternalProcessWindowEnterResize();
+		bool m_bOnWindowDrag = false;
 
 
 	};

@@ -36,7 +36,7 @@ namespace rg::rgengine {
 
 		rgwindow->EventOnResize.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowResize>(this);
 		rgwindow->EventOnExitSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowExitResize>(this);
-
+		rgwindow->EventOnEnterSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowEnterResize>(this);
 
 		return true;
 	}
@@ -63,18 +63,21 @@ namespace rg::rgengine {
 
 	void RgEngineGraphics::InternalProcessWindowResize(unsigned int width, unsigned int height)
 	{
-		m_bWindowSizeChanged = true;
-		m_uWindowResizeHeight = height;
-		m_uWindowResizeWidth = width;
+		if (m_bOnWindowDrag == false) m_pRgGraphicsContext->resizeBuffer(0, 0);
 	}
 
 	void RgEngineGraphics::InternalProcessWindowExitResize()
 	{
-		if (m_bWindowSizeChanged) {
-			m_bWindowSizeChanged = false;
-
-			//do resize buffer;
+		if (m_bOnWindowDrag) {
+			m_pRgGraphicsContext->resizeBuffer(0, 0);
+			m_bOnWindowDrag = false;
 		}
 	}
+
+	void RgEngineGraphics::InternalProcessWindowEnterResize()
+	{
+		m_bOnWindowDrag = true;
+	}
+
 
 }
