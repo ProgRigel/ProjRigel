@@ -6,6 +6,10 @@ FILE(GLOB_RECURSE SRCS_RIGEL_EDITOR ./source/*.cpp)
 
 add_executable(RigelEditor ${HEAD_RIGEL_EDITOR} ${SRCS_RIGEL_EDITOR})
 
+#pch
+use_pch("${SRCS_RIGEL_EDITOR}" "stdafx.h")
+set_pch(./source/stdafx.cpp "stdafx.h")
+
 add_dependencies(RigelEditor rgcore)
 add_dependencies(RigelEditor rggraphics)
 add_dependencies(RigelEditor rggui)

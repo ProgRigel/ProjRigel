@@ -6,6 +6,10 @@ FILE(GLOB_RECURSE SRCS_RGGUI ./source/*.cpp)
 
 add_library(rggui STATIC ${HEAD_RGGUI} ${SRCS_RGGUI})
 
+#pch
+use_pch("${SRCS_RGGUI}" "rggui.h")
+set_pch(./source/rggui.cpp "rggui.h")
+
 add_dependencies(rggui rgcore)
 add_dependencies(rggui rggraphics)
 

@@ -3,6 +3,21 @@ cmake_minimum_required(VERSION 3.2)
 project(Rigel)
 
 #configs
+if(MSVC)
+    macro(set_pch VARCPP VARHEADER)
+        set_source_files_properties(${VARCPP} PROPERTIES COMPILE_FLAGS "/Yc${VARHEADER}")
+    endmacro(set_pch)
+
+    macro(use_pch VARSOURCES VARHEADER)
+        foreach( src_file ${VARSOURCES})
+            set_source_files_properties(${src_file} PROPERTIES COMPILE_FLAGS "/Yu${VARHEADER}")
+        endforeach( src_file ${VARSOURCES})
+    endmacro(use_pch VARHEADER VARSOURCES)
+    
+    
+
+endif(MSVC)
+
 
 #c++latest
 if (MSVC_VERSION GREATER_EQUAL "1900")

@@ -6,6 +6,10 @@ FILE(GLOB SRCS_RGCORE ./source/*.cpp)
 
 add_library(rgcore STATIC ${HEAD_RGCORE} ${SRCS_RGCORE})
 
+#pch
+use_pch("${SRCS_RGCORE}" "rgcore.h")
+set_pch(./source/rgcore.cpp "rgcore.h")
+
 target_include_directories(rgcore PUBLIC ./include/rgcore)
 
 target_include_directories(rgcore PUBLIC ./../thirdpart/freetype/include)
