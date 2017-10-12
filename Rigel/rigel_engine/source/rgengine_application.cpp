@@ -1,5 +1,6 @@
 #include "rgengine_include.h"
 #include "rgengine_application.h"
+#include "rgengine_external_adapter.h"
 #include <functional>
 
 using namespace std;
@@ -11,7 +12,6 @@ namespace rg::rgengine{
 
 	RgEngineApplication::RgEngineApplication(const RgEngineExternalAdapter & adapter)
 	{
-
 		m_pWindow = RgEngineWindow::GetInstance();
 		m_pWindow->Init(adapter);
 

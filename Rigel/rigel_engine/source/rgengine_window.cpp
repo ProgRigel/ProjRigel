@@ -13,7 +13,12 @@ namespace rg::rgengine {
 	bool RgEngineWindow::Init(const RgEngineExternalAdapter & adapter)
 	{
 		if (adapter.bEditorMode) {
-			return false;
+			m_bEditorMode = true;
+			m_pRgWindow = adapter.pWindow;
+			if (m_pRgWindow == nullptr) {
+				return false;
+			}
+			return true;
 		}
 		else
 		{
@@ -39,9 +44,16 @@ namespace rg::rgengine {
 	}
 	void RgEngineWindow::Release()
 	{
-		auto& mgr = RgWindowManager::getInstance();
-		mgr.releaseWindow();
-		m_pRgWindow = nullptr;
+		if (m_bEditorMode) {
+			m_pRgWindow = nullptr;
+		}
+		else
+		{
+			auto& mgr = RgWindowManager::getInstance();
+			mgr.releaseWindow();
+			m_pRgWindow = nullptr;
+		}
+		
 	}
 	RgEngineWindow::~RgEngineWindow()
 	{

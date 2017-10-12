@@ -29,6 +29,8 @@ namespace rg::rgengine {
 		void InternalProcessWindowEnterResize();
 		bool m_bOnWindowDrag = false;
 
+		bool m_bEditorMode = false;
+
 
 	};
 }

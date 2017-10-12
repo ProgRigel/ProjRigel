@@ -30,6 +30,7 @@ namespace rg ::rgengine {
 		static RgEngineWindow* m_pInstance;
 
 		rg::RgWindow * m_pRgWindow = nullptr;
+		bool m_bEditorMode = false;
 		std::function<void(void)> m_funcOnFrame;
 
 	};

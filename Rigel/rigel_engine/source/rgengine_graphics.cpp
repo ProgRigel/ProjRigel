@@ -1,5 +1,6 @@
 #include "rgengine_graphics.h"
 #include "rgengine_window.h"
+#include "rgengine_external_adapter.h"
 namespace rg::rgengine {
 
 	RgEngineGraphics* RgEngineGraphics::m_pInstance = nullptr;
@@ -24,19 +25,26 @@ namespace rg::rgengine {
 	bool RgEngineGraphics::Init(const RgEngineExternalAdapter & adapter)
 	{
 		auto rgwindow = RgEngineWindow::GetInstance()->InternalGetWindow();
-		
 
-		RG_GRAPHICS_INIT_SETTINGS settings;
-		settings.BufferWidth = rgwindow->getWidth();
-		settings.BufferHeight = rgwindow->getHeight();
-		settings.OutputWindow = (HWND)rgwindow->getHandler();
-		settings.Windowed = true;
+		if (adapter.bEditorMode) {
+			if (adapter.pGraphicsContext == nullptr) return false;
+			m_pRgGraphicsContext = adapter.pGraphicsContext;
+			
+		}
+		else
+		{
+			RG_GRAPHICS_INIT_SETTINGS settings;
+			settings.BufferWidth = rgwindow->getWidth();
+			settings.BufferHeight = rgwindow->getHeight();
+			settings.OutputWindow = (HWND)rgwindow->getHandler();
+			settings.Windowed = true;
 
-		m_pRgGraphicsContext = RgGraphicsAPI::InitAPI(RG_GRAPHICS_API::RG_GRAPHICS_APY_DX11, &settings);
+			m_pRgGraphicsContext = RgGraphicsAPI::InitAPI(RG_GRAPHICS_API::RG_GRAPHICS_APY_DX11, &settings);
 
-		rgwindow->EventOnResize.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowResize>(this);
-		rgwindow->EventOnExitSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowExitResize>(this);
-		rgwindow->EventOnEnterSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowEnterResize>(this);
+			rgwindow->EventOnResize.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowResize>(this);
+			rgwindow->EventOnExitSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowExitResize>(this);
+			rgwindow->EventOnEnterSizeMove.connect<RgEngineGraphics, &RgEngineGraphics::InternalProcessWindowEnterResize>(this);
+		}
 
 		return true;
 	}
@@ -57,8 +65,12 @@ namespace rg::rgengine {
 
 	void RgEngineGraphics::Release()
 	{
-		RgGraphicsAPI::ReleaseAPI(m_pRgGraphicsContext);
-		m_pRgGraphicsContext = nullptr;
+		if (m_bEditorMode) {
+			m_pRgGraphicsContext = nullptr;
+		}
+		else {
+			RgGraphicsAPI::ReleaseAPI(m_pRgGraphicsContext);
+		}
 	}
 
 	void RgEngineGraphics::InternalProcessWindowResize(unsigned int width, unsigned int height)
