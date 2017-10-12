@@ -5,7 +5,6 @@
 #include "rg_render_target.h"
 #include "rg_graphics_display_mode.h"
 
-
 #include "directx11\rg_texture_dx11.h"
 #include "directx11\rg_sampler_dx11.h"
 #include "directx11\rg_blend_state_dx11.h"
@@ -16,7 +15,7 @@
 #include "directx11\rg_bufferDX11.h"
 #include "directx11\rg_render_context_dx11.h"
 
-#define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<GetLastError();}
+#define HR_CEHCK(hr) if(hr != S_OK){RgLogE()<<rg::HR_CODE(hr) << rg::HrToMessage(hr);}
 #define RELEASE_COM(h) if(h!= nullptr) h->Release(); h = nullptr;
 
 namespace rg {

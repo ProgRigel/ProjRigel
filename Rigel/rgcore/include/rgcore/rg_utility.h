@@ -1,4 +1,5 @@
 #pragma once
+#include "rg_window.h"
 #include <string>
 #include "rg_math.h"
 
