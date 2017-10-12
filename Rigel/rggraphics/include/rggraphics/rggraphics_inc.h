@@ -38,5 +38,6 @@ namespace rg {
 	struct RgGraphicsSamplerSettings;
 	struct RgRenderTargetBlendSetting;
 	struct RgBlendStateSettings;
+	struct RgGraphicsDisplayMode;
 }
 

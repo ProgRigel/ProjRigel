@@ -36,5 +36,5 @@
 #include "rg_shader.h"
 #include "rg_texture.h"
 #include "rg_viewport.h"
-
+#include "rg_graphics_display_mode.h"
 

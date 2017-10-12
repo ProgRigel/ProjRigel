@@ -3,6 +3,8 @@
 #include "rg_buffer.h"
 #include "rg_rasterizer_state.h"
 #include "rg_render_target.h"
+#include "rg_graphics_display_mode.h"
+
 
 #include "directx11\rg_texture_dx11.h"
 #include "directx11\rg_sampler_dx11.h"
@@ -581,13 +583,31 @@ namespace rg {
 		}
 
 		for (unsigned int i = 0; i < numModes; i++) {
-			//RgLogD() << "mode:" << modelist[i].Width << modelist[i].Height << modelist[i].RefreshRate.Denominator << modelist[i].RefreshRate.Numerator;
+			RgGraphicsDisplayMode displaymode;
+			displaymode.Width = modelist[i].Width;
+			displaymode.Height = modelist[i].Height;
+			displaymode.RefreshRateDenominator = modelist[i].RefreshRate.Denominator;
+			displaymode.RefreshRateNumerator = modelist[i].RefreshRate.Numerator;
+
+			m_vDisplayModes.push_back(displaymode);
 		}
+
+		//get monitor info
+		DXGI_OUTPUT_DESC outputdesc;
+		adapterOutput->GetDesc(&outputdesc);
+		HMONITOR hmonitor = outputdesc.Monitor;
+		MONITORINFOEX monitorInfo;
+		monitorInfo.cbSize = sizeof(MONITORINFOEX);
+		GetMonitorInfo(hmonitor, &monitorInfo);
+		DEVMODE devMode;
+		devMode.dmSize = sizeof(DEVMODE);
+		devMode.dmDriverExtra = 0;
+		EnumDisplaySettings(monitorInfo.szDevice, ENUM_CURRENT_SETTINGS, &devMode);
 
 		DXGI_MODE_DESC closestMatchMode;
 		DXGI_MODE_DESC mode;
-		mode.Width = 1920;
-		mode.Height = 1080;
+		mode.Width = devMode.dmPelsWidth;
+		mode.Height = devMode.dmPelsHeight;
 		mode.RefreshRate.Denominator = 0;
 		mode.RefreshRate.Numerator = 0;
 		mode.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -598,9 +618,10 @@ namespace rg {
 			RgLogE() << HrToMessage(result);
 		}
 
-
-		RgLogD() << "closestMatchMode:" << closestMatchMode.Width << closestMatchMode.Height << closestMatchMode.RefreshRate.Denominator << closestMatchMode.RefreshRate.Numerator;
-		
+		m_DisplayModeDefault.Width = closestMatchMode.Width;
+		m_DisplayModeDefault.Height = closestMatchMode.Height;
+		m_DisplayModeDefault.RefreshRateDenominator = closestMatchMode.RefreshRate.Denominator;
+		m_DisplayModeDefault.RefreshRateNumerator = closestMatchMode.RefreshRate.Numerator;
 
 		delete[] modelist;
 

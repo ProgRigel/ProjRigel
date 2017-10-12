@@ -2,6 +2,7 @@
 #include "rggraphics_inc.h"
 #include "rggraphics.h"
 #include <rgcore\rg_signal.hpp>
+#include "rg_graphics_display_mode.h"
 namespace rg {
 
 	class RgBuffer;
@@ -79,6 +80,9 @@ namespace rg {
 
 		RgRenderContext *m_pRenderContext = nullptr;
 		RgRenderTarget * m_pRenderTarget = nullptr;
+
+		RgGraphicsDisplayMode m_DisplayModeDefault;
+		std::vector<RgGraphicsDisplayMode> m_vDisplayModes;
 
 	public:
 
