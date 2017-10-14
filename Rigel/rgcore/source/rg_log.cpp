@@ -28,7 +28,7 @@ namespace rg
 	}
 	RgLogger & RgLogger::Error()
 	{
-		SetConsoleTextAttribute(m_Stdout, FOREGROUND_RED);
+		SetConsoleTextAttribute(m_Stdout, FOREGROUND_RED | FOREGROUND_INTENSITY);
 		m_sstream << "[Error] ";
 		return *this;
 	}

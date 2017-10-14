@@ -15,6 +15,15 @@
 
 namespace rg
 {
+	enum class RgLogStyle {
+		Yello = FOREGROUND_RED | FOREGROUND_GREEN,
+		Cyan = FOREGROUND_GREEN | FOREGROUND_BLUE,
+		Magenta = FOREGROUND_RED | FOREGROUND_BLUE,
+		Red = FOREGROUND_RED | FOREGROUND_INTENSITY,
+		Green = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+		Blue = FOREGROUND_BLUE | FOREGROUND_INTENSITY,
+	};
+
 	class RgLogger
 	{
 	public:
@@ -26,6 +35,11 @@ namespace rg
 		RgLogger& Error();
 
 	public:
+
+		inline RgLogger& operator << (const RgLogStyle& style) {
+			SetConsoleTextAttribute(m_Stdout, (WORD)style);
+			return *this;
+		}
 
 		inline RgLogger& operator <<(const char * v)
 		{
