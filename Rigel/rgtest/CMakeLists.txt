@@ -12,5 +12,5 @@ target_include_directories(RgTest PUBLIC ./include)
 target_include_directories(RgTest PUBLIC ../rgcore/include)
 target_include_directories(RgTest PUBLIC ../rggraphics/include)
 
-# target_link_libraries(RgTest rgcore)
-# target_link_libraries(RgTest rggraphics)
+target_link_libraries(RgTest rgcore)
+target_link_libraries(RgTest rggraphics)
