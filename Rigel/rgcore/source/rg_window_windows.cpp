@@ -1,31 +1,45 @@
 #pragma once
 #include "rgcore.h"
 #include "rg_window.h"
-#include "rg_windowWindows.h"
+#include "rg_window_windows.h"
 namespace rg {
 
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
 
-	RgWindowWindows *g_winwindow = nullptr;
 
 	LRESULT CALLBACK RgWindowWindowsWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-		if(g_winwindow)
-			return g_winwindow->memberWndProc(hwnd, uMsg, wParam, lParam);
+
+		if (hwnd == nullptr) {
+			RgLogW() << "null hwnd";
+		}
+
+		auto mainwin = RgWindowManager::GetMainWindow();
+		if (mainwin != nullptr) {
+			if (hwnd == mainwin->getHandler()) {
+				RgWindowWindows * winWindows = dynamic_cast<RgWindowWindows *>(mainwin);
+				return winWindows->memberWndProc(hwnd, uMsg, wParam, lParam);
+			}
+		}
+
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 
 
 	RgWindowWindows::RgWindowWindows()
 	{
-		RgLogD() << "winwindows ctor";
-		g_winwindow = this;
+		m_hWnd = 0;
 	}
 
 	RgWindowWindows::~RgWindowWindows()
 	{
-		g_winwindow = nullptr;
-		RgLogD() << "winwindows dctor";
+		if (m_hWnd != nullptr) m_hWnd = nullptr;
+		if (m_hInstance != nullptr) {
+			UnregisterClass(m_pWinClassName, m_hInstance);
+			m_hInstance = nullptr;
+			RgLogD()<< RgLogStyle::Cyan << "release window class";
+		}
+		RgLogD() << "dctor window windows";
 	}
 
 	void * RgWindowWindows::getHandler() const
@@ -34,8 +48,7 @@ namespace rg {
 	}
 
 
-
-	void RgWindowWindows::initWindow(RgWindowSettings* settings)
+	void RgWindowWindows::InitWindow(RgWindowSettings* settings)
 	{
 		if (settings == nullptr) {
 			RgLogE() << "window settings is null";
@@ -68,29 +81,38 @@ namespace rg {
 		m_width = 800;
 		m_height = 600;
 
+		m_bIsChild = false;
+		m_destroyed = false;
+
+		RgWindowManager::InternalRegisterWindow(this);
+
 		m_hWnd = CreateWindow(settings->windowTitle, settings->windowTitle, WS_OVERLAPPEDWINDOW, settings->x, settings->y, 800, 600, 0, nullptr, hInstance, 0);
 		if (!m_hWnd) {
 			RgLogE() << "create windows window error";
 			UnregisterClass(settings->windowTitle, m_hInstance);
 			return;
 		}
+		else{
+			RgLogD() << "create windows window success";
+		}
 		
 
 		RgLogD() << "winwindow init";
 	}
-	void RgWindowWindows::releaseWindow()
+	void RgWindowWindows::Destroy()
 	{
-		UnregisterClass(m_pWinClassName, m_hInstance);
+		//send WM_DESTROY
+		if(m_hWnd != nullptr)
+			DestroyWindow(m_hWnd);
 	}
-	void RgWindowWindows::showWindow()
+	void RgWindowWindows::Show()
 	{
 		ShowWindow(m_hWnd, SW_SHOW);
 	}
-	void RgWindowWindows::closeWindow()
+	void RgWindowWindows::Close()
 	{
-		std::cout << "winwindows close" << std::endl;
-		if(m_hWnd != nullptr)
-			CloseWindow(m_hWnd);
+		//send WM_CLOSE
+		CloseWindow(m_hWnd);
 	}
 
 	LRESULT RgWindowWindows::memberWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -164,10 +186,16 @@ namespace rg {
 		case WM_CLOSE:
 			EventOnGUI.emit(RgWindowEvent{ RgWindowEventType::Close,&m_windowInput });
 			EventOnClose.emit();
+
+			Destroy();
 			break;
 		case WM_DESTROY:
 			EventOnDestroy.emit();
-			PostQuitMessage(0);
+
+			RgLogD() << RgLogStyle::Cyan << "window destroy";
+
+			m_hWnd = nullptr;
+			m_destroyed = true;
 			break;
 		}
 
