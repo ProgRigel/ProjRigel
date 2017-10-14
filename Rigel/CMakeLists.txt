@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 #project basis
 project(Rigel)
 
+
+
 #configs
 if(MSVC)
     macro(set_pch VARCPP VARHEADER)
@@ -37,11 +39,25 @@ option(BUILD_RIGEL_ENGINE "build RigelEngine" OFF)
 
 set(PROJECT_SOURCE_DIR ./)
 
-add_subdirectory(./rigel_editor)
-add_subdirectory(./rgcore)
-add_subdirectory(./rggraphics)
-add_subdirectory(./rggui)
+#module
+message(${module})
 
-add_subdirectory(./rigel_engine)
-add_subdirectory(./rigel_launcher)
+if(NOT module)
+    add_subdirectory(./rigel_editor)
+    add_subdirectory(./rgcore)
+    add_subdirectory(./rggraphics)
+    add_subdirectory(./rggui)
+
+    add_subdirectory(./rigel_engine)
+    add_subdirectory(./rigel_launcher)
+else(NOT module)
+    foreach( mname ${module})
+        message("add module : ${mname}")
+        add_subdirectory("./${mname}")
+    endforeach( mname ${module})
+    
+endif(NOT module)
+
+
+
 
