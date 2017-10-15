@@ -1,34 +1,57 @@
 
 #include <rgcore\rgcore.h>
+#include "..\include\rgtest.h"
+#include <vector>
+#include "rgtest_rgcore.h"
 
 using namespace rg;
+std::vector<RgTestSuit> g_testsuits;
 
-static int count = 0;
+void RunTestSuit() {
 
-void test(){
-	if (count > 100) {
+	for (auto iter = g_testsuits.begin();iter != g_testsuits.end(); iter++)
+	{
+		bool result = false;
+		try
+		{
+			result = (*iter).TestFunction();
+		}
+		catch (const std::exception& e)
+		{
 
-		RgWindowManager::ReleaseWindow();
+			RgLogW("Exception") << RgLogStyle::Yello << (*iter).Title << e.what();
+			continue;
+		}
+
+		if (result) {
+			RgLogW("Success") << RgLogStyle::Green << (*iter).Title;
+		}
+		else {
+			RgLogW("Fail") << RgLogStyle::Red << (*iter).Title;
+		}
+		
+
 	}
-
-	count++;
 }
+
+
 
 int main() {
 
-	RgWindow * win = nullptr;
+	AddRgCoreTestSuits();
 
-	RgWindowSettings set;
-	set.windowTitle = L"testWindow";
+	RgLogD() << "---------------------";
 
-	RgWindowManager::CreateWindowWithSettings(&win, &set);
-	win->Show();
-	//win->EventOnFrame.connect<&test>();
-	RgWindowManager::EnterRunLoop(10);
-
+	RunTestSuit();
 
 
 	getchar();
 
+
 	return 0;
+}
+
+void RegisterTestSuit(const RgTestSuit & testsuit)
+{
+	g_testsuits.push_back(testsuit);
 }
