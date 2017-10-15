@@ -1,8 +1,7 @@
 #pragma once
+#include "rg_window.h"
 
 namespace rg {
-
-	class RgWindow;
 
 	class RgWindowWindows : public RgWindow
 	{
@@ -14,11 +13,11 @@ namespace rg {
 
 	protected:
 		
-		void releaseWindow();
+		void Destroy();
 	public:
-		void initWindow(RgWindowSettings* settings);
-		void showWindow();
-		void closeWindow();
+		void InitWindow(RgWindowSettings* settings);
+		void Show();
+		void Close();
 
 
 

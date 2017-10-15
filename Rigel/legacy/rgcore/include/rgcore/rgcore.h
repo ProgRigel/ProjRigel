@@ -4,6 +4,14 @@
 #include "rg_math.h"
 #include "rg_utility.h"
 #include "rg_signal.hpp"
+#include "rg_window.h"
+#include "rg_window_manager.h"
+
+#ifdef _MSC_VER
+#include "rg_window_windows.h"
+#else __GNUC__
+
+#endif
 
 #include <Windows.h>
 #include <string>

@@ -68,7 +68,7 @@ namespace rg {
 
 	protected:
 		RgWindow();
-		virtual void releaseWindow() = 0;
+		virtual void Destroy() = 0;
 
 		void onFrame();
 		void onRegister();
@@ -89,9 +89,9 @@ namespace rg {
 		Signal<void()> EventOnMouseButton;
 		
 	public:
-		virtual void initWindow(RgWindowSettings* settings) = 0;
-		virtual void showWindow() = 0;
-		virtual void closeWindow() = 0;
+		virtual void InitWindow(RgWindowSettings* settings) = 0;
+		virtual void Show() = 0;
+		virtual void Close() = 0;
 
 		virtual void* getHandler() const = 0;
 
@@ -103,6 +103,9 @@ namespace rg {
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
 		bool m_resized = false;
+
+		bool m_destroyed = false;
+		bool m_bIsChild = false;
 
 
 		friend class RgWindowManager;
