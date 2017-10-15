@@ -30,9 +30,9 @@ namespace rg
 		RgLogger(const char * file, const char * function, int line);
 		~RgLogger();
 	public:
-		RgLogger& Debug();
-		RgLogger& Warning();
-		RgLogger& Error();
+		RgLogger& Debug(const char* prefix = nullptr);
+		RgLogger& Warning(const char* prefix = nullptr);
+		RgLogger& Error(const char* prefix = nullptr);
 
 	public:
 

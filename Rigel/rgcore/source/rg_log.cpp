@@ -14,22 +14,22 @@ namespace rg
 		SetConsoleTextAttribute(m_Stdout, FOREGROUND_INTENSITY);
 	}
 
-	RgLogger & RgLogger::Debug()
+	RgLogger & RgLogger::Debug(const char* prefix)
 	{
 		SetConsoleTextAttribute(m_Stdout, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		m_sstream << "[Debug] ";
+		m_sstream << '[' << (prefix == nullptr ? "Debug" : prefix) << "] " ;
 		return *this;
 	}
-	RgLogger & RgLogger::Warning()
+	RgLogger & RgLogger::Warning(const char* prefix)
 	{
 		SetConsoleTextAttribute(m_Stdout, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		m_sstream << "[Warning] ";
+		m_sstream << '[' << (prefix == nullptr ? "Warning" : prefix) << "] ";
 		return *this;
 	}
-	RgLogger & RgLogger::Error()
+	RgLogger & RgLogger::Error(const char* prefix)
 	{
 		SetConsoleTextAttribute(m_Stdout, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		m_sstream << "[Error] ";
+		m_sstream << '[' << (prefix == nullptr ? "Error" : prefix) << "] ";
 		return *this;
 	}
 }
