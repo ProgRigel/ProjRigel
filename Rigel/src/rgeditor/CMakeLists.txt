@@ -22,4 +22,6 @@ target_include_directories(RigelEditor PUBLIC ../../thirdpart/bgfx.cmake/bgfx/ex
 target_link_libraries(RigelEditor RigelEngine)
 target_link_libraries(RigelEditor example-common)
 
-target_compile_definitions(RigelEditor PRIVATE "-D_CRT_SECURE_NO_WARNINGS" "-DENTRY_CONFIG_IMPLEMENT_MAIN=1" )
+target_compile_definitions(RigelEditor PRIVATE "-D_CRT_SECURE_NO_WARNINGS" "-D__STDC_FORMAT_MACROS" "-DENTRY_CONFIG_IMPLEMENT_MAIN=1" )
+
+set_target_properties(RigelEditor PROPERTIES LINK_FLAGS "/ENTRY:\"mainCRTStartup\"" )
