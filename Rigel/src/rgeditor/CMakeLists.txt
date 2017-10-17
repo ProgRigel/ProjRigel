@@ -5,7 +5,7 @@ FILE(GLOB_RECURSE source_rgeditor ./source/*.cpp)
 add_executable(RigelEditor ${header_rgeditor} ${source_rgeditor})
 
 #pch
-use_pch("${SRCS_RIGEL_EDITOR}" "rgeditor.h")
+use_pch("${source_rgeditor}" "rgeditor.h")
 set_pch(./source/rgeditor.cpp "rgeditor.h")
 
 add_dependencies(RigelEditor RigelEngine)

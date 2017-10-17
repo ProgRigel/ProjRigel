@@ -1,4 +1,6 @@
+#include "rgeditor.h"
 #include "rgeditor_egui.h"
+#include "rgeditor_core.h"
 #include <imgui\imgui.h>
 namespace rgeditor {
 
@@ -43,18 +45,11 @@ namespace rgeditor {
 	}
 	void RgEditorModuleEGUI::drawEditorBasis()
 	{
+		RigelEditorCore::getInstance()->guiBasis();
+
 		if (ImGui::BeginMainMenuBar()) {
-			if (ImGui::BeginMenu("File")) {
-				if (ImGui::BeginMenu("New")) {
-					if(ImGui::MenuItem("Project")){}
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Open")) {
-					if (ImGui::MenuItem("Project")) {}
-					ImGui::EndMenu();
-				}
-				ImGui::EndMenu();
-			}
+			
+			RigelEditorCore::getInstance()->guiMainMenuBar();
 
 			//registered menuitems
 			for (auto iter = m_vMenuItems.begin(); iter != m_vMenuItems.end(); iter++) {

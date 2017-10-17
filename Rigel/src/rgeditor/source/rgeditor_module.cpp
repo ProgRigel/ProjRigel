@@ -1,3 +1,4 @@
+#include "rgeditor.h"
 #include "rgeditor_module.h"
 
 #include "rgeditor_egui.h"
