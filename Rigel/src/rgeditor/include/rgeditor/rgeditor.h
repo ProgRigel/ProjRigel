@@ -4,6 +4,9 @@
 #include <common\entry\entry.h>
 #include <common\bgfx_utils.h>
 
+#include "rgeditor_module.h"
+
+#define RGLOG_DEBUG(x) rgeditor::RgEditorModuleConsole::logDebug(x)
 
 namespace rgeditor {
 
@@ -16,7 +19,6 @@ namespace rgeditor {
 		bool update();
 
 	public:
-		
 
 
 	private:

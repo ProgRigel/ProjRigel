@@ -10,8 +10,9 @@ namespace rgeditor {
 	void rgEditorModuleInit()
 	{
 		g_vEditorModules.push_back(new RgEditorModuleEGUI());
-		g_vEditorModules.push_back(new RgEditorModuleModuleManager());
 		g_vEditorModules.push_back(new RgEditorModuleConsole());
+		g_vEditorModules.push_back(new RgEditorModuleModuleManager());
+		
 
 
 		for (auto iter = g_vEditorModules.rbegin(); iter != g_vEditorModules.rend(); iter++) {
@@ -44,7 +45,6 @@ namespace rgeditor {
 
 	void RgEditorModule::update()
 	{
-
 	}
 
 
@@ -80,30 +80,62 @@ namespace rgeditor {
 
 #pragma region Console
 
+	RgEditorModuleConsole* RgEditorModuleConsole::m_pInstance = nullptr;
+
 	void RgEditorModuleConsole::init()
 	{
 		static bool m_bShowManager = false;
 		RgEditorModuleEGUI::registerEGUIMenuItem("Tools", "Console", []() {
 			m_bShowManager = true;
+			RGLOG_DEBUG("open ModuleConsole");
 		});
 
-		RgEditorModuleEGUI::registerEGUIWindow([]() {
+		RgEditorModuleEGUI::registerEGUIWindow([this]() {
 			if (m_bShowManager) {
 				ImGui::SetNextWindowSize(ImVec2(500.0f, 200.0f), ImGuiSetCond_FirstUseEver);
-				if (ImGui::Begin("Console", &m_bShowManager)) {
+				if (ImGui::Begin("Console", &m_bShowManager,ImGuiWindowFlags_MenuBar)) {
 					
+
+					drawMenubar();
+					
+
+					drawLogs();
 				}
 				ImGui::End();
 			}
 
 		});
+
+
+		m_logdeque.push_back("1dwasdw");
+		m_logdeque.push_back("1=----dwasddww");
+		m_logdeque.push_back("---1dwasdw");
+		m_logdeque.push_back("---1dwasdw");
 	}
 
 	void RgEditorModuleConsole::shutdown()
 	{
 	}
+	void RgEditorModuleConsole::logDebug(const char * msg)
+	{
+		if (m_pInstance == nullptr) return;
+		m_pInstance->m_logdeque.push_back(msg);
+	}
 	void RgEditorModuleConsole::drawLogs()
 	{
+		for (auto iter = m_logdeque.begin(); iter != m_logdeque.end(); iter++) {
+			ImGui::Text(*iter);
+		}
+	}
+	void RgEditorModuleConsole::drawMenubar()
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::Button("Clear")) { m_logdeque.clear(); }
+			if (ImGui::Button("Test")) { m_logdeque.push_back("test"); }
+
+			ImGui::EndMenuBar();
+		}
 	}
 #pragma endregion
 

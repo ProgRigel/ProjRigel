@@ -2,7 +2,11 @@
 #include "rgeditor.h"
 #include <vector>
 #include <map>
-#include <queue>
+#include <deque>
+#include <list>
+#include <cstdarg>
+#include <iostream>
+#include <sstream>
 namespace rgeditor {
 
 	class RgEditorModule;
@@ -51,12 +55,20 @@ namespace rgeditor {
 
 	class RgEditorModuleConsole :public RgEditorModule {
 	public:
-		RgEditorModuleConsole() :RgEditorModule(RgEditorBaseModuleType::Console) {}
+		RgEditorModuleConsole() :RgEditorModule(RgEditorBaseModuleType::Console) {
+			m_pInstance = this;
+		}
 		void init();
 		void shutdown();
 
+		static void logDebug(const char * msg);
+
 	private:
 		void drawLogs();
+		void drawMenubar();
+
+		static RgEditorModuleConsole* m_pInstance;
+		std::deque<const char*> m_logdeque;
 	};
 #pragma endregion
 	///////////////////////////////////////
