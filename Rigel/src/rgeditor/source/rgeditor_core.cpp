@@ -53,13 +53,9 @@ namespace rgeditor {
 		guiProjectInfo();
 
 
-		if (ImGui::Button("tEST")) {
-			
-			std::wstring path = std::experimental::filesystem::current_path();
-			std::string spath = RG_WSTR2STR(path);
+		static RigelEditorFileTree ft(L"D:/git/yemi/ProjRigel/Build/win64");
 
-			RGLOG_DEBUG(spath.c_str());
-		}
+		ft.drawGUI();
 	}
 
 	void RigelEditorCore::guiMainMenuBar()
@@ -143,6 +139,86 @@ namespace rgeditor {
 
 	RigelEditorCore::~RigelEditorCore()
 	{
+	}
+
+	RigelEditorFileTree::RigelEditorFileTree(std::wstring path)
+	{
+		namespace fs = std::experimental::filesystem;
+
+		fs::path basepath = path;
+
+		RGLOG_DEBUG(basepath.string().c_str());
+		
+		open(basepath);
+	}
+
+	void RigelEditorFileTree::open(fs::path p)
+	{
+		
+
+		std::vector<fs::path>().swap(subpath);
+
+		fs::directory_iterator diriter(p);
+		for (auto d : diriter) {
+			subpath.push_back(d.path());
+		}
+
+		if (m_selected != nullptr) {
+			delete[]m_selected;
+		}
+
+		m_selected = new bool[subpath.size()];
+		memset(m_selected, 0, sizeof(bool)* subpath.size());
+
+		basepath = p;
+	}
+
+	void RigelEditorFileTree::drawGUI()
+	{
+		auto& size = ImGui::GetWindowSize();
+
+		if (ImGui::BeginChild("corefs", ImVec2(size.x, size.y), false)) {
+
+			int diropen = -1;
+			int index = 0;
+
+			ImGuiIO& io = ImGui::GetIO();
+
+			bool dirp = false;
+			if (ImGui::Selectable("..",&dirp, ImGuiSelectableFlags_AllowDoubleClick)) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					diropen = 0;
+				}
+			}
+
+			for (auto& p : subpath) {
+				std::string s = p.filename().string();
+				if (ImGui::Selectable( s.c_str(), &m_selected[index],ImGuiSelectableFlags_AllowDoubleClick)) {
+					if (ImGui::IsMouseDoubleClicked(0)) {
+						if (fs::is_directory(p)) {
+							diropen = index;
+						}
+					}
+				}
+				index++;
+			}
+
+			if (diropen >= 0) {
+				if (diropen == 0) {
+					open(basepath.parent_path());
+				}
+				else
+				{
+					open(subpath[diropen]);
+				}
+			}
+		}
+		ImGui::EndChild();
+	}
+
+	void RigelEditorFileTree::selectClear()
+	{
+		memset(m_selected, 0, sizeof(bool)* subpath.size());
 	}
 
 }

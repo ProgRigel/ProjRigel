@@ -7,6 +7,7 @@
 #include <cstdarg>
 #include <iostream>
 #include <sstream>
+#include <string>
 namespace rgeditor {
 
 	class RgEditorModule;
@@ -62,6 +63,7 @@ namespace rgeditor {
 		void shutdown();
 
 		static void logDebug(const char * msg);
+		static void logDebug(std::string msg);
 
 	private:
 		void drawLogs();

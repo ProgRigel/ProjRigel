@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <filesystem>
 
 namespace rgeditor {
 
@@ -42,6 +43,23 @@ namespace rgeditor {
 		bool m_bShowEntryPage = true;
 
 		RigelProject m_currentProj;
+	};
+
+	namespace fs = std::experimental::filesystem;
+	class RigelEditorFileTree {
+	public:
+		RigelEditorFileTree(std::wstring path);
+
+		void open(fs::path p);
+		void drawGUI();
+
+		void selectClear();
+	public:
+		fs::path basepath;
+		std::vector<fs::path> subpath;
+		
+	private:
+		bool * m_selected = nullptr;
 	};
 
 

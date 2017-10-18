@@ -57,7 +57,6 @@ namespace rgeditor {
 		static bool m_bShowManager = false;
 		RgEditorModuleEGUI::registerEGUIMenuItem("Tools", "ModuleManager", []() {
 			m_bShowManager = true;
-
 		});
 
 		RgEditorModuleEGUI::registerEGUIWindow([]() {
@@ -122,6 +121,13 @@ namespace rgeditor {
 		if (m_pInstance == nullptr) return;
 		m_pInstance->m_logdeque.push_back(msg);
 	}
+
+	void RgEditorModuleConsole::logDebug(std::string msg)
+	{
+		if (m_pInstance == nullptr) return;
+		m_pInstance->m_logdeque.push_back(msg);
+	}
+
 	void RgEditorModuleConsole::drawLogs()
 	{
 		for (auto iter = m_logdeque.begin(); iter != m_logdeque.end(); iter++) {

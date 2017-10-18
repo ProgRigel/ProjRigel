@@ -23,6 +23,7 @@ namespace rgeditor{
 		static void registerEGUIWindow(std::function<void()> guicallback);
 		static void registerEGUIMenuItem(const char* category, const char * item , std::function<void()> guicallback);
 
+
 	private:
 		RgEditorModuleEGUI(const RgEditorModuleEGUI&) = delete;
 		RgEditorModuleEGUI& operator=(const RgEditorModuleEGUI&) = delete;
@@ -35,10 +36,6 @@ namespace rgeditor{
 		void drawEditorBasis();
 	};
 
-
-	struct RgEditorFileTree {
-
-	};
 
 	
 }
