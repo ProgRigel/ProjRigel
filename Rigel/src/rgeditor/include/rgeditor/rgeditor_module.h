@@ -68,7 +68,7 @@ namespace rgeditor {
 		void drawMenubar();
 
 		static RgEditorModuleConsole* m_pInstance;
-		std::deque<const char*> m_logdeque;
+		std::deque<std::string> m_logdeque;
 	};
 #pragma endregion
 	///////////////////////////////////////

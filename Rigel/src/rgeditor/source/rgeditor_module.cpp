@@ -85,7 +85,7 @@ namespace rgeditor {
 
 	void RgEditorModuleConsole::init()
 	{
-		static bool m_bShowManager = false;
+		static bool m_bShowManager = true;
 		RgEditorModuleEGUI::registerEGUIMenuItem("Tools", "Console", []() {
 			m_bShowManager = true;
 			RGLOG_DEBUG("open ModuleConsole");
@@ -125,7 +125,7 @@ namespace rgeditor {
 	void RgEditorModuleConsole::drawLogs()
 	{
 		for (auto iter = m_logdeque.begin(); iter != m_logdeque.end(); iter++) {
-			ImGui::Text(*iter);
+			ImGui::Text((*iter).c_str());
 		}
 	}
 	void RgEditorModuleConsole::drawMenubar()

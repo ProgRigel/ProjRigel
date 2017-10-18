@@ -36,5 +36,9 @@ namespace rgeditor{
 	};
 
 
+	struct RgEditorFileTree {
+
+	};
+
 	
 }

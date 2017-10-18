@@ -51,6 +51,15 @@ namespace rgeditor {
 		guiEnteryPage();
 
 		guiProjectInfo();
+
+
+		if (ImGui::Button("tEST")) {
+			
+			std::wstring path = std::experimental::filesystem::current_path();
+			std::string spath = RG_WSTR2STR(path);
+
+			RGLOG_DEBUG(spath.c_str());
+		}
 	}
 
 	void RigelEditorCore::guiMainMenuBar()
